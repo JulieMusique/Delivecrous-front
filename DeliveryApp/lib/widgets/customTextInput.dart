@@ -1,11 +1,11 @@
+import 'package:deliveryapp/constants/colors.dart';
 import 'package:flutter/material.dart';
-import '../constants/colors.dart';
 
 class CustomTextInput extends StatelessWidget {
   const CustomTextInput({
     required String hintText,
     EdgeInsets padding = const EdgeInsets.only(left: 40),
-    required Key key,
+    Key? key,
   })  : _hintText = hintText,
         _padding = padding,
         super(key: key);
@@ -22,13 +22,14 @@ class CustomTextInput extends StatelessWidget {
         color: AppColor.placeholderBg,
         shape: StadiumBorder(),
       ),
-      child: TextField(
+      child: TextFormField(
         decoration: InputDecoration(
-          border: InputBorder.none,
+          prefixIcon: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8),
+                      child: Icon(  Icons.email,)
+                    ),
           hintText: _hintText,
-          hintStyle: TextStyle(
-            color: AppColor.placeholder,
-          ),
+         
           contentPadding: _padding,
         ),
       ),

@@ -30,14 +30,14 @@ void showCustomDialog(BuildContext context, {required ValueChanged onValue}) {
               ),
             ],
           ),
-          child: Scaffold(
+          child: const Scaffold(
             backgroundColor: Colors.transparent,
             body: Stack(
               clipBehavior: Clip.none,
               children: [
                 Column(
                   children: [
-                    const Text(
+                    Text(
                       "Sign in",
                       style: TextStyle(
                         fontSize: 34,
@@ -46,14 +46,14 @@ void showCustomDialog(BuildContext context, {required ValueChanged onValue}) {
                       ),
                     ),
                     Row(
-                      children: const [
+                      children: [
                         Expanded(
                           child: Divider(),
                         ),
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 16),
                           child: Text(
-                            "OR",
+                            "Welcome",
                             style: TextStyle(
                               color: Colors.black26,
                               fontWeight: FontWeight.w500,
@@ -63,13 +63,45 @@ void showCustomDialog(BuildContext context, {required ValueChanged onValue}) {
                         Expanded(child: Divider()),
                       ],
                     ),
-                    const SizedBox(height: 20), // Espace vertical
-                    Align(
-                      alignment: Alignment.center, // Centrer horizontalement et verticalement
-                      child: SignInForm(), // SignInForm centré
+                    SizedBox(height: 20), // Espace vertical
+                  
+                    SignInForm(),
+                   
+
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Divider(),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          child: Text(
+                            "Forget your password ? ",
+                            style: TextStyle(
+                              color: Colors.black26,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        Expanded(child: Divider()),
+                      ],
                     ),
                   ],
                 ),
+                 Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: -48,
+                  child: CircleAvatar(
+                    radius: 16,
+                    backgroundColor: Colors.white,
+                    child: Icon(
+                      Icons.close,
+                      size: 20,
+                      color: Colors.black,
+                    ),
+                  ),
+                )
               ],
             ),
           ),

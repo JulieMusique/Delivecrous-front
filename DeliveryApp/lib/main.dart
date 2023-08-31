@@ -1,4 +1,4 @@
-import 'package:deliveryapp/pages/homescreen.dart';
+import 'package:deliveryapp/pages/OnboardingPages/homescreen.dart';
 import 'package:flutter/material.dart';
 import './constants/colors.dart';
 

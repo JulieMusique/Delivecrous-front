@@ -1,9 +1,9 @@
-import 'package:deliveryapp/pages/animated_btn.dart';
+import 'package:deliveryapp/utils/animated_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 import 'sign_in_dialog.dart';
-import '../constants/colors.dart';
-import '../utils/helper.dart';
+import '../../constants/colors.dart';
+import '../../utils/helper.dart';
 
 class OnbodingScreen extends StatefulWidget {
   const OnbodingScreen({super.key});

@@ -1,8 +1,7 @@
 
 
 import 'package:flutter/material.dart';
-import '../constants/colors.dart';
-import '../utils/helper.dart';
+
 
 class EntryPoint extends StatefulWidget {
   const EntryPoint({super.key});

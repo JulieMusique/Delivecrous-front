@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../constants/colors.dart';
-import '../pages/homescreen.dart';
+import '../pages/OnboardingPages/homescreen.dart';
 import '../pages/menuScreen.dart';
 import '../pages/profileScreen.dart';
 import '../pages/favoris.dart';
