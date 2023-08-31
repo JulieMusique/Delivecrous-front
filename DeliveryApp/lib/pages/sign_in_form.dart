@@ -1,3 +1,4 @@
+import 'package:deliveryapp/constants/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
@@ -151,7 +152,7 @@ class _SignInFormState extends State<SignInForm> {
                     singIn(context);
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFF77D8E),
+                    backgroundColor: AppColor.orange,
                     minimumSize: const Size(double.infinity, 56),
                     shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.only(
@@ -164,7 +165,6 @@ class _SignInFormState extends State<SignInForm> {
                   ),
                   icon: const Icon(
                     CupertinoIcons.arrow_right,
-                    color: Color(0xFFFE0037),
                   ),
                   label: const Text("Sign In"),
                 ),

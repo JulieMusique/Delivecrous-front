@@ -4,15 +4,16 @@ import 'package:rive/rive.dart';
 import 'sign_in_dialog.dart';
 import '../constants/colors.dart';
 import '../utils/helper.dart';
+
 class OnbodingScreen extends StatefulWidget {
   const OnbodingScreen({super.key});
 
   @override
   State<OnbodingScreen> createState() => LandingScreen();
 }
+
 class LandingScreen extends State<OnbodingScreen> {
-  static const routeName = "/landingScreen";
-    late RiveAnimationController _btnAnimationController;
+  late RiveAnimationController _btnAnimationController;
   bool isShowSignInDialog = false;
 
   @override
@@ -21,9 +22,10 @@ class LandingScreen extends State<OnbodingScreen> {
       "active",
       autoplay: false,
     );
-  
+
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,30 +36,32 @@ class LandingScreen extends State<OnbodingScreen> {
         children: [
           Align(
             alignment: Alignment.topCenter,
+            child : ClipPath(
+              clipper : CustomClipperAppBar(),
             child: Container(
-  width: double.infinity,
-  height: Helper.getScreenHeight(context) * 0.5,
-  decoration: BoxDecoration(
-    boxShadow: [
-      BoxShadow(
-        color: AppColor.placeholder,
-        offset: Offset(0, 15),
-        blurRadius: 10,
-      ),
-    ],
-    borderRadius: BorderRadius.circular(10),
-    color: AppColor.orange,
-  ),
-  child: ClipPath(
-    clipper: CustomClipperAppBar(),
-    child: Image.asset(
-      Helper.getAssetName("login_bg.png", "virtual"),
-      fit: BoxFit.cover,
-    ),
-  ),
-),
-
-          ),
+              width: double.infinity,
+              height: Helper.getScreenHeight(context) * 0.5,
+              decoration: BoxDecoration(
+                boxShadow: const [
+                  BoxShadow(
+                    color: AppColor.placeholder,
+                    offset: Offset(0, 15),
+                    blurRadius: 10,
+                  ),
+                ],
+                borderRadius: BorderRadius.circular(10),
+                color: AppColor.orange,
+              ),
+              alignment:  Alignment.center,
+                child: Image.asset(
+                  Helper.getAssetName("login_bg.png", "virtual"),
+                   width: double.infinity, // Ajustez la largeur de l'image
+            height: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              ),),
+            ),
+          
           Align(
             alignment: Alignment.center,
             child: Image.asset(
@@ -72,20 +76,26 @@ class LandingScreen extends State<OnbodingScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 40),
               child: Column(
                 children: [
-                  Flexible(
-                    child: Text(
-                      "Discover the best foods from over 1,000 restaurants and fast delivery to your doorstep",
+                  
+                    Text(
+                      "Discover the best foods from us\nand fast delivery to your doorstep",
                       textAlign: TextAlign.center,
-                    ),
-                  ),
-                  Spacer(
+                      style: TextStyle(
+                        fontSize: 18, // Ajustez la taille de police
+                        fontFamily: "VotrePolice", // Ajustez la police
+                        fontWeight: FontWeight.bold, // Ajustez le poids de la police
+                        color: Color(0xFF4c2610),
+                      ),),
+                  
+                  const Spacer(
                     flex: 2,
                   ),
                   SizedBox(
                     width: double.infinity,
                     height: 50,
-                    child:   AnimatedBtn(
+                    child: AnimatedBtn(
                       btnAnimationController: _btnAnimationController,
+                      choix: "Alreadyuser",
                       press: () {
                         _btnAnimationController.isActive = true;
 
@@ -108,30 +118,38 @@ class LandingScreen extends State<OnbodingScreen> {
                       },
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   SizedBox(
                     width: double.infinity,
                     height: 50,
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.white),
-                        foregroundColor:
-                            MaterialStateProperty.all(AppColor.orange),
-                        shape: MaterialStateProperty.all(
-                          StadiumBorder(
-                            side:
-                                BorderSide(color: AppColor.orange, width: 1.5),
-                          ),
-                        ),
-                      ),
-                      onPressed: () {},
-                      child: Text("Create an Account"),
+                    child: AnimatedBtn(
+                      btnAnimationController: _btnAnimationController,
+                      choix: "Newuser",
+                      press: () {
+                        _btnAnimationController.isActive = true;
+
+                        Future.delayed(
+                          const Duration(milliseconds: 800),
+                          () {
+                            setState(() {
+                              isShowSignInDialog = true;
+                            });
+                            showCustomDialog(
+                              context,
+                              onValue: (_) {
+                                setState(() {
+                                  isShowSignInDialog = false;
+                                });
+                              },
+                            );
+                          },
+                        );
+                      },
                     ),
                   ),
-                  Spacer(),
+                  const Spacer(),
                 ],
               ),
             ),
@@ -141,18 +159,18 @@ class LandingScreen extends State<OnbodingScreen> {
     ));
   }
 }
-
 class CustomClipperAppBar extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
-    Offset controlPoint = Offset(size.width * 0.24, size.height);
-    Offset endPoint = Offset(size.width * 0.25, size.height * 0.96);
-    Offset controlPoint2 = Offset(size.width * 0.3, size.height * 0.78);
-    Offset endPoint2 = Offset(size.width * 0.5, size.height * 0.78);
-    Offset controlPoint3 = Offset(size.width * 0.7, size.height * 0.78);
-    Offset endPoint3 = Offset(size.width * 0.75, size.height * 0.96);
-    Offset controlPoint4 = Offset(size.width * 0.76, size.height);
-    Offset endPoint4 = Offset(size.width * 0.79, size.height);
+     Offset controlPoint = Offset(size.width * 0.23, size.height);
+     Offset endPoint = Offset(size.width * 0.25, size.height * 0.98);
+     Offset controlPoint2 = Offset(size.width * 0.35, size.height * 0.75);
+     Offset endPoint2 = Offset(size.width * 0.5, size.height * 0.75);
+     Offset controlPoint3 = Offset(size.width * 0.65, size.height * 0.75);
+     Offset endPoint3 = Offset(size.width * 0.77, size.height * 0.98);
+     Offset controlPoint4 = Offset(size.width * 0.78, size.height);
+    Offset  endPoint4 = Offset(size.width * 0.82, size.height);
+
     Path path = Path()
       ..lineTo(0, size.height)
       ..lineTo(size.width * 0.21, size.height)

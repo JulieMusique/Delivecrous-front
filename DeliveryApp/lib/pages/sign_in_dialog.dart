@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'sign_in_form.dart';
 
-
-
 void showCustomDialog(BuildContext context, {required ValueChanged onValue}) {
   showGeneralDialog(
     context: context,
     barrierLabel: "Barrier",
-
     barrierDismissible: true,
     barrierColor: Colors.black.withOpacity(0.5),
     transitionDuration: const Duration(milliseconds: 400),
@@ -48,14 +45,6 @@ void showCustomDialog(BuildContext context, {required ValueChanged onValue}) {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 16),
-                      child: Text(
-                        "Access to 240+ hours of content. Learn design and code, by building real apps with Flutter and Swift.",
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    const SignInForm(),
                     Row(
                       children: const [
                         Expanded(
@@ -74,56 +63,18 @@ void showCustomDialog(BuildContext context, {required ValueChanged onValue}) {
                         Expanded(child: Divider()),
                       ],
                     ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 24),
-                      child: Text(
-                        "Sign up with Email, Apple or Google",
-                        style: TextStyle(color: Colors.black54),
-                      ),
+                    const SizedBox(height: 20), // Espace vertical
+                    Align(
+                      alignment: Alignment.center, // Centrer horizontalement et verticalement
+                      child: SignInForm(), // SignInForm centré
                     ),
-               
                   ],
                 ),
-                const Positioned(
-                  left: 0,
-                  right: 0,
-                  bottom: -48,
-                  child: CircleAvatar(
-                    radius: 16,
-                    backgroundColor: Colors.white,
-                    child: Icon(
-                      Icons.close,
-                      size: 20,
-                      color: Colors.black,
-                    ),
-                  ),
-                )
               ],
             ),
           ),
         ),
       );
     },
-    transitionBuilder: (_, anim, __, child) {
-      Tween<Offset> tween;
-      // if (anim.status == AnimationStatus.reverse) {
-      //   tween = Tween(begin: const Offset(0, 1), end: Offset.zero);
-      // } else {
-      //   tween = Tween(begin: const Offset(0, -1), end: Offset.zero);
-      // }
-
-      tween = Tween(begin: const Offset(0, -1), end: Offset.zero);
-
-      return SlideTransition(
-        position: tween.animate(
-          CurvedAnimation(parent: anim, curve: Curves.easeInOut),
-        ),
-        // child: FadeTransition(
-        //   opacity: anim,
-        //   child: child,
-        // ),
-        child: child,
-      );
-    },
-  ).then(onValue);
+  );
 }
