@@ -16,7 +16,10 @@ class _SignInFormState extends State<SignInForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   void singIn(BuildContext context) {
-    // confetti.fire();
+    Navigator.push(
+  context,
+  MaterialPageRoute(builder: (context) => EntryPoint()),
+);
     setState(() {});
   }
 
@@ -40,12 +43,7 @@ class _SignInFormState extends State<SignInForm> {
                 Padding(
                   padding: const EdgeInsets.only(top: 8, bottom: 16),
                   child: TextFormField(
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "";
-                      }
-                      return null;
-                    },
+                    
                     decoration: const InputDecoration(
                       prefixIcon: Padding(
                           padding: EdgeInsets.symmetric(horizontal: 8),
@@ -66,12 +64,7 @@ class _SignInFormState extends State<SignInForm> {
                   padding: const EdgeInsets.only(top: 8, bottom: 16),
                   child: TextFormField(
                     obscureText: true,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "";
-                      }
-                      return null;
-                    },
+                   
                     decoration: const InputDecoration(
                       prefixIcon: Padding(
                           padding: EdgeInsets.symmetric(horizontal: 8),

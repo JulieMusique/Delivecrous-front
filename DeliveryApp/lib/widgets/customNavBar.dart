@@ -15,7 +15,7 @@ class CustomNavBar extends StatelessWidget {
   final bool more;
 
   const CustomNavBar(
-      {required Key key,
+      {Key? key,
       this.home = false,
       this.menu = false,
       this.profile = false,
