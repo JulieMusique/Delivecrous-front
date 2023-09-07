@@ -1,4 +1,4 @@
-import 'package:deliveryapp/pages/OnboardingPages/homescreen.dart';
+import 'package:deliveryapp/pages/PlatsScreen.dart';
 import 'package:flutter/material.dart';
 import './constants/colors.dart';
 
@@ -57,7 +57,8 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home:OnbodingScreen(),
+      home: PlatsScreen(),
+      //OnbodingScreen(),
 
     );
     }

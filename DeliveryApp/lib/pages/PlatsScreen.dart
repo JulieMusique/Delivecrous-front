@@ -1,8 +1,28 @@
+import 'package:deliveryapp/dartClass/Dish.dart';
+import 'package:deliveryapp/http/HttpServiceDish.dart';
 import 'package:flutter/material.dart';
 import '../constants/colors.dart';
 import '../utils/helper.dart';
 import '../widgets/customNavBar.dart';
-class PlatsScreen extends StatelessWidget {
+
+class PlatsScreen extends StatefulWidget {
+  PlatsScreen({super.key});
+
+  @override
+  State<PlatsScreen> createState() => _PlatsScreen();
+}
+
+class _PlatsScreen extends State<PlatsScreen> {
+
+  late Future<List<Dish>> listDishes;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    listDishes = fetchDishes();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,46 +78,41 @@ class PlatsScreen extends StatelessWidget {
                     ),
                     name: "French Apple Pie",
                     shop: "Minute by tuk tuk",
-                    rating: "4.9",
                   ),
                   const SizedBox(
                     height: 5,
                   ),
-                  DessertCard(
-                    image: Image.asset(
-                      Helper.getAssetName("dessert2.jpg", "real"),
-                      fit: BoxFit.cover,
-                    ),
-                    name: "Dark Chocolate Cake",
-                    shop: "Cakes by Tella",
-                    rating: "4.7",
+                  FutureBuilder<List<Dish>>(
+                    future: listDishes,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator(); // Load screen
+                      } else if (snapshot.hasError) {
+                        return Text('Erreur : ${snapshot.error}');
+                      } else if (!snapshot.hasData) {
+                        return const Text('Aucune donnée disponible.');
+                      } else {
+                        // Maintenant, vous pouvez accéder aux éléments de la liste listDishes
+                        final dishes = snapshot.data;
+
+                        // Utilisez les éléments de la liste comme vous le souhaitez
+                        return Dish(
+                          id: dishes![0].id,
+                          title: dishes[0].title,
+                          description: dishes[0].description,
+                          categories: dishes[0].categories,
+                          price: dishes[0].price,
+                          image: dishes[0].image,
+                          ingredientList: dishes[0].ingredientList,
+                          allergenList: dishes[0].allergenList,
+                        );
+                        }
+                    }
+
                   ),
+              
                   const SizedBox(
-                    height: 5,
-                  ),
-                  DessertCard(
-                    image: Image.asset(
-                      Helper.getAssetName("dessert4.jpg", "real"),
-                      fit: BoxFit.cover,
-                    ),
-                    name: "Street Shake",
-                    shop: "Cafe Racer",
-                    rating: "4.9",
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  DessertCard(
-                    image: Image.asset(
-                      Helper.getAssetName("dessert5.jpg", "real"),
-                      fit: BoxFit.cover,
-                    ),
-                    name: "Fudgy Chewy Brownies",
-                    shop: "Minute by tuk tuk",
-                    rating: "4.9",
-                  ),
-                  const SizedBox(
-                    height: 100,
+                    height: 1000,
                   ),
                 ],
               ),
@@ -120,17 +135,14 @@ class DessertCard extends StatelessWidget {
   const DessertCard({
     Key? key,
     required String name,
-    required String rating,
     required String shop,
     required Image image,
   })  : _name = name,
-        _rating = rating,
         _shop = shop,
         _image = image,
         super(key: key);
 
   final String _name;
-  final String _rating;
   final String _shop;
   final Image _image;
   @override
@@ -180,9 +192,9 @@ class DessertCard extends StatelessWidget {
                       const SizedBox(
                         width: 5,
                       ),
-                      Text(
-                        _rating,
-                        style: const TextStyle(color: AppColor.orange),
+                      const Text(
+                        "3.9",
+                        style: TextStyle(color: AppColor.orange),
                       ),
                       const SizedBox(
                         width: 5,
@@ -197,7 +209,7 @@ class DessertCard extends StatelessWidget {
                       const Padding(
                         padding: EdgeInsets.only(bottom: 8.0),
                         child: Text(
-                          ".",
+                          "_",
                           style: TextStyle(color: AppColor.orange),
                         ),
                       ),
@@ -205,7 +217,7 @@ class DessertCard extends StatelessWidget {
                         width: 5,
                       ),
                       const Text(
-                        "Desserts",
+                        "Type Plat",
                         style: TextStyle(color: Colors.white),
                       ),
                     ],
