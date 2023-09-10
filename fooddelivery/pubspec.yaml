@@ -1,0 +1,26 @@
+name: fooddelivery
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=3.2.0-122.0.dev <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  lottie: ^2.6.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/anim/
+  fonts:
+    - family: Cute
+      fonts:
+        - asset: fonts/cutefont.ttf
