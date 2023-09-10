@@ -43,7 +43,7 @@ class OnboardScreen extends StatelessWidget {
               // Bouton "Get Food"
               ElevatedButton(
                 onPressed: () {
-                  // Mettez ici le code à exécuter lorsque le bouton est pressé
+                 
                 },
                 style: ElevatedButton.styleFrom(
                   primary: const Color(0xFFD2F5AF), // Couleur du bouton
