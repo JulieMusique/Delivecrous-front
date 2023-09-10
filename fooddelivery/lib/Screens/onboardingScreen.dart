@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fooddelivery/Screens/Log/Components/page_connexion.dart';
 import 'package:lottie/lottie.dart';
 
 class OnboardScreen extends StatelessWidget {
@@ -43,7 +44,10 @@ class OnboardScreen extends StatelessWidget {
               // Bouton "Get Food"
               ElevatedButton(
                 onPressed: () {
-                 
+                 Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => PageConnexion()),
+            );
                 },
                 style: ElevatedButton.styleFrom(
                   primary: const Color(0xFFD2F5AF), // Couleur du bouton

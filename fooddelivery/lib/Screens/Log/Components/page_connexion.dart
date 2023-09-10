@@ -137,8 +137,8 @@ class _PageConnexionState extends State<PageConnexion> {
   void initState() {
     super.initState();
     animationURL = defaultTargetPlatform == TargetPlatform.android
-        ? 'assets/animations/login.riv'
-        : 'animations/login.riv';
+        ? 'assets/anim/login.riv'
+        : 'anim/login.riv';
     rootBundle.load(animationURL).then(
       (data) {
         final file = RiveFile.import(data);
@@ -215,7 +215,7 @@ class _PageConnexionState extends State<PageConnexion> {
                                 onChanged: moveEyeBalls,
                                 keyboardType: TextInputType.emailAddress,
                                 style: const TextStyle(fontSize: 14),
-                                cursorColor: const Color(0xffb04863),
+                                cursorColor: const Color(0xFFD2F5AF),
                                 decoration: InputDecoration(
                                   hintText: "Adresse mail",
                                   filled: true,
@@ -229,10 +229,10 @@ class _PageConnexionState extends State<PageConnexion> {
                                     child: SvgPicture.asset(
                                         "assets/icons/email.svg"),
                                   ),
-                                  focusColor: const Color(0xffb04863),
+                                  focusColor: const Color(0xFFD2F5AF),
                                   focusedBorder: const OutlineInputBorder(
                                     borderSide: BorderSide(
-                                      color: Color(0xffb04863),
+                                      color: const Color(0xFFD2F5AF),
                                     ),
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(10)),
@@ -246,7 +246,7 @@ class _PageConnexionState extends State<PageConnexion> {
                                 keyboardType: TextInputType.visiblePassword,
                                 obscureText: true,
                                 style: const TextStyle(fontSize: 14),
-                                cursorColor: const Color(0xffb04863),
+                                cursorColor: const Color(0xFFD2F5AF),
                                 decoration: InputDecoration(
                                   hintText: "Mot de Passe",
                                   filled: true,
@@ -260,10 +260,10 @@ class _PageConnexionState extends State<PageConnexion> {
                                     child: SvgPicture.asset(
                                         "assets/icons/password.svg"),
                                   ),
-                                  focusColor: const Color(0xffb04863),
+                                  focusColor: const Color(0xFFD2F5AF),
                                   focusedBorder: const OutlineInputBorder(
                                     borderSide: BorderSide(
-                                      color: Color(0xffb04863),
+                                      color: const Color(0xFFD2F5AF),
                                     ),
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(10)),
