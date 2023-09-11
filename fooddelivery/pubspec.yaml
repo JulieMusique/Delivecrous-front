@@ -25,6 +25,8 @@ flutter:
   assets:
     - assets/anim/
     - assets/icons/
+    - assets/images/virtual/
+    - assets/images/real/
   fonts:
     - family: Cute
       fonts:

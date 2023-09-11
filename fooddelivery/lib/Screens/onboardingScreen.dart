@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fooddelivery/Screens/Log/Components/page_connexion.dart';
+import 'Log/Components/loginScreen.dart';
 import 'package:lottie/lottie.dart';
 
 class OnboardScreen extends StatelessWidget {
@@ -46,7 +46,7 @@ class OnboardScreen extends StatelessWidget {
                 onPressed: () {
                  Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => PageConnexion()),
+              MaterialPageRoute(builder: (context) => LoginScreen()),
             );
                 },
                 style: ElevatedButton.styleFrom(

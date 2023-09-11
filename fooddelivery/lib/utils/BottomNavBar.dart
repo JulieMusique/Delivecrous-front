@@ -1,13 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:fooddelivery/Screens/CartScreen.dart';
+import 'package:fooddelivery/Screens/FavorisScreen.dart';
+import 'package:fooddelivery/Screens/HomeScreen.dart';
+import 'package:fooddelivery/Screens/ProfileScreen.dart';
 
 class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({super.key});
+    const BottomNavBar(
+      {Key? key,
+      this.home = false,
+      this.favoris = false,
+      this.profile = false,
+      this.panier = false})
+      : super(key: key);
+       final bool home;
+  final bool favoris;
+  final bool profile;
+  final bool panier;
   @override
   State<BottomNavBar> createState() => _BottomBarState();
 }
 
+
+
 class _BottomBarState extends State<BottomNavBar> {
+
+ 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +38,16 @@ class _BottomBarState extends State<BottomNavBar> {
           onTap: (index) {
             print(index);
           },
-          items: [
+          items:  [
+            GestureDetector(
+                    onTap: () {
+                      if (!widget.favoris) {
+                        Navigator.pushReplacement(
+  context,
+  MaterialPageRoute(builder: (context) => FavorisScreen()),);
+                      }
+                    },
+                    child:
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -32,8 +60,16 @@ class _BottomBarState extends State<BottomNavBar> {
                   ),
                 ),
               ],
-            ),
-            Column(
+            ),),
+            GestureDetector(
+                    onTap: () {
+                      if (!widget.home) {
+                        Navigator.pushReplacement(
+  context,
+  MaterialPageRoute(builder: (context) => HomeScreen()),);
+                      }
+                    },
+                    child:Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Icon(
@@ -46,13 +82,19 @@ class _BottomBarState extends State<BottomNavBar> {
                   style: TextStyle(
                     fontSize: 10,
                     color: Colors.white,
-
-                    // Autres propriétés de style
                   ),
                 ),
               ],
-            ),
-            Column(
+            ),),
+           GestureDetector(
+                    onTap: () {
+                      if (!widget.panier) {
+                        Navigator.pushReplacement(
+  context,
+  MaterialPageRoute(builder: (context) => CartScreen()),);
+                      }
+                    },
+                    child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Icon(
@@ -68,8 +110,16 @@ class _BottomBarState extends State<BottomNavBar> {
                   ),
                 ),
               ],
-            ),
-           Column(
+            ),),
+          GestureDetector(
+                    onTap: () {
+                      if (!widget.profile) {
+                        Navigator.pushReplacement(
+  context,
+  MaterialPageRoute(builder: (context) => ProfileScreen()),);
+                      }
+                    },
+                    child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Icon(
@@ -78,14 +128,14 @@ class _BottomBarState extends State<BottomNavBar> {
                   color: Colors.white,
                 ),
                 Text(
-                  'Compte',
+                  'Profile',
                   style: TextStyle(
                     fontSize: 10,
                     color: Colors.white,
                   ),
                 ),
               ],
-            ),
+            ),),
          
           ]),
     );
