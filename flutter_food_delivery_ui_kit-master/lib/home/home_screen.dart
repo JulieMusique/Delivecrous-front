@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
 import 'package:flutter_ui_food_delivery_app/utils/routes.dart';
+import 'package:flutter_ui_food_delivery_app/utils/style.dart';
 import 'package:flutter_ui_food_delivery_app/widgets/custom_text.dart';
 import 'package:flutter_ui_food_delivery_app/widgets/food_item_widget.dart';
 import 'package:flutter_ui_food_delivery_app/widgets/search_box.dart';
@@ -143,6 +144,13 @@ class _HomeScreenState extends State<HomeScreen>
               },
             ),
           ),
+           Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: PrimaryText(
+                      text: 'Categories',
+                      fontWeight: FontWeight.w700,
+                      size: 22),
+                ),
           TabBar(
             isScrollable: true,
             tabs: tabs,
@@ -159,13 +167,16 @@ class _HomeScreenState extends State<HomeScreen>
               });
             },
           ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.35,
-            child: IndexedStack(
-              children: contents,
-              index: selectedIndex,
-            ),
-          ),
+        Column(
+                  children: List.generate(
+                    FoodList.length,
+                    (index) => FoodCard(
+                        FoodList[index]['imagePath'],
+                        FoodList[index]['name'],
+                        FoodList[index]['Description'],
+                        FoodList[index]['star']),
+                  ),
+                ),
         ],
       ),
     );

@@ -13,7 +13,7 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController controller =
-      TextEditingController(text: "Spicy chieckns");
+      TextEditingController(text: "Spicy chickens");
   List<Food> foods = [];
 
   @override

@@ -6,7 +6,7 @@ import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
 class MainScreen extends StatefulWidget {
   final VoidCallback onTap;
   final bool collabsed;
-  MainScreen({required this.onTap,required this.collabsed});
+  MainScreen({required this.onTap, required this.collabsed});
 
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -40,22 +40,23 @@ class _MainScreenState extends State<MainScreen> {
         child: BottomNavigationBar(
           elevation: 0,
           backgroundColor: concrete,
-          items: const <BottomNavigationBarItem>[
+          items: <BottomNavigationBarItem>[
+          
             BottomNavigationBarItem(
-              label: "Home",
+              label: "Accueil",
               icon: Icon(Icons.home),
             ),
             BottomNavigationBarItem(
-              label:"Search",
+              label: "Favoris",
               icon: Icon(Icons.favorite_border),
             ),
             BottomNavigationBarItem(
-              label:"Profile",
-              icon: Icon(Icons.account_circle),
+              label: "Historique",
+              icon: Icon(Icons.history),
             ),
             BottomNavigationBarItem(
-             label: "History",
-              icon: Icon(Icons.history),
+              label: "Profile",
+              icon: Icon(Icons.account_circle),
             ),
           ],
           unselectedItemColor: manatee,
@@ -73,17 +74,16 @@ class _MainScreenState extends State<MainScreen> {
             child: Column(
               children: [
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.1,
+                  height: MediaQuery.of(context).size.height * 0.05,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
                       onTap: widget.onTap,
-                      child: SvgPicture.asset(
-                        "assets/icons/navigation.svg",
-                        width: 24,
-                        height: 24,
+                      child: CircleAvatar(
+                        radius: 25,
+                        backgroundImage: AssetImage('man.jpeg'),
                       ),
                     ),
                     SvgPicture.asset(

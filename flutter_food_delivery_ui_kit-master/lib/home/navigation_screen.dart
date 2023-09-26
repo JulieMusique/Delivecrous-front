@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
-import 'package:flutter_ui_food_delivery_app/utils/routes.dart';
 import 'package:flutter_ui_food_delivery_app/widgets/custom_text.dart';
 
 class NavigationScreen extends StatefulWidget {
@@ -20,19 +19,16 @@ class _NavigationScreenState extends State<NavigationScreen> {
     super.initState();
     options.add(
         NavOption(title: "Profile", assetPath: "assets/icons/profile.svg"));
-    options.add(NavOption(title: "Orders", assetPath: "assets/icons/buy.svg"));
-    options.add(NavOption(
-        title: "Offer and Promo", assetPath: "assets/icons/offer.svg"));
+    options.add(NavOption(title: "commandes", assetPath: "assets/icons/buy.svg"));
     options.add(
-        NavOption(title: "Privacy Policy", assetPath: "assets/icons/note.svg"));
+        NavOption(title: "je dois réflechir", assetPath: "assets/icons/note.svg"));
     options.add(
-        NavOption(title: "Security", assetPath: "assets/icons/security.svg"));
+        NavOption(title: "Address", assetPath: "assets/icons/security.svg"));
   }
 
   @override
   Widget build(BuildContext context) {
     double sizeWidth = MediaQuery.of(context).size.width;
-    double sizeHeight = MediaQuery.of(context).size.height;
     return GestureDetector(
       onTap: widget.onTap,
       child: Container(
