@@ -21,9 +21,13 @@ import 'package:provider/provider.dart';
  const tahiti = Color(0xFFF47B0A);
  const french = Color(0xFFEB4796);
  const blue = Color(0xFF0038FF);
+ 
 class AppColor{
+  static const black = Colors.black;
+   static const lighterGray = Color(0xffe0e0e0);
+  static const lightGray = Color(0xffc0c1c3);
 
-
+static const tertiary = Color(0xffff36b6b);
 static const  white = Colors.white;
 static const  light = Color(0xfff4f4f4);
 static const grey = Color(0xffa3a3a3);
@@ -33,10 +37,10 @@ static const  success = Color(0xff2FDB5F);
 static const  warning = Color(0xffF1C75D);
 static const  error = Color(0xffF77272);
 static const  primaryLight = Color(0xff67E5CE);
-static const  primary = Color(0xff2FDBBC);
+  static const primary = Color(0xfffdc912);
 static const  primaryDark = Color(0xff1EAE94);
 static const secondaryLight = Color(0xffFAAC52);
-static const secondary = Color(0xffF99928);
+  static const secondary = Color(0xff323335);
 static const  secondaryDark = Color(0xffDF7B07);}
 ThemeProvider themeProvider(BuildContext context) =>
     Provider.of<ThemeProvider>(context, listen: false);

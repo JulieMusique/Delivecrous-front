@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ui_food_delivery_app/home/home_screen.dart';
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
 import 'package:flutter_ui_food_delivery_app/widgets/custom_text.dart';
-import 'package:flutter_ui_food_delivery_app/widgets/food_item_widget.dart';
 
 class SearchScreen extends StatefulWidget {
   SearchScreen({Key? key}) : super(key: key);
@@ -14,18 +12,10 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController controller =
       TextEditingController(text: "Spicy chickens");
-  List<Food> foods = [];
 
   @override
   void initState() {
-    foods.add(Food(id: 1, name: "", image: "assets/images/foods/one.png"));
-    foods.add(Food(id: 2, name: "", image: "assets/images/foods/two.png"));
-    foods.add(Food(id: 3, name: "", image: "assets/images/foods/three.png"));
-    foods.add(Food(id: 4, name: "", image: "assets/images/foods/four.png"));
-    foods.add(Food(id: 5, name: "", image: "assets/images/foods/one.svg"));
-    foods.add(Food(id: 6, name: "", image: "assets/images/foods/two.svg"));
-    foods.add(Food(id: 7, name: "", image: "assets/images/foods/three.svg"));
-    foods.add(Food(id: 8, name: "", image: "assets/images/foods/four.svg"));
+   
     super.initState();
   }
 
@@ -104,11 +94,8 @@ class _SearchScreenState extends State<SearchScreen> {
                       crossAxisSpacing: 4.0,
                       mainAxisSpacing: 4.0),
                   itemBuilder: (BuildContext context, int index) {
-                    return FoodItemWidget(
-                      food: foods[index],
-                    );
+                    
                   },
-                  itemCount: foods.length,
                 ))
               ],
             ),

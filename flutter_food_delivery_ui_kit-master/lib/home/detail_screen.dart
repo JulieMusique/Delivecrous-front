@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ui_food_delivery_app/home/home_screen.dart';
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
 import 'package:flutter_ui_food_delivery_app/widgets/circle_dot_widget.dart';
 import 'package:flutter_ui_food_delivery_app/widgets/custom_button.dart';
 import 'package:flutter_ui_food_delivery_app/widgets/custom_text.dart';
 
 class DetailScreen extends StatefulWidget {
-  final Food food;
-  DetailScreen({required this.food});
 
   @override
   _DetailScreenState createState() => _DetailScreenState();

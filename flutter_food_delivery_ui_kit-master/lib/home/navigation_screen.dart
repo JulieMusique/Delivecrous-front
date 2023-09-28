@@ -33,7 +33,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
       onTap: widget.onTap,
       child: Container(
         decoration: BoxDecoration(
-            color: vermilion,
+            color: Color.fromARGB(255, 89, 154, 23),
             borderRadius: BorderRadius.circular(widget.collabsed ? 24 : 0)),
         child: Column(
           children: [
@@ -63,7 +63,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
                               text: options[index].title,
                               size: 17,
                               weight: FontWeight.w600,
-                              color: Colors.white,
+                              color: Colors.black,
                               textAlign: TextAlign.start,
                             )
                           ],
@@ -96,7 +96,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
                       text: "Sign-out",
                       size: 17,
                       weight: FontWeight.w600,
-                      color: Colors.white,
+                      color: Colors.black,
                       textAlign: TextAlign.start,
                     ),
                     SizedBox(
@@ -104,7 +104,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
                     ),
                     Icon(
                       Icons.arrow_forward,
-                      color: Colors.white,
+                      color: Colors.black,
                     ),
                   ],
                 ),

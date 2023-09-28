@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_ui_food_delivery_app/cart/cart_screen.dart';
 import 'package:flutter_ui_food_delivery_app/home/home_screen.dart';
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
+import 'package:flutter_ui_food_delivery_app/widgets/custom_text.dart';
 
 class MainScreen extends StatefulWidget {
   final VoidCallback onTap;
@@ -61,7 +63,7 @@ class _MainScreenState extends State<MainScreen> {
           ],
           unselectedItemColor: manatee,
           currentIndex: _selectedIndex,
-          selectedItemColor: vermilion,
+          selectedItemColor: Color.fromARGB(255, 89, 154, 23) ,
           onTap: _onItemTapped,
         ),
       ),
@@ -86,11 +88,22 @@ class _MainScreenState extends State<MainScreen> {
                         backgroundImage: AssetImage('man.jpeg'),
                       ),
                     ),
-                    SvgPicture.asset(
-                      "assets/icons/cart.svg",
-                      width: 24,
-                      height: 24,
-                    ),
+                
+              
+                   IconButton(
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => CartScreen()), 
+    );
+  },
+  icon: SvgPicture.asset(
+    "assets/icons/cart.svg",
+    width: 24,
+    height: 24,
+  ),
+)
+
                   ],
                 ),
                 widgets.elementAt(_selectedIndex),
