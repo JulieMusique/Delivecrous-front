@@ -76,15 +76,7 @@ class _MainScreenState extends State<MainScreen> {
             ),
             BottomNavigationBarItem(
               label: "Favoris",
-              icon: BlocProvider(
-                // Ajoutez BlocProvider autour de l'IconButton pour accéder aux BLoCs
-                blocs: [
-                  // Ajoutez vos BLoCs ici
-                  Bloc((i) => FavoriteListBloc()),
-                  Bloc((i) => ColorBloc()),
-                ],
-                dependencies: [],
-                child: IconButton(
+              icon:  IconButton(
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -93,7 +85,7 @@ class _MainScreenState extends State<MainScreen> {
                   },
                   icon: Icon(Icons.favorite_border),
                 ),
-              ),
+              
             ),
             BottomNavigationBarItem(
               label: "Historique",

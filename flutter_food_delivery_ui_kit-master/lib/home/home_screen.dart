@@ -139,12 +139,13 @@ class _HomeScreenState extends State<HomeScreen>
       String imagePath, String name, String weight, int price, Food food) {
     final CartListBloc bloc = BlocProvider.getBloc<CartListBloc>();
     addToCart(Food foodItem) {
-                            bloc.addToList(food);
-                          }
+      bloc.addToList(food);
+    }
 
-                          removeFromList(Food food) {
-                            bloc.removeFromList(food);
-                          }
+    removeFromList(Food food) {
+      bloc.removeFromList(food);
+    }
+
     return GestureDetector(
       onTap: () => {
         Navigator.push(context,
@@ -205,14 +206,12 @@ class _HomeScreenState extends State<HomeScreen>
                       ),
                       child: GestureDetector(
                         onTap: () {
-                      
-
                           addToCart(food);
                           final snackBar = SnackBar(
                             content: Text('${food.name} added to Cart'),
                             duration: Duration(milliseconds: 550),
                           );
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                         },
                         child: Icon(Icons.add, size: 20),
@@ -222,7 +221,7 @@ class _HomeScreenState extends State<HomeScreen>
                     SizedBox(
                       child: Row(
                         children: [
-                          FavB(food : food),
+                          FavB(food: food),
                           SizedBox(width: 5),
                         ],
                       ),
@@ -297,7 +296,6 @@ class _HomeScreenState extends State<HomeScreen>
 
 class FavB extends StatefulWidget {
   final Food food;
-      final CartListBloc bloc = BlocProvider.getBloc<CartListBloc>();
 
   FavB({Key? key, required this.food}) : super(key: key);
 
@@ -308,15 +306,7 @@ class FavB extends StatefulWidget {
 class _FavBState extends State<FavB> {
   bool isFav = false;
 
-  // Liste de favoris (utilisée à des fins de démonstration)
-  List<Food> favoriteItems = [];
-addToFavorite(Food foodItem) {
-                            widget.bloc.addToList(foodItem);
-                          }
-
-                          removeFromList(Food food) {
-                            widget.bloc.removeFromList(food);
-                          }
+ 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -328,13 +318,10 @@ addToFavorite(Food foodItem) {
         // Ajouter ou supprimer l'élément de la liste de favoris ici
         if (isFav) {
           // Ajouter à la liste de favoris
-                                    addToFavorite(widget.food);
-
-          favoriteItems.add(widget.food);
+        
           showSnackBar("Ajouté aux favoris");
         } else {
           // Supprimer de la liste de favoris
-          favoriteItems.remove(widget.food);
           showSnackBar("Retiré des favoris");
         }
       },
