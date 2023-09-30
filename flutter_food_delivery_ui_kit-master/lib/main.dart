@@ -30,8 +30,6 @@ class MyApp extends StatelessWidget {
         Routes.login: (context) => LoginScreen(),
         Routes.intro: (context) => OnboardScreen(),
         Routes.search: (context) => SearchScreen(),
-        Routes.profile: (context) => ProfileScreen(),
-        Routes.cart: (context) => CartScreen(),
         Routes.payment: (context) => PaymentScreen()
       },
     );

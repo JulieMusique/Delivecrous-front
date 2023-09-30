@@ -50,6 +50,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         Navigator.of(context).pop();
                       },
                     ),
+                    
                     Expanded(
                       child: TextField(
                         controller: controller,
@@ -60,6 +61,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         style: TextStyle(color: Colors.black),
                       ),
                     ),
+                  
                   ],
                 ),
               ],

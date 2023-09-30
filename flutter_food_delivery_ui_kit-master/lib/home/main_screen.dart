@@ -1,9 +1,14 @@
+import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_ui_food_delivery_app/Favorite/FavoriteOrder.dart';
+import 'package:flutter_ui_food_delivery_app/Favorite/bloc/FavoriteslistBloc.dart';
+import 'package:flutter_ui_food_delivery_app/cart/bloc/cartlistBloc.dart';
+import 'package:flutter_ui_food_delivery_app/cart/bloc/listTileColorBloc.dart';
 import 'package:flutter_ui_food_delivery_app/cart/cart_screen.dart';
 import 'package:flutter_ui_food_delivery_app/home/home_screen.dart';
+import 'package:flutter_ui_food_delivery_app/profile/profile_screen.dart';
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
-import 'package:flutter_ui_food_delivery_app/widgets/custom_text.dart';
 
 class MainScreen extends StatefulWidget {
   final VoidCallback onTap;
@@ -18,12 +23,33 @@ class _MainScreenState extends State<MainScreen> {
   List<Widget> widgets = [];
 
   int _selectedIndex = 0;
-  void _onItemTapped(int index) {
+  
+ void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
+    
+    // Ajoutez ici la logique de navigation
+    if (index == 0) {
+      // Naviguez vers la première page (par exemple, HomePage)
+      Navigator.pop
+        (context);
+       
+    } else if (index == 1) {
+      // Naviguez vers la deuxième page (par exemple, FavoritesPage)
+  
+    
+    } else if (index == 2) {
+      // Naviguez vers la troisième page (par exemple, HistoryPage)
+      
+    } else if (index == 3) {
+      // Naviguez vers la quatrième page (par exemple, ProfilePage)
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => ProfileScreen()),
+      );
+    }
   }
-
   @override
   void initState() {
     widgets.add(HomeScreen());
@@ -50,7 +76,24 @@ class _MainScreenState extends State<MainScreen> {
             ),
             BottomNavigationBarItem(
               label: "Favoris",
-              icon: Icon(Icons.favorite_border),
+              icon: BlocProvider(
+                // Ajoutez BlocProvider autour de l'IconButton pour accéder aux BLoCs
+                blocs: [
+                  // Ajoutez vos BLoCs ici
+                  Bloc((i) => FavoriteListBloc()),
+                  Bloc((i) => ColorBloc()),
+                ],
+                dependencies: [],
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => FavoriteScreen()),
+                    );
+                  },
+                  icon: Icon(Icons.favorite_border),
+                ),
+              ),
             ),
             BottomNavigationBarItem(
               label: "Historique",
@@ -59,6 +102,7 @@ class _MainScreenState extends State<MainScreen> {
             BottomNavigationBarItem(
               label: "Profile",
               icon: Icon(Icons.account_circle),
+              
             ),
           ],
           unselectedItemColor: manatee,
@@ -88,9 +132,13 @@ class _MainScreenState extends State<MainScreen> {
                         backgroundImage: AssetImage('man.jpeg'),
                       ),
                     ),
-                
-              
-                   IconButton(
+                BlocProvider(
+      blocs: [
+        //add yours BLoCs controlles
+        Bloc((i) => CartListBloc()),
+        Bloc((i) => ColorBloc()),
+      ], dependencies: [],
+      child: IconButton(
   onPressed: () {
     Navigator.push(
       context,
@@ -102,7 +150,9 @@ class _MainScreenState extends State<MainScreen> {
     width: 24,
     height: 24,
   ),
-)
+),),
+              
+                
 
                   ],
                 ),

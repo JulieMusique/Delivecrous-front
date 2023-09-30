@@ -1,6 +1,8 @@
+import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_ui_food_delivery_app/cart/bloc/cartlistBloc.dart';
 import 'package:flutter_ui_food_delivery_app/home/FoodDetail.dart';
 import 'package:flutter_ui_food_delivery_app/model/list_food.dart';
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
@@ -20,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   int selectedFoodCard = 0;
   TextEditingController _controller = TextEditingController();
-
+  bool isAscendingOrder = true;
   @override
   void initState() {
     super.initState();
@@ -88,19 +90,45 @@ class _HomeScreenState extends State<HomeScreen>
                 foodCategoryList[index].name,
                 index),
           ),
-        ), Padding(
-                  padding: const EdgeInsets.only(left: 20, top: 5),
-                  child: PrimaryText(
-                      text: 'Our Delicious dishes', fontWeight: FontWeight.w700, size: 22),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 20, top: 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              PrimaryText(
+                text: 'Our Delicious dishes',
+                fontWeight: FontWeight.w700,
+                size: 22,
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.filter_list,
+                  color: Colors.black,
                 ),
+                onPressed: () {
+                  setState(() {
+                    isAscendingOrder = !isAscendingOrder;
+                    if (isAscendingOrder) {
+                      FoodList.sort((a, b) => a.price.compareTo(b.price));
+                    } else {
+                      FoodList.sort((a, b) => b.price.compareTo(a.price));
+                    }
+                  });
+                },
+              ),
+            ],
+          ),
+        ),
         Column(
           children: List.generate(
             FoodList.length,
             (index) => FoodCard(
-              FoodList[index].imagePath,
-              FoodList[index].name,
-              FoodList[index].description
-            ),
+                FoodList[index].imagePath,
+                FoodList[index].name,
+                FoodList[index].description,
+                FoodList[index].price,
+                FoodList[index]),
           ),
         ),
       ],
@@ -108,11 +136,19 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   Widget FoodCard(
-      String imagePath, String name, String weight) {
+      String imagePath, String name, String weight, int price, Food food) {
+    final CartListBloc bloc = BlocProvider.getBloc<CartListBloc>();
+    addToCart(Food foodItem) {
+                            bloc.addToList(food);
+                          }
+
+                          removeFromList(Food food) {
+                            bloc.removeFromList(food);
+                          }
     return GestureDetector(
       onTap: () => {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => FoodDetail()))
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => DetailFood(food: food)))
       },
       child: Container(
         margin: EdgeInsets.only(right: 15, left: 10, top: 25),
@@ -136,9 +172,10 @@ class _HomeScreenState extends State<HomeScreen>
                         children: [
                           Icon(
                             Icons.restaurant,
-                            color: Color.fromARGB(255, 89, 154, 23) ,
+                            color: Color.fromARGB(255, 89, 154, 23),
                             size: 20,
                           ),
+                          Text('$price €')
                         ],
                       ),
                       SizedBox(
@@ -160,18 +197,32 @@ class _HomeScreenState extends State<HomeScreen>
                       padding:
                           EdgeInsets.symmetric(horizontal: 45, vertical: 20),
                       decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 89, 154, 23) ,
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(20),
-                            topRight: Radius.circular(20),
-                          )),
-                      child: Icon(Icons.add, size: 20),
+                        color: Color.fromARGB(255, 89, 154, 23),
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                        ),
+                      ),
+                      child: GestureDetector(
+                        onTap: () {
+                      
+
+                          addToCart(food);
+                          final snackBar = SnackBar(
+                            content: Text('${food.name} added to Cart'),
+                            duration: Duration(milliseconds: 550),
+                          );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                        },
+                        child: Icon(Icons.add, size: 20),
+                      ),
                     ),
                     SizedBox(width: 20),
                     SizedBox(
                       child: Row(
                         children: [
-                          FavB(),
+                          FavB(food : food),
                           SizedBox(width: 5),
                         ],
                       ),
@@ -212,8 +263,9 @@ class _HomeScreenState extends State<HomeScreen>
         padding: EdgeInsets.symmetric(vertical: 25, horizontal: 20),
         decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color:
-                selectedFoodCard == index ? Color.fromARGB(255, 89, 154, 23) : AppColor.white,
+            color: selectedFoodCard == index
+                ? Color.fromARGB(255, 89, 154, 23)
+                : AppColor.white,
             boxShadow: [
               BoxShadow(
                 color: AppColor.lighterGray,
@@ -244,7 +296,10 @@ class _HomeScreenState extends State<HomeScreen>
 }
 
 class FavB extends StatefulWidget {
-  const FavB({Key? key}) : super(key: key);
+  final Food food;
+      final CartListBloc bloc = BlocProvider.getBloc<CartListBloc>();
+
+  FavB({Key? key, required this.food}) : super(key: key);
 
   @override
   State<FavB> createState() => _FavBState();
@@ -253,18 +308,49 @@ class FavB extends StatefulWidget {
 class _FavBState extends State<FavB> {
   bool isFav = false;
 
+  // Liste de favoris (utilisée à des fins de démonstration)
+  List<Food> favoriteItems = [];
+addToFavorite(Food foodItem) {
+                            widget.bloc.addToList(foodItem);
+                          }
+
+                          removeFromList(Food food) {
+                            widget.bloc.removeFromList(food);
+                          }
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: () {
+    return GestureDetector(
+      onTap: () {
         setState(() {
           isFav = !isFav;
         });
+
+        // Ajouter ou supprimer l'élément de la liste de favoris ici
+        if (isFav) {
+          // Ajouter à la liste de favoris
+                                    addToFavorite(widget.food);
+
+          favoriteItems.add(widget.food);
+          showSnackBar("Ajouté aux favoris");
+        } else {
+          // Supprimer de la liste de favoris
+          favoriteItems.remove(widget.food);
+          showSnackBar("Retiré des favoris");
+        }
       },
-      icon: Icon(
-        isFav ? CupertinoIcons.heart_fill : CupertinoIcons.heart,
-        color: Color(0xFFD2F5AF),
+      child: Icon(
+        isFav ? Icons.favorite : Icons.favorite_border,
+        color: Colors.red,
         size: 24.0,
+      ),
+    );
+  }
+
+  void showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: Duration(seconds: 1),
       ),
     );
   }

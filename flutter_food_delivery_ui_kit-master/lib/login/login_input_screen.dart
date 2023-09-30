@@ -33,22 +33,21 @@ class _LoginInputScreenState extends State<LoginInputScreen> {
         padding: EdgeInsets.symmetric(horizontal: 50, vertical: 24),
         child: Column(
           children: [
+         
             Padding(
               padding: EdgeInsets.only(bottom: 42),
               child: AppInputText(
                 controller: emailController,
-                enable: true,
-                title: "Email address",
-                hint: "sabari@gmail.com",
+
+                hint: "Your Email",
               ),
             ),
+          
             Padding(
               padding: EdgeInsets.only(bottom: 42),
               child: AppInputText(
                 controller: passwordController,
-                enable: true,
-                title: "Password",
-                hint: "*********",
+                hint: "Password",
               ),
             ),
             Align(
@@ -59,7 +58,7 @@ class _LoginInputScreenState extends State<LoginInputScreen> {
                   color: vermilion,
                   size: 17,
                   weight: FontWeight.w600,
-                  text: "Forgot passcode?",
+                  text: "Forgot password?",
                   textAlign: TextAlign.start,
                 ),
               ),

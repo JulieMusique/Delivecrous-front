@@ -9,8 +9,8 @@ class Helper {
     return MediaQuery.of(context).size.height;
   }
 
-  static String getAssetName(String fileName, String type) {
-    return "assets/images/$type/$fileName";
+  static String getAssetName(String fileName) {
+    return "assets/$fileName";
   }
 
   static TextTheme getTheme(BuildContext context) {

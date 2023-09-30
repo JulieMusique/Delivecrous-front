@@ -6,9 +6,9 @@ import 'package:provider/provider.dart';
  const sunset_orange = Color(0xFFFF4B3A);
  const concrete = Color(0xFFF2F2F2);
  const manatee = Color(0xFF9A9A9D);
- const vermilion = Color(0xFFFA4A0C);
- const vermilion_10 = Color(0x1AFF470B);
- const vermilion_100 = Color(0xFFFF470B);
+ const vermilion = Color.fromARGB(255, 56, 110, 2);
+ const vermilion_10 = Color.fromARGB(255, 89, 154, 23);
+ const vermilion_100 = Color.fromARGB(255, 33, 64, 3);
  const silver = Color(0xFFBCBABA);
  const athens_gray = Color(0xFFF6F6F9);
  const black_05 = Color(0x0D000000);
@@ -26,7 +26,8 @@ class AppColor{
   static const black = Colors.black;
    static const lighterGray = Color(0xffe0e0e0);
   static const lightGray = Color(0xffc0c1c3);
-
+  static const placeholder = Color(0xFFB6B7B7);
+  static const placeholderBg = Color(0xFFF2F2F2);
 static const tertiary = Color(0xffff36b6b);
 static const  white = Colors.white;
 static const  light = Color(0xfff4f4f4);

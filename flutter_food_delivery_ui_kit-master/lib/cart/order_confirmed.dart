@@ -1,82 +1,60 @@
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_ui_food_delivery_app/cart/base.dart';
-import 'package:flutter_ui_food_delivery_app/constants/colors.dart';
-import 'package:flutter_ui_food_delivery_app/utils/image_path.extension.dart';
-import 'package:flutter_ui_food_delivery_app/utils/metrics.dart';
-import 'package:flutter_ui_food_delivery_app/utils/navigate.dart';
-import 'package:flutter_ui_food_delivery_app/utils/text_theme.dart';
-import 'package:flutter_ui_food_delivery_app/widgets/solid_button.dart';
+import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
+import 'package:flutter_ui_food_delivery_app/utils/routes.dart';
+import 'package:flutter_ui_food_delivery_app/widgets/custom_button.dart';
 import 'package:lottie/lottie.dart';
 
 class OrderConfirmed extends StatelessWidget {
-  const OrderConfirmed({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    return Base(
-      child: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent,
-          statusBarIconBrightness: Brightness.light,
-          systemNavigationBarColor: Colors.transparent,
-          systemNavigationBarIconBrightness: Brightness.light,
-        ),
-        child: Container(
-          width: w(context),
-          height: h(context),
-          color: AppColor.orange,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "ORDER CONFIRMED",
-                style: head36(context, AppColor.white),
-              ),
-              SizedBox(height: hh(context, 50)),
-              Container(
-                width: ww(context, 157),
-                height: ww(context, 157),
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      offset: Offset(0, hh(context, 4)),
-                      blurRadius: 10,
-                    ),
-                  ],
-                  shape: BoxShape.circle,
-                 
-                ),
-              ),
-              Lottie.asset(
-                '/anim/confirmed_order.json', // Assurez-vous que le chemin est correct
-                fit: BoxFit.contain,
-                height: 300,
-                width: 300,
-              ),
-              SizedBox(height: hh(context, 50)),
-              horizontalpadding(
-                context,
-                child: Text(
-                  "Hang on Tight! We’ve received your order and we’ll bring it to you ASAP!",
-                  textAlign: TextAlign.center,
-                  style: body(context, AppColor.white),
-                ),
-              ),
-              SizedBox(height: hh(context, 95)),
-              horizontalpadding(
-                context,
-                child: SolidBorderedButton(
-                  onTap: () => popTo(context),
-                  text: "TRACK MY ORDER",
-                  bgColor: AppColor.white,
-                  borderColor: AppColor.white,
-                  textColor: AppColor.primary,
-                ),
-              ),
-            ],
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          "Food Express",
+          style: TextStyle(
+            color: Colors.black,
+            fontFamily: 'Comic Sans MS, Arial', // Couleur du texte de l'app bar
           ),
+        ),
+        backgroundColor: Color(0xFFD2F5AF), // Couleur de l'app bar
+      ),
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // Lottie Animation
+            Lottie.asset(
+              '/anim/confirmed_order.json', // Assurez-vous que le chemin est correct
+              fit: BoxFit.contain,
+              height: 300,
+              width: 300,
+            ),
+            SizedBox(
+                height: 20), // Espacement entre l'animation et le message
+
+            // Message
+            Text(
+              "ORDER CONFIRMED",
+              style: TextStyle(fontSize: 24),
+            ),
+            SizedBox(
+                height: 20), // Espacement entre le message et le bouton
+
+            AppButton(
+                bgColor: vermilion,
+                borderRadius: 30,
+                fontSize: 17,
+                fontWeight: FontWeight.w600,
+                onTap: () {
+                  Navigator.pushNamed(context, Routes.home);
+                },
+                text: "TRACK MY ORDER",
+                textColor: Colors.white)
+          ],
         ),
       ),
     );

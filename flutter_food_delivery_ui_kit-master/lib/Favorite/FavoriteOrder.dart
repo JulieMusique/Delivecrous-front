@@ -1,21 +1,17 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_ui_food_delivery_app/cart/order_confirmed.dart';
-import 'package:flutter_ui_food_delivery_app/cart/order_error.dart';
+import 'package:flutter_ui_food_delivery_app/Favorite/bloc/FavoriteslistBloc.dart';
 import 'package:flutter_ui_food_delivery_app/home/FoodDetail.dart';
 import 'package:flutter_ui_food_delivery_app/model/list_food.dart';
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
 import 'package:flutter_ui_food_delivery_app/utils/style.dart';
-import 'package:flutter_ui_food_delivery_app/widgets/custom_button.dart';
-
-import 'bloc/cartlistBloc.dart';
 import 'bloc/listTileColorBloc.dart';
 
-class CartScreen extends StatelessWidget {
+class FavoriteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final CartListBloc bloc = BlocProvider.getBloc<CartListBloc>();
+    final FavoriteListBloc bloc = BlocProvider.getBloc<FavoriteListBloc>();
     List<Food> foodItems;
     return StreamBuilder(
       stream: bloc.listStream,
@@ -24,10 +20,8 @@ class CartScreen extends StatelessWidget {
           foodItems = snapshot.data!;
           return Scaffold(
             body: SafeArea(
-              child: CartBody(foodItems),
+              child: FavBody(foodItems),
             ),
-                        bottomNavigationBar: BottomBar(foodItems),
-
           );
         } else {
           return Container(
@@ -38,116 +32,11 @@ class CartScreen extends StatelessWidget {
     );
   }
 }
- 
-  Container totalAmount(List<Food> foodItems) {
-    return Container(
-      margin: EdgeInsets.only(right: 10),
-      padding: EdgeInsets.all(25),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Text(
-            "Total:",
-            style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),
-          ),
-          Text(
-            "\$${returnTotalAmount(foodItems)}",
-            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 28),
-          ),
-        ],
-      ),
-    );
-  }
 
-  String returnTotalAmount(List<Food> foodItems) {
-    double totalAmount = 0.0;
-
-    for (int i = 0; i < foodItems.length; i++) {
-      totalAmount = totalAmount + foodItems[i].price * foodItems[i].quantity;
-    }
-    return totalAmount.toStringAsFixed(2);
-  }
-class BottomBar extends StatefulWidget {
+class FavBody extends StatelessWidget {
   final List<Food> foodItems;
 
-  BottomBar(this.foodItems);
-
-  @override
-  _BottomBarState createState() => _BottomBarState();
-}
-
-class _BottomBarState extends State<BottomBar> {
-  double totalAmount = 0.0;
-
-  @override
-  void initState() {
-    super.initState();
-    updateTotalAmount();
-  }
-
-  void updateTotalAmount() {
-    double total = 0.0;
-
-    for (int i = 0; i < widget.foodItems.length; i++) {
-      total = total + widget.foodItems[i].price * widget.foodItems[i].quantity;
-    }
-
-    setState(() {
-      totalAmount = total;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(left: 35, bottom: 25),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Container(
-            margin: EdgeInsets.only(right: 10),
-            padding: EdgeInsets.all(25),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  "Total:",
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),
-                ),
-                Text(
-                  "\$$totalAmount",
-                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 28),
-                ),
-              ],
-            ),
-          ),
-          AppButton(
-            bgColor: vermilion,
-            borderRadius: 30,
-            fontSize: 17,
-            fontWeight: FontWeight.w600,
-            onTap: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => OrderConfirmed() /*OrderError(),*/
-                ),
-              );
-            },
-            text: "Continue",
-            textColor: Colors.white,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-
-class CartBody extends StatelessWidget {
-  final List<Food> foodItems;
-
-  CartBody(this.foodItems);
+  FavBody(this.foodItems);
 
   @override
   Widget build(BuildContext context) {
@@ -169,7 +58,7 @@ class CartBody extends StatelessWidget {
     return Container(
       child: Center(
         child: Text(
-          "No More Items Left In The Cart",
+          "No More Items Left In Favoris",
           style: TextStyle(
               fontWeight: FontWeight.w600,
               color: Colors.grey[500],
@@ -183,7 +72,7 @@ class CartBody extends StatelessWidget {
     return ListView.builder(
       itemCount: foodItems.length,
       itemBuilder: (context, index) {
-        return CartListItem(foodItem: foodItems[index]);
+        return FavoriteListItem(foodItem: foodItems[index]);
       },
     );
   }
@@ -191,10 +80,10 @@ class CartBody extends StatelessWidget {
  
 }
 
-class CartListItem extends StatelessWidget {
+class FavoriteListItem extends StatelessWidget {
   final Food foodItem;
 
-  CartListItem({required this.foodItem});
+  FavoriteListItem({required this.foodItem});
 
   @override
   Widget build(BuildContext context) {
@@ -314,7 +203,7 @@ class ItemContent extends StatelessWidget {
               color: vermilion,
               borderRadius: BorderRadius.circular(15),
             ),
-            child: BuyFood(),
+            child: FavFood(),
           ),
         ],
       ),
@@ -322,6 +211,58 @@ class ItemContent extends StatelessWidget {
   }
 }
 
+class FavFood extends StatefulWidget {
+  const FavFood({Key? key}) : super(key: key);
+
+  @override
+  State<FavFood> createState() => _FavFoodState();
+}
+
+class _FavFoodState extends State<FavFood> {
+  var FavFood = 1;
+
+  void _incFood() {
+    setState(() {
+      FavFood++;
+    });
+  }
+
+  void _decFood() {
+    setState(() {
+      if (FavFood > 1) {
+        FavFood--;
+      } else {
+        FavFood = 1;
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        IconButton(
+          onPressed: _decFood,
+          icon: Icon(
+            Icons.remove,
+            color: Colors.white,
+          ),
+        ),
+        Text(
+          "$FavFood",
+          style: TextStyle(color: Colors.white),
+        ),
+        IconButton(
+          onPressed: _incFood,
+          icon: Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
+        )
+      ],
+    );
+  }
+}
 class CustomAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -336,7 +277,7 @@ class CustomAppBar extends StatelessWidget {
           },
         ),
         title: Text(
-          "My Order",
+          "My Favorite Dishes",
           style: TextStyle(
             fontWeight: FontWeight.w700,
             fontSize: 15,

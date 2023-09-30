@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ui_food_delivery_app/login/login_input_screen.dart';
 import 'package:flutter_ui_food_delivery_app/login/sign_up_input_screen.dart';
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
+import 'package:lottie/lottie.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key? key}) : super(key: key);
@@ -45,12 +46,18 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: MediaQuery.of(context).size.height * 0.4,
                 child: Stack(
                   children: [
+                    AppBar(
+        title: Text('Login'),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
                     Center(
-                      child: Image.asset(
-                        "assets/icons/bell_big.png",
-                        width: 150,
-                        height: 150,
-                      ),
+                      child: Lottie.asset(
+                '/anim/foodie.json', // Assurez-vous que le chemin est correct
+                fit: BoxFit.contain,
+                height: 300,
+                width: 300,
+              ),
                     ),
                     Align(
                       alignment: Alignment.bottomCenter,
