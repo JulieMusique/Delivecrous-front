@@ -1,15 +1,15 @@
-import 'package:bloc_pattern/bloc_pattern.dart';
+import 'package:bloc_pattern/bloc_pattern.dart'; // Importation de BLoC Pattern pour la gestion des BLoCs
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:flutter_ui_food_delivery_app/cart/bloc/cartlistBloc.dart';
-import 'package:flutter_ui_food_delivery_app/home/FoodDetail.dart';
-import 'package:flutter_ui_food_delivery_app/model/list_food.dart';
-import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
-import 'package:flutter_ui_food_delivery_app/utils/routes.dart';
-import 'package:flutter_ui_food_delivery_app/utils/style.dart';
-import 'package:flutter_ui_food_delivery_app/widgets/custom_text.dart';
-import 'package:flutter_ui_food_delivery_app/widgets/search_box.dart';
+import 'package:flutter_ui_food_delivery_app/cart/bloc/cartlistBloc.dart'; // Importation du BLoC pour la gestion du panier
+import 'package:flutter_ui_food_delivery_app/home/FoodDetail.dart'; // Importation de la page de détail des aliments
+import 'package:flutter_ui_food_delivery_app/model/list_food.dart'; // Importation des données sur les aliments
+import 'package:flutter_ui_food_delivery_app/utils/colors.dart'; // Importation des couleurs personnalisées
+import 'package:flutter_ui_food_delivery_app/utils/routes.dart'; // Importation des itinéraires de navigation
+import 'package:flutter_ui_food_delivery_app/utils/style.dart'; // Importation des styles personnalisés
+import 'package:flutter_ui_food_delivery_app/widgets/custom_text.dart'; // Importation d'un widget de texte personnalisé
+import 'package:flutter_ui_food_delivery_app/widgets/search_box.dart'; // Importation du widget de boîte de recherche
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -18,19 +18,14 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen>
-    with SingleTickerProviderStateMixin {
-  int selectedFoodCard = 0;
-  TextEditingController _controller = TextEditingController();
-  bool isAscendingOrder = true;
-  @override
-  void initState() {
-    super.initState();
-  }
+class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
+  int selectedFoodCard = 0; // Indice de la catégorie d'aliments sélectionnée
+  TextEditingController _controller = TextEditingController(); // Contrôleur pour le champ de recherche
+  bool isAscendingOrder = true; // Indicateur pour l'ordre croissant/décroissant de la liste d'aliments
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller.dispose(); // Libération des ressources du contrôleur
 
     super.dispose();
   }
@@ -38,110 +33,116 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   Widget build(BuildContext context) {
     return ListView(
-      shrinkWrap: true,
+  shrinkWrap: true, // Réduit la hauteur de la liste pour qu'elle s'adapte au contenu
+  children: [
+    // En-tête de la page
+    Row(
       children: [
-        Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 20),
-              child: AppText(
-                text: 'Delicious \n',
-                size: 34,
-                color: AppColor.black,
-                weight: FontWeight.bold,
-                textAlign: TextAlign.start,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20),
-              child: AppText(
-                text: 'food for you',
-                size: 30,
-                color: Colors.black,
-                weight: FontWeight.bold,
-                textAlign: TextAlign.start,
-              ),
-            ),
-          ],
-        ),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: SearchBox(
-            enable: false,
-            hint: "Search",
-            controller: _controller,
-            onTap: () {
-              Navigator.of(context).pushNamed(Routes.search);
-            },
-          ),
-        ),
-        PrimaryText(
-          text: 'Categories',
-          fontWeight: FontWeight.w700,
-          size: 22,
-        ),
-        SizedBox(
-          height: 230,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: foodCategoryList.length,
-            itemBuilder: (context, index) => foodCategoryCard(
-                foodCategoryList[index].imagePath,
-                foodCategoryList[index].name,
-                index),
+          padding: const EdgeInsets.only(left: 20), // Marge à gauche
+          child: AppText(
+            text: 'Delicious \n', // Texte "Delicious" avec un retour à la ligne
+            size: 34, // Taille du texte
+            color: AppColor.black, // Couleur du texte
+            weight: FontWeight.bold, // Poids de la police en gras
+            textAlign: TextAlign.start, // Alignement du texte à gauche
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 20, top: 5),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              PrimaryText(
-                text: 'Our Delicious dishes',
-                fontWeight: FontWeight.w700,
-                size: 22,
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.filter_list,
-                  color: Colors.black,
-                ),
-                onPressed: () {
-                  setState(() {
-                    isAscendingOrder = !isAscendingOrder;
-                    if (isAscendingOrder) {
-                      FoodList.sort((a, b) => a.price.compareTo(b.price));
-                    } else {
-                      FoodList.sort((a, b) => b.price.compareTo(a.price));
-                    }
-                  });
-                },
-              ),
-            ],
-          ),
-        ),
-        Column(
-          children: List.generate(
-            FoodList.length,
-            (index) => FoodCard(
-                FoodList[index].imagePath,
-                FoodList[index].name,
-                FoodList[index].description,
-                FoodList[index].price,
-                FoodList[index]),
+          padding: const EdgeInsets.only(left: 20), // Marge à gauche
+          child: AppText(
+            text: 'food for you', // Texte "food for you"
+            size: 30, // Taille du texte
+            color: Colors.black, // Couleur du texte
+            weight: FontWeight.bold, // Poids de la police en gras
+            textAlign: TextAlign.start, // Alignement du texte à gauche
           ),
         ),
       ],
-    );
+    ),
+    Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0), // Marge verticale
+      child: SearchBox(
+        enable: false, // Désactive la boîte de recherche
+        hint: "Search", // Texte d'indication dans la boîte de recherche
+        controller: _controller, // Contrôleur de texte pour la boîte de recherche
+        onTap: () {
+          Navigator.of(context).pushNamed(Routes.search); // Navigation vers la page de recherche
+        },
+      ),
+    ),
+    PrimaryText(
+      text: 'Categories', // Texte "Categories"
+      fontWeight: FontWeight.w700, // Poids de la police en gras
+      size: 22, // Taille du texte
+    ),
+    SizedBox(
+      height: 230, // Hauteur de la liste de catégories alimentaires
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal, // Défilement horizontal
+        itemCount: foodCategoryList.length, // Nombre d'éléments dans la liste de catégories alimentaires
+        itemBuilder: (context, index) => foodCategoryCard(
+            foodCategoryList[index].imagePath,
+            foodCategoryList[index].name,
+            index),
+      ),
+    ),
+    Padding(
+      padding: const EdgeInsets.only(left: 20, top: 5), // Marge à gauche et en haut
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          PrimaryText(
+            text: 'Our Delicious dishes', // Texte "Our Delicious dishes"
+            fontWeight: FontWeight.w700, // Poids de la police en gras
+            size: 22, // Taille du texte
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.filter_list, // Icône de filtre
+              color: Colors.black, // Couleur de l'icône
+            ),
+            onPressed: () {
+              setState(() {
+                isAscendingOrder = !isAscendingOrder;
+                if (isAscendingOrder) {
+                  FoodList.sort((a, b) => a.price.compareTo(b.price)); // Tri en ordre croissant
+                } else {
+                  FoodList.sort((a, b) => b.price.compareTo(a.price)); // Tri en ordre décroissant
+                }
+              });
+            },
+          ),
+        ],
+      ),
+    ),
+    // Liste des aliments générée dynamiquement
+    Column(
+      children: List.generate(
+        FoodList.length,
+        (index) => FoodCard(
+            FoodList[index].imagePath,
+            FoodList[index].name,
+            FoodList[index].description,
+            FoodList[index].price,
+            FoodList[index]),
+      ),
+    ),
+  ],
+);
   }
 
+  // Widget pour afficher une carte d'aliment
   Widget FoodCard(
       String imagePath, String name, String weight, int price, Food food) {
     final CartListBloc bloc = BlocProvider.getBloc<CartListBloc>();
+
+    // Fonction pour ajouter un aliment au panier
     addToCart(Food foodItem) {
       bloc.addToList(food);
     }
 
+    // Fonction pour supprimer un aliment du panier
     removeFromList(Food food) {
       bloc.removeFromList(food);
     }
@@ -161,92 +162,109 @@ class _HomeScreenState extends State<HomeScreen>
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(top: 25, left: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.restaurant,
-                            color: Color.fromARGB(255, 89, 154, 23),
-                            size: 20,
-                          ),
-                          Text('$price €')
-                        ],
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width / 2.2,
-                        child: PrimaryText(
-                            text: name, size: 22, fontWeight: FontWeight.w700),
-                      ),
-                      PrimaryText(
-                          text: weight, size: 18, color: AppColor.lightGray),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  children: [
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 45, vertical: 20),
-                      decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 89, 154, 23),
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(20),
-                          topRight: Radius.circular(20),
-                        ),
-                      ),
-                      child: GestureDetector(
-                        onTap: () {
-                          addToCart(food);
-                          final snackBar = SnackBar(
-                            content: Text('${food.name} added to Cart'),
-                            duration: Duration(milliseconds: 550),
-                          );
-                                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
-                        },
-                        child: Icon(Icons.add, size: 20),
-                      ),
-                    ),
-                    SizedBox(width: 20),
-                    SizedBox(
-                      child: Row(
-                        children: [
-                          FavB(food: food),
-                          SizedBox(width: 5),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            Container(
-              transform: Matrix4.translationValues(30.0, 25.0, 0.0),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
-                  boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 20)]),
-              child: Hero(
-                tag: imagePath,
-                child: Image.asset(imagePath,
-                    width: MediaQuery.of(context).size.width / 2.9),
+           Column(
+  crossAxisAlignment: CrossAxisAlignment.start, // Alignement du contenu à gauche
+  children: [
+    Padding(
+      padding: EdgeInsets.only(top: 25, left: 10), // Ajout de marge supérieure et gauche
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start, // Alignement du contenu à gauche
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.restaurant, // Icône de restaurant
+                color: Color.fromARGB(255, 89, 154, 23), // Couleur de l'icône
+                size: 20, // Taille de l'icône
               ),
+              Text('$price €') // Affiche le prix en euros à côté de l'icône
+            ],
+          ),
+          SizedBox(
+            width: MediaQuery.of(context).size.width / 2.2, // Largeur du conteneur de texte en fonction de la largeur de l'écran
+            child: PrimaryText(
+                text: name, // Nom de l'aliment
+                size: 22, // Taille du texte
+                fontWeight: FontWeight.w700), // Poids de la police en gras
+          ),
+          PrimaryText(
+              text: weight, // Poids de l'aliment
+              size: 18, // Taille du texte
+              color: AppColor.lightGray), // Couleur du texte en gris clair
+        ],
+      ),
+    ),
+    SizedBox(
+      height: 20, // Espace vertical
+    ),
+    Row(
+      children: [
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 45, vertical: 20), // Ajout de rembourrage horizontal et vertical au conteneur
+          decoration: BoxDecoration(
+            color: Color.fromARGB(255, 89, 154, 23), // Couleur de fond du conteneur
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(20), // Coins inférieurs arrondis à gauche
+              topRight: Radius.circular(20), // Coins supérieurs arrondis à droite
             ),
+          ),
+          child: GestureDetector(
+            onTap: () {
+              addToCart(food); // Appel de la fonction pour ajouter l'aliment au panier
+              final snackBar = SnackBar(
+                content: Text('${food.name} added to Cart'), // Message de la barre d'informations
+                duration: Duration(milliseconds: 550), // Durée d'affichage de la barre d'informations
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snackBar); // Affichage de la barre d'informations
+            },
+            child: Icon(Icons.add, size: 20), // Icône "Ajouter" dans le conteneur
+          ),
+        ),
+        SizedBox(width: 20), // Espace horizontal
+        SizedBox(
+          child: Row(
+            children: [
+              FavB(food: food), // Widget pour gérer les favoris
+              SizedBox(width: 5), // Espace horizontal
+            ],
+          ),
+        ),
+      ],
+    ),
+  ],
+),
+
+           Container(
+  // Utilisation de la propriété "transform" pour déplacer l'enfant du Container
+  transform: Matrix4.translationValues(30.0, 25.0, 0.0),
+
+  // Configuration de la décoration du Container
+  decoration: BoxDecoration(
+    borderRadius: BorderRadius.circular(50), // Crée des coins arrondis
+    boxShadow: [ // Ajoute une ombre au Container
+      BoxShadow(
+        color: Colors.grey, // Couleur de l'ombre
+        blurRadius: 20, // Flou de l'ombre
+      ),
+    ],
+  ),
+
+  child: Hero(
+    tag: imagePath, // Utilisation de Hero pour des transitions d'images fluides entre les écrans
+    child: Image.asset(
+      imagePath, // Chemin vers l'image à afficher
+      width: MediaQuery.of(context).size.width / 2.9, // Largeur de l'image basée sur la largeur de l'écran
+    ),
+  ),
+),
+
           ],
         ),
       ),
     );
   }
 
+  // Widget pour afficher une carte de catégorie d'aliments
   Widget foodCategoryCard(String imagePath, String name, int index) {
     return GestureDetector(
       onTap: () => {
@@ -294,6 +312,7 @@ class _HomeScreenState extends State<HomeScreen>
   }
 }
 
+// Widget pour gérer les favoris
 class FavB extends StatefulWidget {
   final Food food;
 
@@ -304,21 +323,19 @@ class FavB extends StatefulWidget {
 }
 
 class _FavBState extends State<FavB> {
-  bool isFav = false;
+  bool isFav = false; // Indicateur d'état des favoris
 
- 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         setState(() {
-          isFav = !isFav;
+          isFav = !isFav; // Inversion de l'état des favoris
         });
 
         // Ajouter ou supprimer l'élément de la liste de favoris ici
         if (isFav) {
           // Ajouter à la liste de favoris
-        
           showSnackBar("Ajouté aux favoris");
         } else {
           // Supprimer de la liste de favoris
@@ -333,6 +350,7 @@ class _FavBState extends State<FavB> {
     );
   }
 
+  // Affiche un message en bas de l'écran
   void showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(

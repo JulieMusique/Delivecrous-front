@@ -60,5 +60,3 @@ L'ensemble du code semble être une partie d'une application Flutter qui présen
 - `Food` est une classe qui représente un aliment avec un ID, une image, un nom, une description, un prix, une catégorie, un allergène et une quantité. faut ajouter les ingredients 
 - La quantité est utilisée pour suivre combien d'articles de cet aliment sont dans le panier.
 - Les méthodes `incrementQuantity` et `decrementQuantity` permettent d'ajuster la quantité.
-
-
