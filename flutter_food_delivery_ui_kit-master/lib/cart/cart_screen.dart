@@ -84,6 +84,7 @@ class _BottomBarState extends State<BottomBar> {
     updateTotalAmount();
   }
 
+  // Met à jour le montant total en fonction des éléments dans le panier
   void updateTotalAmount() {
     double total = 0.0;
 
@@ -120,6 +121,7 @@ class _BottomBarState extends State<BottomBar> {
               ],
             ),
           ),
+          // Bouton "Continue" pour finaliser la commande
           AppButton(
             bgColor: vermilion,
             borderRadius: 30,
@@ -142,27 +144,31 @@ class _BottomBarState extends State<BottomBar> {
   }
 }
 
+// Classe représentant le corps de l'écran du panier
 class CartBody extends StatelessWidget {
-  final List<Food> foodItems;
+  final List<Food> foodItems; // Liste des articles alimentaires dans le panier
 
-  CartBody(this.foodItems);
+  CartBody(this.foodItems); // Constructeur prenant la liste des articles alimentaires comme paramètre
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(20, 30, 15, 0),
+      padding: EdgeInsets.fromLTRB(20, 30, 15, 0), // Espacement intérieur du conteneur
       child: Column(
         children: <Widget>[
-          CustomAppBar(),
+          CustomAppBar(), // Affiche la barre d'applications personnalisée
           Expanded(
             flex: 1,
-            child: foodItems.length > 0 ? foodItemList() : noItemContainer(),
+            child: foodItems.length > 0
+                ? foodItemList() // Affiche la liste des articles alimentaires si elle n'est pas vide
+                : noItemContainer(), // Affiche un message si la liste est vide
           )
         ],
       ),
     );
   }
 
+  // Widget pour afficher un message lorsque le panier est vide
   Container noItemContainer() {
     return Container(
       child: Center(
@@ -177,6 +183,7 @@ class CartBody extends StatelessWidget {
     );
   }
 
+  // Widget pour afficher la liste des articles alimentaires dans le panier
   ListView foodItemList() {
     return ListView.builder(
       itemCount: foodItems.length,
@@ -187,69 +194,72 @@ class CartBody extends StatelessWidget {
   }
 }
 
+// Classe représentant un élément de la liste du panier
 class CartListItem extends StatelessWidget {
-  final Food foodItem;
+  final Food foodItem; // L'article alimentaire associé à cet élément
 
-  CartListItem({required this.foodItem});
+  CartListItem({required this.foodItem}); // Constructeur avec l'article alimentaire comme paramètre
 
   @override
   Widget build(BuildContext context) {
     return LongPressDraggable(
-      hapticFeedbackOnStart: false,
-      maxSimultaneousDrags: 1,
-      data: foodItem,
-      feedback: DraggableChildFeedback(foodItem: foodItem),
-      child: DraggableChild(foodItem: foodItem),
+      hapticFeedbackOnStart: false, // Désactive la rétroaction haptique au début du glissement
+      maxSimultaneousDrags: 1, // Permet un seul glissement simultané de cet élément
+      data: foodItem, // L'article alimentaire associé aux données de glissement
+      feedback: DraggableChildFeedback(foodItem: foodItem), // Rétroaction visuelle pendant le glissement
+      child: DraggableChild(foodItem: foodItem), // Contenu de l'élément glissable
       childWhenDragging: foodItem.quantity > 1
-          ? DraggableChild(foodItem: foodItem)
-          : Container(),
+          ? DraggableChild(foodItem: foodItem) // Affiche l'élément glissable lors du glissement si la quantité est supérieure à 1
+          : Container(), // Affiche un conteneur vide lors du glissement si la quantité est égale à 1
     );
   }
 }
 
+
+// Classe représentant un élément pouvant être glissé (draggable) pour un article du panier
 class DraggableChild extends StatelessWidget {
   const DraggableChild({
     Key? key,
-    required this.foodItem,
+    required this.foodItem, // L'article alimentaire associé à cet élément glissable
   }) : super(key: key);
 
-  final Food foodItem;
+  final Food foodItem; // L'article alimentaire affiché dans cet élément glissable
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 25),
-      child: ItemContent(
-        foodItem: foodItem,
-      ),
+      margin: EdgeInsets.only(bottom: 25), // Marge inférieure pour espacement entre les éléments glissables
+      child: ItemContent(foodItem: foodItem), // Affiche le contenu de l'article alimentaire
     );
   }
 }
 
+
+// Classe représentant un élément de feedback lors du glissement (drag) d'un article du panier
 class DraggableChildFeedback extends StatelessWidget {
   const DraggableChildFeedback({
     Key? key,
-    required this.foodItem,
+    required this.foodItem, // L'article alimentaire associé à cet élément de feedback
   }) : super(key: key);
 
-  final Food foodItem;
+  final Food foodItem; // L'article alimentaire affiché dans cet élément de feedback
 
   @override
   Widget build(BuildContext context) {
     final ColorBloc colorBloc = BlocProvider.getBloc<ColorBloc>();
 
     return Opacity(
-      opacity: 0.7,
+      opacity: 0.7, // Opacité de l'élément de feedback (70% de transparence)
       child: Material(
         child: StreamBuilder(
-          stream: colorBloc.colorStream,
+          stream: colorBloc.colorStream, // Flux de couleurs pour le changement de couleur
           builder: (context, snapshot) {
             return Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                color: snapshot.data != null ? snapshot.data : Colors.white,
+                borderRadius: BorderRadius.circular(15), // Coins arrondis du conteneur
+                color: snapshot.data != null ? snapshot.data : Colors.white, // Couleur du conteneur basée sur le flux de couleurs
               ),
-              child: ItemContent(foodItem: foodItem),
+              child: ItemContent(foodItem: foodItem), // Affiche l'élément de contenu de l'article alimentaire
             );
           },
         ),
@@ -258,13 +268,15 @@ class DraggableChildFeedback extends StatelessWidget {
   }
 }
 
+
+// Classe représentant un élément de contenu d'un article dans le panier
 class ItemContent extends StatelessWidget {
   const ItemContent({
     Key? key,
     required this.foodItem,
   }) : super(key: key);
 
-  final Food foodItem;
+  final Food foodItem; // Représente l'article alimentaire affiché dans cet élément
 
   @override
   Widget build(BuildContext context) {
@@ -274,17 +286,17 @@ class ItemContent extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         boxShadow: [BoxShadow(blurRadius: 10, color: AppColor.lighterGray)],
-        color: AppColor.white,
+        color: AppColor.white, // Couleur de fond de l'élément de contenu
       ),
       child: Row(
         children: [
           Row(
             children: [
               Hero(
-                tag: foodItem.imagePath,
+                tag: foodItem.imagePath, // Tag pour l'animation Hero (transition d'image)
                 child: Image.asset(
-                  foodItem.imagePath,
-                  width: MediaQuery.of(context).size.width / 6,
+                  foodItem.imagePath, // Chemin de l'image de l'article
+                  width: MediaQuery.of(context).size.width / 6, // Largeur de l'image
                 ),
               ),
               SizedBox(width: 16), // Espace entre l'image et le nom/prix
@@ -292,26 +304,26 @@ class ItemContent extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   PrimaryText(
-                    text: foodItem.name,
-                    size: 18,
-                    fontWeight: FontWeight.w700,
+                    text: foodItem.name, // Nom de l'article alimentaire
+                    size: 18, // Taille de la police pour le nom
+                    fontWeight: FontWeight.w700, // Poids de la police en gras
                   ),
                   PrimaryText(
-                    text: '\$${foodItem.price}',
-                    size: 16,
-                    color: AppColor.lightGray,
+                    text: '\$${foodItem.price}', // Prix de l'article
+                    size: 16, // Taille de la police pour le prix
+                    color: AppColor.lightGray, // Couleur du texte du prix
                   ),
                 ],
               ),
             ],
           ),
-          Spacer(),
+          Spacer(), // Étire l'espace disponible entre les éléments
           Container(
             decoration: BoxDecoration(
-              color: vermilion,
-              borderRadius: BorderRadius.circular(15),
+              color: vermilion, // Couleur de fond du conteneur
+              borderRadius: BorderRadius.circular(15), // Coins arrondis du conteneur
             ),
-            child: BuyFood(),
+            child: BuyFood(), // Affiche un widget "BuyFood" (peut être un bouton d'achat)
           ),
         ],
       ),
@@ -319,26 +331,31 @@ class ItemContent extends StatelessWidget {
   }
 }
 
+
+// Classe pour afficher une barre d'app bar personnalisée
 class CustomAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
       leading: GestureDetector(
+        // Ajoute un détecteur de geste pour détecter les pressions sur l'icône de retour
         child: Icon(
-          CupertinoIcons.back,
-          size: 20,
+          CupertinoIcons.back, // Icône de flèche de retour style iOS
+          size: 20, // Taille de l'icône
         ),
         onTap: () {
-          Navigator.pop(context);
+          // Lorsqu'on appuie sur l'icône de retour
+          Navigator.pop(context); // Navigue en arrière pour revenir à l'écran précédent
         },
       ),
       title: Text(
-        "My Order",
+        "My Order", // Titre de la barre d'app bar
         style: TextStyle(
-          fontWeight: FontWeight.w700,
-          fontSize: 15,
+          fontWeight: FontWeight.w700, // Poids de la police en gras
+          fontSize: 15, // Taille de la police
         ),
       ),
     );
   }
 }
+
