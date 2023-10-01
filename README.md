@@ -3,7 +3,7 @@
 
 Ce dépôt contient le code source de la partie frontend de l'application de commande de repas cross-plateforme "Deliverucrous", similaire à "UberEats".
 
-![Capture d'écran](ExplicationdesDifferentsScreen.png)
+![Capture d'écran](ExplicationdesDifferentsScreen.PNG)
 ## Technologies Utilisées
 - Framework : 
 - Langages : 
