@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ui_food_delivery_app/model/User.dart';
-import 'package:flutter_ui_food_delivery_app/profile/profile_screen.dart';
+import 'package:flutter_ui_food_delivery_app/login/profile/profile_screen.dart';
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
 import 'package:flutter_ui_food_delivery_app/widgets/custom_button.dart';
 import 'package:flutter_ui_food_delivery_app/widgets/custom_input.dart';

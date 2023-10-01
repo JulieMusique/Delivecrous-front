@@ -5,7 +5,7 @@ import 'package:flutter_ui_food_delivery_app/home/landing_screen.dart';
 import 'package:flutter_ui_food_delivery_app/home/search_screen.dart';
 import 'package:flutter_ui_food_delivery_app/login/login_screen.dart';
 import 'package:flutter_ui_food_delivery_app/login/onboardingScreen.dart';
-import 'package:flutter_ui_food_delivery_app/profile/profile_screen.dart';
+import 'package:flutter_ui_food_delivery_app/login/profile/profile_screen.dart';
 import 'package:flutter_ui_food_delivery_app/utils/routes.dart';
 
 void main() {

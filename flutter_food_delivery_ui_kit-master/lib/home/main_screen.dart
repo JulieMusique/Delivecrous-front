@@ -7,7 +7,7 @@ import 'package:flutter_ui_food_delivery_app/cart/bloc/cartlistBloc.dart';
 import 'package:flutter_ui_food_delivery_app/cart/bloc/listTileColorBloc.dart';
 import 'package:flutter_ui_food_delivery_app/cart/cart_screen.dart';
 import 'package:flutter_ui_food_delivery_app/home/home_screen.dart';
-import 'package:flutter_ui_food_delivery_app/profile/profile_screen.dart';
+import 'package:flutter_ui_food_delivery_app/login/profile/profile_screen.dart';
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
 
 class MainScreen extends StatefulWidget {
