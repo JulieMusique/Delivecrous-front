@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen>
               padding: const EdgeInsets.only(left: 20),
               child: AppText(
                 text: 'food for you',
-                size: 34,
+                size: 30,
                 color: Colors.black,
                 weight: FontWeight.bold,
                 textAlign: TextAlign.start,
