@@ -25,8 +25,7 @@ class CartScreen extends StatelessWidget {
             body: SafeArea(
               child: CartBody(foodItems),
             ),
-                        bottomNavigationBar: BottomBar(foodItems),
-
+            bottomNavigationBar: BottomBar(foodItems),
           );
         } else {
           return Container(
@@ -37,35 +36,36 @@ class CartScreen extends StatelessWidget {
     );
   }
 }
- 
-  Container totalAmount(List<Food> foodItems) {
-    return Container(
-      margin: EdgeInsets.only(right: 10),
-      padding: EdgeInsets.all(25),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Text(
-            "Total:",
-            style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),
-          ),
-          Text(
-            "\$${returnTotalAmount(foodItems)}",
-            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 28),
-          ),
-        ],
-      ),
-    );
-  }
 
-  String returnTotalAmount(List<Food> foodItems) {
-    double totalAmount = 0.0;
+Container totalAmount(List<Food> foodItems) {
+  return Container(
+    margin: EdgeInsets.only(right: 10),
+    padding: EdgeInsets.all(25),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Text(
+          "Total:",
+          style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),
+        ),
+        Text(
+          "\$${returnTotalAmount(foodItems)}",
+          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 28),
+        ),
+      ],
+    ),
+  );
+}
 
-    for (int i = 0; i < foodItems.length; i++) {
-      totalAmount = totalAmount + foodItems[i].price * foodItems[i].quantity;
-    }
-    return totalAmount.toStringAsFixed(2);
+String returnTotalAmount(List<Food> foodItems) {
+  double totalAmount = 0.0;
+
+  for (int i = 0; i < foodItems.length; i++) {
+    totalAmount = totalAmount + foodItems[i].price * foodItems[i].quantity;
   }
+  return totalAmount.toStringAsFixed(2);
+}
+
 class BottomBar extends StatefulWidget {
   final List<Food> foodItems;
 
@@ -129,8 +129,8 @@ class _BottomBarState extends State<BottomBar> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => OrderConfirmed() /*OrderError(),*/
-                ),
+                    builder: (context) => OrderConfirmed() /*OrderError(),*/
+                    ),
               );
             },
             text: "Continue",
@@ -141,7 +141,6 @@ class _BottomBarState extends State<BottomBar> {
     );
   }
 }
-
 
 class CartBody extends StatelessWidget {
   final List<Food> foodItems;
@@ -186,8 +185,6 @@ class CartBody extends StatelessWidget {
       },
     );
   }
-
- 
 }
 
 class CartListItem extends StatelessWidget {
@@ -198,13 +195,14 @@ class CartListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LongPressDraggable(
-      hapticFeedbackOnStart: false,      
+      hapticFeedbackOnStart: false,
       maxSimultaneousDrags: 1,
       data: foodItem,
       feedback: DraggableChildFeedback(foodItem: foodItem),
       child: DraggableChild(foodItem: foodItem),
-      childWhenDragging: foodItem.quantity > 1 ? DraggableChild(foodItem: foodItem) : Container(),
-      
+      childWhenDragging: foodItem.quantity > 1
+          ? DraggableChild(foodItem: foodItem)
+          : Container(),
     );
   }
 }
@@ -212,7 +210,7 @@ class CartListItem extends StatelessWidget {
 class DraggableChild extends StatelessWidget {
   const DraggableChild({
     Key? key,
-     required this.foodItem,
+    required this.foodItem,
   }) : super(key: key);
 
   final Food foodItem;
@@ -324,24 +322,23 @@ class ItemContent extends StatelessWidget {
 class CustomAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return  AppBar(
-        leading: GestureDetector(
-          child: Icon(
-            CupertinoIcons.back,
-            size: 20,
-          ),
-          onTap: () {
-            Navigator.pop(context);
-          },
+    return AppBar(
+      leading: GestureDetector(
+        child: Icon(
+          CupertinoIcons.back,
+          size: 20,
         ),
-        title: Text(
-          "My Order",
-          style: TextStyle(
-            fontWeight: FontWeight.w700,
-            fontSize: 15,
-          ),
+        onTap: () {
+          Navigator.pop(context);
+        },
+      ),
+      title: Text(
+        "My Order",
+        style: TextStyle(
+          fontWeight: FontWeight.w700,
+          fontSize: 15,
         ),
-      );
-    
+      ),
+    );
   }
 }
