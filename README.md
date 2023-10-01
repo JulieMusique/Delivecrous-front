@@ -3,8 +3,12 @@
 
 Ce dépôt contient le code source de la partie frontend de l'application de commande de repas cross-plateforme "Deliverucrous", similaire à "UberEats".
 
+<<<<<<< HEAD
 git 
 
+=======
+![Capture d'écran](flutter_food_delivery_ui_kit-master/screenshots/ExplicationdesDifferentsScreen.png)
+>>>>>>> 898cb3e7e0ebd2849141d3ee599a638e4f25312f
 ## Technologies Utilisées
 - Framework : 
 - Langages : 
