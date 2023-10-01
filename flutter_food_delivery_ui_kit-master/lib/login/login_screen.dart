@@ -29,35 +29,44 @@ class _LoginScreenState extends State<LoginScreen> {
                     Container(
                       height: MediaQuery.of(context).size.height * 0.6,
                       child: TabBarView(
-                          children: [LoginInputScreen(), SignUpInputScreen()]),
+                        children: [
+                          LoginInputScreen(), // Écran de connexion
+                          SignUpInputScreen(), // Écran d'inscription
+                        ],
+                      ),
                     ),
                   ],
                 ),
               ),
               Container(
                 decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(offset: Offset(0, 4), color: Colors.white)
-                    ],
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(30),
-                        bottomRight: Radius.circular(30))),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      offset: Offset(0, 4),
+                      color: Colors.white,
+                    ),
+                  ],
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(30),
+                    bottomRight: Radius.circular(30),
+                  ),
+                ),
                 height: MediaQuery.of(context).size.height * 0.4,
                 child: Stack(
                   children: [
                     AppBar(
-        title: Text('Login'),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
+                      title: Text('Login'), // Titre de la page de connexion
+                      backgroundColor: Colors.transparent,
+                      elevation: 0,
+                    ),
                     Center(
                       child: Lottie.asset(
-                '/anim/foodie.json', // Assurez-vous que le chemin est correct
-                fit: BoxFit.contain,
-                height: 300,
-                width: 300,
-              ),
+                        '/anim/foodie.json', 
+                        fit: BoxFit.contain,
+                        height: 300,
+                        width: 300,
+                      ),
                     ),
                     Align(
                       alignment: Alignment.bottomCenter,
@@ -66,20 +75,20 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: TabBar(
                           tabs: [
                             Tab(
-                              text: "Login",
+                              text: "Login", // Onglet de connexion
                             ),
                             Tab(
-                              text: "Sign-Up",
-                            )
+                              text: "Sign-Up", // Onglet d'inscription
+                            ),
                           ],
                           labelColor: Colors.black,
                           indicatorColor: vermilion,
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),
