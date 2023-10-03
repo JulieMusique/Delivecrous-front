@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 class FoodCategory {
   String imagePath; // Chemin de l'image représentant la catégorie d'aliments
   String name; // Nom de la catégorie d'aliments
@@ -7,22 +9,24 @@ class FoodCategory {
 
 class Food {
   int id; // Identifiant unique de l'aliment
-  String imagePath; // Chemin de l'image de l'aliment
-  String name; // Nom de l'aliment
+  String title; // Nom de l'aliment
   String description; // Description de l'aliment
-  int price; // Prix de l'aliment en euros
-  String category; // Catégorie de l'aliment
-  String allergene; // Informations sur les allergènes de l'aliment
+  double price; // Prix de l'aliment en euros
+  String imagePath; // Chemin de l'image de l'aliment
+  List categories; // Catégories de l'aliment
+  List allergens; // Informations sur les allergènes de l'aliment
+  List<Ingredient> ingredients;
   int quantity; // Quantité d'aliment sélectionnée (par défaut à 1)
 
   Food({
     required this.id,
-    required this.imagePath,
-    required this.name,
+    required this.title,
     required this.description,
     required this.price,
-    required this.allergene,
-    required this.category,
+    required this.imagePath,
+    required this.categories,
+    required this.allergens,
+    required this.ingredients,
     this.quantity = 1,
   });
 
@@ -33,21 +37,80 @@ class Food {
   void decrementQuantity() {
     this.quantity = this.quantity - 1; // Décrémente la quantité d'aliments sélectionnés
   }
+
+  List getNameIngredient(){
+    List resultName = [];
+
+    for(int i=0; i<ingredients.length; i++){
+      resultName.add(ingredients[i].name);
+    }
+    return resultName;
+  }
+
+  factory Food.fromJson(Map<String, dynamic> json){
+    return Food(
+      id:json['idDish'],
+      title:json['title'],
+      description: json['description'],
+      price: json['price'],
+      imagePath: json['imagePath'],
+      categories: json['categories'],
+      allergens: json['allergenList'],
+      ingredients: json['ingredientList'],
+    );
+  }
+
+  String show(){
+    return "Plat : $id\n$title\n$description\n$price\n$price\n$imagePath\n$categories\n$allergens\n$ingredients\n";
+  }
 }
+
+class Ingredient {
+  final int idIngredient;
+  final String name;
+  final int calorie;
+  final List allergenList;
+
+  Ingredient({
+    required this.idIngredient,
+    required this.name,
+    required this.calorie,
+    required this.allergenList});
+
+  factory Ingredient.fromJson(Map<String, dynamic> json){
+    return Ingredient(
+        idIngredient: json['idIngredient'],
+        name: json['name'],
+        calorie: json['calorie'],
+        allergenList: json['allergenList']
+    );
+  }
+
+  @override
+  String toString(){
+    return "Ingrédient : $idIngredient\n$name\n$calorie\n$allergenList\n";
+  }
+}
+
+
+
+
+
+
 
 List<FoodCategory> foodCategoryList = [
   // Liste des catégories d'aliments
   FoodCategory(
     imagePath: 'assets/pizza.svg',
-    name: 'Pizza',
+    name: 'Vegetarian',
   ),
   FoodCategory(
-    imagePath: 'assets/sea-food.svg',
-    name: 'Seafood',
+    imagePath: 'assets/pizza.svg',
+    name: 'Meat',
   ),
   FoodCategory(
-    imagePath: 'assets/coke.svg',
-    name: 'Soft Drinks',
+    imagePath: 'assets/pizza.svg',
+    name: 'Fish',
   ),
   FoodCategory(
     imagePath: 'assets/pizza.svg',
@@ -55,55 +118,7 @@ List<FoodCategory> foodCategoryList = [
   ),
   FoodCategory(
     imagePath: 'assets/pizza.svg',
-    name: 'Végeterian',
+    name: 'Fat',
   ),
 ];
 
-List<Food> FoodList = [
-  // Liste des aliments
-  Food(
-    id: 1,
-    imagePath: 'assets/pizza.png',
-    name: 'Primavera Pizza',
-    description: 'description 540 gr',
-    category: 'pizza',
-    price: 18,
-    allergene: 'vege',
-  ),
-  Food(
-    id: 2,
-    imagePath: 'assets/pizza-1.png',
-    name: 'Cheese Pizza',
-    description: 'description 200 gr',
-    category: 'pizza',
-    price: 15,
-    allergene: 'viande',
-  ),
-  Food(
-    id: 3,
-    imagePath: 'assets/salad.png',
-    name: 'Healthy Salad',
-    description: 'description 200 gr',
-    category: 'salad',
-    price: 10,
-    allergene: 'healthy',
-  ),
-  Food(
-    id: 4,
-    imagePath: 'assets/sandwhich.png',
-    name: 'Grilled Sandwhich',
-    description: 'description 250 gr',
-    category: 'sandiwsh',
-    price: 20,
-    allergene: 'viande',
-  ),
-  Food(
-    id: 5,
-    imagePath: 'assets/chowmin.png',
-    name: 'Cheese Chowmin',
-    description: 'description 500 gr',
-    category: 'burger',
-    price: 30,
-    allergene: 'vege',
-  ),
-];

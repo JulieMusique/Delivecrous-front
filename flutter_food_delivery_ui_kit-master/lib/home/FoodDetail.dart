@@ -4,6 +4,12 @@ import 'package:flutter_ui_food_delivery_app/home/home_screen.dart';
 import 'package:flutter_ui_food_delivery_app/model/list_food.dart';
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
 
+const TextStyle styleDetail = TextStyle(
+  fontFamily: 'Poppins',
+  fontWeight: FontWeight.w600,
+  fontSize: 19,
+);
+
 class DetailFood extends StatelessWidget {
   final Food food;
   const DetailFood({Key? key, required this.food}) : super(key: key);
@@ -37,7 +43,7 @@ class DetailFood extends StatelessWidget {
                         FavB(food: food), // Widget pour gérer les favoris
                       ],
                     ),
-                    Image.asset(
+                    Image.network(
                       food.imagePath, // Chemin de l'image
                       width: 250, // Largeur de l'image
                     ),
@@ -57,30 +63,35 @@ class DetailFood extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      food.name, // Nom de l'aliment
+                      food.title, // Nom de l'aliment
                       style: TextStyle(
-                        fontFamily: 'Poppins', // Police de caractères
-                        fontWeight: FontWeight.w600, // Poids de la police en gras
-                        fontSize: 19, // Taille du texte
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w600,
+                        fontSize: 22,
                       ),
                     ),
-                    SizedBox(
-                      height: 6,
+
+                    Text(
+                      "Description :", // Titre de la description
+                      style: styleDetail
                     ),
                     Text(
-                      food.category, // Catégorie de l'aliment
+                      food.description, // Description de l'aliment
                       style: TextStyle(
                         fontFamily: 'Poppins',
                         fontSize: 14,
                       ),
                     ),
+                    ListWidget(relatedName: 'Ingredients', list: food.getNameIngredient()),
+                    ListWidget(relatedName: 'Categories', list: food.categories),
+                    ListWidget(relatedName: 'Allergens', list: food.allergens),
                     Container(
                       margin: EdgeInsets.only(top: 25, bottom: 25),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "\$" + food.price.toString(), // Prix de l'aliment
+                            food.price.toString() + "\€", // Prix de l'aliment
                             style: TextStyle(
                               fontFamily: 'Poppins',
                               fontWeight: FontWeight.w600,
@@ -95,42 +106,6 @@ class DetailFood extends StatelessWidget {
                             child: BuyFood(), // Widget pour acheter l'aliment
                           ),
                         ],
-                      ),
-                    ),
-                    Text(
-                      "Description", // Titre de la description
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.w600,
-                        fontSize: 19,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 7,
-                    ),
-                    Text(
-                      food.description, // Description de l'aliment
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 14,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Text(
-                      "Allergene : ", // Titre des allergènes
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.w600,
-                        fontSize: 19,
-                      ),
-                    ),
-                    Text(
-                      food.allergene, // Liste des allergènes
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 14,
                       ),
                     ),
                   ],
@@ -165,6 +140,48 @@ class DetailFood extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class ListWidget extends StatelessWidget {
+  final String relatedName;
+  final List list;
+
+  const ListWidget({super.key, required this.relatedName, required this.list});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("$relatedName : ",
+            style: styleDetail
+          ),
+          SizedBox(
+            child: ListView.builder(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: list.length,
+              itemBuilder: (context, index) {
+                var item = list[index];
+                String firstLetter = item.substring(0, 1); // item = "Hello" -> firstLetter = "H"
+                String remainsLowerCase = item.substring(1).toLowerCase(); // item = "HELLO" -> item.substring(1) = "ELLO" .toLowerCase()
+                item = firstLetter + remainsLowerCase;
+                return Text(
+                  item + (index < list.length - 1 ? ', ' : ''),
+                  style: TextStyle(
+                    fontFamily: 'Poppins',
+                    fontSize: 14,
+                  ),
+                );
+              },
+            ),
+          )
+        ],
       ),
     );
   }
