@@ -31,26 +31,26 @@ class Food {
   });
 
   void incrementQuantity() {
-    this.quantity = this.quantity + 1; // Incrémente la quantité d'aliments sélectionnés
+    this.quantity =
+        this.quantity + 1; // Incrémente la quantité d'aliments sélectionnés
   }
 
   void decrementQuantity() {
-    this.quantity = this.quantity - 1; // Décrémente la quantité d'aliments sélectionnés
+    this.quantity =
+        this.quantity - 1; // Décrémente la quantité d'aliments sélectionnés
   }
 
-  List getNameIngredient(){
+  List getNameIngredient() {
     List resultName = [];
-
-    for(int i=0; i<ingredients.length; i++){
+    for (int i = 0; i < ingredients.length; i++)
       resultName.add(ingredients[i].name);
-    }
     return resultName;
   }
 
-  factory Food.fromJson(Map<String, dynamic> json){
+  factory Food.fromJson(Map<String, dynamic> json) {
     return Food(
-      id:json['idDish'],
-      title:json['title'],
+      id: json['idDish'],
+      title: json['title'],
       description: json['description'],
       price: json['price'],
       imagePath: json['imagePath'],
@@ -60,7 +60,8 @@ class Food {
     );
   }
 
-  String show(){
+  @override
+  String toString() {
     return "Plat : $id\n$title\n$description\n$price\n$price\n$imagePath\n$categories\n$allergens\n$ingredients\n";
   }
 }
@@ -71,32 +72,25 @@ class Ingredient {
   final int calorie;
   final List allergenList;
 
-  Ingredient({
-    required this.idIngredient,
-    required this.name,
-    required this.calorie,
-    required this.allergenList});
+  Ingredient(
+      {required this.idIngredient,
+      required this.name,
+      required this.calorie,
+      required this.allergenList});
 
-  factory Ingredient.fromJson(Map<String, dynamic> json){
+  factory Ingredient.fromJson(Map<String, dynamic> json) {
     return Ingredient(
         idIngredient: json['idIngredient'],
         name: json['name'],
         calorie: json['calorie'],
-        allergenList: json['allergenList']
-    );
+        allergenList: json['allergenList']);
   }
 
   @override
-  String toString(){
+  String toString() {
     return "Ingrédient : $idIngredient\n$name\n$calorie\n$allergenList\n";
   }
 }
-
-
-
-
-
-
 
 List<FoodCategory> foodCategoryList = [
   // Liste des catégories d'aliments
@@ -121,4 +115,3 @@ List<FoodCategory> foodCategoryList = [
     name: 'Fat',
   ),
 ];
-

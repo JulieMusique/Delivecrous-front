@@ -12,6 +12,7 @@ const TextStyle styleDetail = TextStyle(
 
 class DetailFood extends StatelessWidget {
   final Food food;
+
   const DetailFood({Key? key, required this.food}) : super(key: key);
 
   @override
@@ -32,7 +33,8 @@ class DetailFood extends StatelessWidget {
                       children: [
                         IconButton(
                           onPressed: () {
-                            Navigator.pop(context); // Retour à l'écran précédent
+                            Navigator.pop(
+                                context); // Retour à l'écran précédent
                           },
                           icon: Icon(
                             CupertinoIcons.chevron_left_square_fill,
@@ -70,11 +72,8 @@ class DetailFood extends StatelessWidget {
                         fontSize: 22,
                       ),
                     ),
-
-                    Text(
-                      "Description :", // Titre de la description
-                      style: styleDetail
-                    ),
+                    Text("Description :", // Titre de la description
+                        style: styleDetail),
                     Text(
                       food.description, // Description de l'aliment
                       style: TextStyle(
@@ -82,8 +81,11 @@ class DetailFood extends StatelessWidget {
                         fontSize: 14,
                       ),
                     ),
-                    ListWidget(relatedName: 'Ingredients', list: food.getNameIngredient()),
-                    ListWidget(relatedName: 'Categories', list: food.categories),
+                    ListWidget(
+                        relatedName: 'Ingredients',
+                        list: food.getNameIngredient()),
+                    ListWidget(
+                        relatedName: 'Categories', list: food.categories),
                     ListWidget(relatedName: 'Allergens', list: food.allergens),
                     Container(
                       margin: EdgeInsets.only(top: 25, bottom: 25),
@@ -100,7 +102,8 @@ class DetailFood extends StatelessWidget {
                           ),
                           Container(
                             decoration: BoxDecoration(
-                              color: vermilion, // Couleur de l'arrière-plan du bouton
+                              color: vermilion,
+                              // Couleur de l'arrière-plan du bouton
                               borderRadius: BorderRadius.circular(15),
                             ),
                             child: BuyFood(), // Widget pour acheter l'aliment
@@ -126,9 +129,12 @@ class DetailFood extends StatelessWidget {
             ),
           ),
           style: ElevatedButton.styleFrom(
-            primary: Color.fromARGB(251, 255, 255, 255), // Couleur de fond du bouton
-            padding: EdgeInsets.all(25), // Remplissage du bouton
-            elevation: 0, // Élévation du bouton
+            primary: Color.fromARGB(251, 255, 255, 255),
+            // Couleur de fond du bouton
+            padding: EdgeInsets.all(25),
+            // Remplissage du bouton
+            elevation: 0,
+            // Élévation du bouton
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(
                 Radius.circular(30), // Bordure arrondie du bouton
@@ -145,6 +151,7 @@ class DetailFood extends StatelessWidget {
   }
 }
 
+// ListWidget -> Generic Widget to show text from a list of string and associated name
 class ListWidget extends StatelessWidget {
   final String relatedName;
   final List list;
@@ -158,9 +165,7 @@ class ListWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("$relatedName : ",
-            style: styleDetail
-          ),
+          Text("$relatedName : ", style: styleDetail),
           SizedBox(
             child: ListView.builder(
               scrollDirection: Axis.vertical,
@@ -168,8 +173,11 @@ class ListWidget extends StatelessWidget {
               itemCount: list.length,
               itemBuilder: (context, index) {
                 var item = list[index];
-                String firstLetter = item.substring(0, 1); // item = "Hello" -> firstLetter = "H"
-                String remainsLowerCase = item.substring(1).toLowerCase(); // item = "HELLO" -> item.substring(1) = "ELLO" .toLowerCase()
+                String firstLetter =
+                    item.substring(0, 1); // item = "Hello" -> firstLetter = "H"
+                String remainsLowerCase = item
+                    .substring(1)
+                    .toLowerCase(); // item = "HELLO" -> item.substring(1) = "ELLO" .toLowerCase()
                 item = firstLetter + remainsLowerCase;
                 return Text(
                   item + (index < list.length - 1 ? ', ' : ''),
@@ -196,24 +204,24 @@ class BuyFood extends StatefulWidget {
 
 class _BuyFoodState extends State<BuyFood> {
   var buyFood = 1;
-void _incFood() {
-  setState(() {
-    buyFood++; // Incrémente la quantité d'aliments sélectionnés lors de l'appui sur le bouton d'ajout
-  });
-}
 
-void _decFood() {
-  setState(() {
-    if (buyFood > 1) {
-      // Vérifie que la quantité d'aliments sélectionnés est supérieure à 1 avant de décrémenter
-      buyFood--; // Décrémente la quantité d'aliments sélectionnés lors de l'appui sur le bouton de réduction
-    } else {
-      // Si la quantité est déjà à 1, reste à 1 pour éviter des valeurs négatives
-      buyFood = 1;
-    }
-  });
-}
+  void _incFood() {
+    setState(() {
+      buyFood++; // Incrémente la quantité d'aliments sélectionnés lors de l'appui sur le bouton d'ajout
+    });
+  }
 
+  void _decFood() {
+    setState(() {
+      if (buyFood > 1) {
+        // Vérifie que la quantité d'aliments sélectionnés est supérieure à 1 avant de décrémenter
+        buyFood--; // Décrémente la quantité d'aliments sélectionnés lors de l'appui sur le bouton de réduction
+      } else {
+        // Si la quantité est déjà à 1, reste à 1 pour éviter des valeurs négatives
+        buyFood = 1;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
