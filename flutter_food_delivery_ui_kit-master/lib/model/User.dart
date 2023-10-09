@@ -1,19 +1,51 @@
+
 class User {
-  String firstName;
+  int? id;
   String lastName;
+  String firstName;
   String email;
-  String address;
-  String phoneNumber;
+  String? phone;
+  String? address;
+  String? login;
   String password;
-  final String photoUrl;
+  double soldeCarteCrous;
 
   User({
-    required this.firstName,
+    this.id,
     required this.lastName,
+    required this.firstName,
     required this.email,
-    required this.address,
-    required this.phoneNumber,
-    required this.photoUrl,
-    required this.password
+    this.phone,
+    this.address,
+    this.login,
+    required this.password,
+    required this.soldeCarteCrous,
   });
+
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      id: json['id'],
+      lastName: json['lastName'],
+      firstName: json['firstName'],
+      email: json['email'],
+      phone: json['phone'],
+      address: json['adresse'],
+      login: json['login'],
+      password: json['password'],
+      soldeCarteCrous: json['solde_carte_crous'] ?? 0,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'lastName': lastName,
+      'firstName': firstName,
+      'email': email,
+      'phone': phone,
+      'adresse': address,
+      'login': login,
+      'password': password,
+      'solde_carte_crous': soldeCarteCrous,
+    };
+  }
 }
