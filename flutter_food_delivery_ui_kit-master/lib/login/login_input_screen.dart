@@ -119,7 +119,8 @@ class _LoginInputScreenState extends State<LoginInputScreen> {
               padding: EdgeInsets.only(bottom: 42),
               child: AppInputText(
                 controller: passwordController,
-                hint: "Password", // Invite de champ pour le mot de passe
+                hint: "Password",
+                obscureText: true, 
               ),
             ),
             // Texte "Forgot password?" pour réinitialiser le mot de passe
