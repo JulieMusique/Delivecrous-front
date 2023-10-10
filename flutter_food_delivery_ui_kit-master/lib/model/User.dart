@@ -1,6 +1,6 @@
 
 class User {
-  int id;
+  int? id;
   String lastName;
   String firstName;
   String email;
@@ -11,7 +11,7 @@ class User {
   double soldeCarteCrous;
 
   User({
-    required this.id,
+    this.id,
     required this.lastName,
     required this.firstName,
     required this.email,
