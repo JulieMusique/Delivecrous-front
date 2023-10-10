@@ -304,7 +304,7 @@ class ItemContent extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   PrimaryText(
-                    text: foodItem.name, // Nom de l'article alimentaire
+                    text: foodItem.title, // Nom de l'article alimentaire
                     size: 18, // Taille de la police pour le nom
                     fontWeight: FontWeight.w700, // Poids de la police en gras
                   ),
