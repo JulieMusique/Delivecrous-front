@@ -186,7 +186,7 @@ class _SignUpInputScreenState extends State<SignUpInputScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => LoginInputScreen(),
+          builder: (context) => LoginScreen(),
         ),
       );
     } else if (response.statusCode == 409) {
