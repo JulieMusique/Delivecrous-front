@@ -2,6 +2,7 @@ import 'package:bloc_pattern/bloc_pattern.dart'; // Importation de BLoC Pattern 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_ui_food_delivery_app/Favorite/Favoritebar.dart';
 import 'package:flutter_ui_food_delivery_app/cart/bloc/cartlistBloc.dart'; // Importation du BLoC pour la gestion du panier
 import 'package:flutter_ui_food_delivery_app/home/FoodDetail.dart'; // Importation de la page de détail des aliments
 import 'package:flutter_ui_food_delivery_app/model/list_food.dart'; // Importation des données sur les aliments
@@ -12,9 +13,12 @@ import 'package:flutter_ui_food_delivery_app/widgets/custom_text.dart'; // Impor
 import 'package:flutter_ui_food_delivery_app/widgets/search_box.dart';
 
 import '../http/HttpServiceDish.dart';
+import '../model/User.dart';
 
+// ignore: must_be_immutable
 class HomeScreen extends StatefulWidget {
-  HomeScreen({Key? key}) : super(key: key);
+  User user;
+  HomeScreen({Key? key, required this.user}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -180,7 +184,15 @@ class _HomeScreenState extends State<HomeScreen>
                   },
                 );
               } else {
-                return const Text('Aucun plat trouvé.');
+                return Container(child: Center(
+        child: Text(
+          "No More Items Left In Favoris",
+          style: TextStyle(
+              fontWeight: FontWeight.w600,
+              color: Colors.grey[500],
+              fontSize: 20),
+        ),
+      ),);
               }
             }
           },
@@ -208,7 +220,7 @@ class _HomeScreenState extends State<HomeScreen>
         child: GestureDetector(
       onTap: () => {
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => DetailFood(food: food)))
+            MaterialPageRoute(builder: (context) => DetailFood(user: widget.user,food: food)))
       },
       child: Container(
         margin: EdgeInsets.only(right: 15, left: 10, top: 25),
@@ -301,7 +313,7 @@ class _HomeScreenState extends State<HomeScreen>
                     SizedBox(
                       child: Row(
                         children: [
-                          FavB(food: food), // Widget pour gérer les favoris
+                          FavB(user: widget.user,food: food), // Widget pour gérer les favoris
                           SizedBox(width: 5), // Espace horizontal
                         ],
                       ),
@@ -394,55 +406,6 @@ class _HomeScreenState extends State<HomeScreen>
                         : AppColor.white))
           ],
         ),
-      ),
-    );
-  }
-}
-
-// Widget pour gérer les favoris
-class FavB extends StatefulWidget {
-  final Food food;
-
-  FavB({Key? key, required this.food}) : super(key: key);
-
-  @override
-  State<FavB> createState() => _FavBState();
-}
-
-class _FavBState extends State<FavB> {
-  bool isFav = false; // Indicateur d'état des favoris
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          isFav = !isFav; // Inversion de l'état des favoris
-        });
-
-        // Ajouter ou supprimer l'élément de la liste de favoris ici
-        if (isFav) {
-          // Ajouter à la liste de favoris
-          showSnackBar("Ajouté aux favoris");
-        } else {
-          // Supprimer de la liste de favoris
-          showSnackBar("Retiré des favoris");
-        }
-      },
-      child: Icon(
-        isFav ? Icons.favorite : Icons.favorite_border,
-        color: Colors.red,
-        size: 24.0,
-      ),
-    );
-  }
-
-  // Affiche un message en bas de l'écran
-  void showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        duration: Duration(seconds: 1),
       ),
     );
   }

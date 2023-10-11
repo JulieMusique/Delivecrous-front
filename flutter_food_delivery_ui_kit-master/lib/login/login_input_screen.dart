@@ -1,10 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_ui_food_delivery_app/home/landing_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
-import 'package:flutter_ui_food_delivery_app/utils/routes.dart';
-import 'package:flutter_ui_food_delivery_app/widgets/custom_button.dart';
 import 'package:flutter_ui_food_delivery_app/widgets/custom_input.dart';
 import 'package:flutter_ui_food_delivery_app/widgets/custom_text.dart';
 
@@ -33,35 +32,6 @@ class _LoginInputScreenState extends State<LoginInputScreen> {
     super.dispose();
   }
 
-  Future<void> fetchData() async {
-    print(isLoading);
-    try {
-      final username = 'user';
-      final password = '09127daa-1d29-4749-98a8-b1a50eb5af20';
-
-      final headers = {
-        'Authorization':
-            'Basic ' + base64Encode(utf8.encode('$username:$password')),
-      };
-
-      final response = await http.get(
-        Uri.parse('http://localhost:8080/DelivCROUS/users'),
-        headers: headers,
-      );
-
-      if (response.statusCode == 200) {
-        final jsonData = json.decode(response.body);
-        print(jsonData);
-      } else {
-        // Gestion des erreurs en cas de statut de réponse autre que 200
-        print('Erreur HTTP: ${response.statusCode}');
-      }
-    } catch (e) {
-      // Gestion des erreurs en cas d'exception
-      print('Erreur lors de la requête HTTP: $e');
-    }
-  }
-
   Future<void> loginUser() async {
     setState(() {
       isLoading = true;
@@ -69,10 +39,11 @@ class _LoginInputScreenState extends State<LoginInputScreen> {
 
     final String email = emailController.text;
     final String password = passwordController.text;
-    
+
     try {
       final response = await http.get(
-        Uri.parse('http://localhost:8080/DelivCROUS/users/login/$email/$password'),
+        Uri.parse(
+            'http://localhost:8080/DelivCROUS/users/login/$email/$password'),
       );
       print(response.statusCode);
 
@@ -84,7 +55,8 @@ class _LoginInputScreenState extends State<LoginInputScreen> {
         final Map<String, dynamic> userData = json.decode(response.body);
         print(userData);
         final User user = User.fromJson(userData);
-        Navigator.pushNamed(context, Routes.home);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => LandingScreen(user)));
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -120,7 +92,7 @@ class _LoginInputScreenState extends State<LoginInputScreen> {
               child: AppInputText(
                 controller: passwordController,
                 hint: "Password",
-                obscureText: true, 
+                obscureText: true,
               ),
             ),
             // Texte "Forgot password?" pour réinitialiser le mot de passe

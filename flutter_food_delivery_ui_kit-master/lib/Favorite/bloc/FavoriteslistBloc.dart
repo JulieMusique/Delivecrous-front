@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:flutter_ui_food_delivery_app/Favorite/bloc/provider.dart';
+import 'package:flutter_ui_food_delivery_app/Favorite/bloc/providerFavorite.dart';
 import 'package:flutter_ui_food_delivery_app/model/list_food.dart';
 import 'package:rxdart/rxdart.dart';
 

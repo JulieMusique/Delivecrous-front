@@ -9,14 +9,15 @@ import 'package:flutter_ui_food_delivery_app/cart/bloc/listTileColorBloc.dart';
 import 'package:flutter_ui_food_delivery_app/cart/cart_screen.dart';
 import 'package:flutter_ui_food_delivery_app/home/home_screen.dart';
 import 'package:flutter_ui_food_delivery_app/login/profile/profile_screen.dart';
+import 'package:flutter_ui_food_delivery_app/model/User.dart';
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
 
 // Définition du widget MainScreen
+// ignore: must_be_immutable
 class MainScreen extends StatefulWidget {
   final VoidCallback onTap;
-  final bool collabsed;
-
-  MainScreen({required this.onTap, required this.collabsed});
+   User user;
+  MainScreen({required this.onTap, required this.user});
 
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -39,6 +40,7 @@ class _MainScreenState extends State<MainScreen> {
       // Naviguez vers la première page (par exemple, HomePage)
       Navigator.pop(context);
     } else if (index == 1) {
+      
       // Naviguez vers la deuxième page (par exemple, FavoritesPage)
       // Ici, la navigation n'est pas implémentée
     } else if (index == 2) {
@@ -56,10 +58,8 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     // Initialisation de la liste de widgets avec des instances de HomeScreen
-    widgets.add(HomeScreen());
-    widgets.add(HomeScreen());
-    widgets.add(HomeScreen());
-    widgets.add(HomeScreen());
+    widgets.add(HomeScreen(user:widget.user));
+  
     super.initState();
   }
 
@@ -86,7 +86,7 @@ Widget build(BuildContext context) {
                 // Navigue vers l'écran des Favoris lorsqu'on appuie sur l'icône
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => FavoriteScreen()),
+                  MaterialPageRoute(builder: (context) => FavoriteScreen(user:widget.user)),
                 );
               },
               icon: Icon(Icons.favorite_border),
@@ -109,7 +109,7 @@ Widget build(BuildContext context) {
     ),
     body: Container(
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(widget.collabsed ? 24 : 0)),
+          borderRadius: BorderRadius.circular(0)),
       child: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 24),
@@ -132,7 +132,8 @@ Widget build(BuildContext context) {
                   BlocProvider(
                     blocs: [
                       Bloc((i) => CartListBloc()), // Bloc pour le panier
-                      Bloc((i) => ColorBloc()), // Bloc pour la couleur
+                      Bloc((i) => ColorBloc()),// Bloc pour la couleur
+                      Bloc((i) => FavoriteListBloc()), // Bloc pour la favoris
                     ],
                     dependencies: [],
                     child: IconButton(

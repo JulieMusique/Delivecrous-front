@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_ui_food_delivery_app/home/home_screen.dart';
+import 'package:flutter_ui_food_delivery_app/Favorite/Favoritebar.dart';
 import 'package:flutter_ui_food_delivery_app/model/list_food.dart';
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
+
+import '../model/User.dart';
 
 const TextStyle styleDetail = TextStyle(
   fontFamily: 'Poppins',
@@ -12,8 +14,8 @@ const TextStyle styleDetail = TextStyle(
 
 class DetailFood extends StatelessWidget {
   final Food food;
-
-  const DetailFood({Key? key, required this.food}) : super(key: key);
+  final User user;
+  const DetailFood({Key? key, required this.food,required this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +44,7 @@ class DetailFood extends StatelessWidget {
                             size: 35, // Taille de l'icône
                           ),
                         ),
-                        FavB(food: food), // Widget pour gérer les favoris
+                        FavB(user:user,food: food), // Widget pour gérer les favoris
                       ],
                     ),
                     Image.network(
@@ -121,15 +123,17 @@ class DetailFood extends StatelessWidget {
       bottomNavigationBar: Container(
         padding: EdgeInsets.all(20),
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+           
+          },
           child: Text(
             "Buy Now",
             style: TextStyle(
-              color: vermilion, // Couleur du texte du bouton
+              color: Color.fromARGB(251, 255, 255, 255), // Couleur du texte du bouton
             ),
           ),
           style: ElevatedButton.styleFrom(
-            primary: Color.fromARGB(251, 255, 255, 255),
+            primary: vermilion,
             // Couleur de fond du bouton
             padding: EdgeInsets.all(25),
             // Remplissage du bouton

@@ -24,7 +24,6 @@ class MyApp extends StatelessWidget {
       ),
       home: OnboardScreen(),
       routes: {
-        Routes.home: (context) => LandingScreen(),
         Routes.login: (context) => LoginScreen(),
         Routes.intro: (context) => OnboardScreen(),
         Routes.search: (context) => SearchScreen(),
