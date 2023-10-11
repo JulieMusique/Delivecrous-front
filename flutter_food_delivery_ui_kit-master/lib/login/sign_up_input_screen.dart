@@ -1,10 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_ui_food_delivery_app/login/login_input_screen.dart';
+import 'package:flutter_ui_food_delivery_app/login/login_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_ui_food_delivery_app/model/User.dart';
-import 'package:flutter_ui_food_delivery_app/login/profile/profile_screen.dart';
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
 import 'package:flutter_ui_food_delivery_app/widgets/custom_button.dart';
 import 'package:flutter_ui_food_delivery_app/widgets/custom_input.dart';
@@ -166,8 +165,7 @@ class _SignUpInputScreenState extends State<SignUpInputScreen> {
                       address: addressController.text,
                       phone: phoneController.text,
                       login: loginController.text,
-                      password: passwordController
-                          .text,
+                      password: passwordController.text,
                       //photoUrl: "", // À compléter avec l'URL de la photo
                       soldeCarteCrous: 0);
                   final response = await http.post(
@@ -182,31 +180,32 @@ class _SignUpInputScreenState extends State<SignUpInputScreen> {
                   print(response.statusCode);
                   // Passez l'instance de User à ProfileScreen
                   if (response.statusCode == 201) {
-      // L'inscription a réussi, redirigez l'utilisateur vers le profil
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => LoginScreen(),
-        ),
-      );
-    } else if (response.statusCode == 409) {
-      // L'email existe déjà, affichez un message d'erreur
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('L\'email existe déjà dans la base de données.'),
-          backgroundColor: Colors.red,
-        ),
-      );
-    } else {
-      // Gestion d'autres erreurs
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Erreur lors de l\'inscription.'),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
-  },
+                    // L'inscription a réussi, redirigez l'utilisateur vers le profil
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => LoginScreen(),
+                      ),
+                    );
+                  } else if (response.statusCode == 409) {
+                    // L'email existe déjà, affichez un message d'erreur
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                            'L\'email existe déjà dans la base de données.'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  } else {
+                    // Gestion d'autres erreurs
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Erreur lors de l\'inscription.'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
+                },
                 text: "SignUp", // Texte du bouton d'inscription
                 textColor: athens_gray, // Couleur du texte du bouton
               ),

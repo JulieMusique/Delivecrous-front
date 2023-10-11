@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 
 class FoodCategory {
   String imagePath; // Chemin de l'image représentant la catégorie d'aliments
