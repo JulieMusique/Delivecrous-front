@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ui_food_delivery_app/Favorite/Favoritebar.dart';
+import 'package:flutter_ui_food_delivery_app/cart/buy_food.dart';
 import 'package:flutter_ui_food_delivery_app/model/list_food.dart';
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
 
@@ -15,7 +16,8 @@ const TextStyle styleDetail = TextStyle(
 class DetailFood extends StatelessWidget {
   final Food food;
   final User user;
-  const DetailFood({Key? key, required this.food,required this.user}) : super(key: key);
+  const DetailFood({Key? key, required this.food, required this.user})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +46,9 @@ class DetailFood extends StatelessWidget {
                             size: 35, // Taille de l'icône
                           ),
                         ),
-                        FavB(user:user,food: food), // Widget pour gérer les favoris
+                        FavB(
+                            user: user,
+                            food: food), // Widget pour gérer les favoris
                       ],
                     ),
                     Image.network(
@@ -123,13 +127,12 @@ class DetailFood extends StatelessWidget {
       bottomNavigationBar: Container(
         padding: EdgeInsets.all(20),
         child: ElevatedButton(
-          onPressed: () {
-           
-          },
+          onPressed: () {},
           child: Text(
             "Buy Now",
             style: TextStyle(
-              color: Color.fromARGB(251, 255, 255, 255), // Couleur du texte du bouton
+              color: Color.fromARGB(
+                  251, 255, 255, 255), // Couleur du texte du bouton
             ),
           ),
           style: ElevatedButton.styleFrom(
@@ -195,61 +198,6 @@ class ListWidget extends StatelessWidget {
           )
         ],
       ),
-    );
-  }
-}
-
-class BuyFood extends StatefulWidget {
-  const BuyFood({Key? key}) : super(key: key);
-
-  @override
-  State<BuyFood> createState() => _BuyFoodState();
-}
-
-class _BuyFoodState extends State<BuyFood> {
-  var buyFood = 1;
-
-  void _incFood() {
-    setState(() {
-      buyFood++; // Incrémente la quantité d'aliments sélectionnés lors de l'appui sur le bouton d'ajout
-    });
-  }
-
-  void _decFood() {
-    setState(() {
-      if (buyFood > 1) {
-        // Vérifie que la quantité d'aliments sélectionnés est supérieure à 1 avant de décrémenter
-        buyFood--; // Décrémente la quantité d'aliments sélectionnés lors de l'appui sur le bouton de réduction
-      } else {
-        // Si la quantité est déjà à 1, reste à 1 pour éviter des valeurs négatives
-        buyFood = 1;
-      }
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        IconButton(
-          onPressed: _decFood,
-          icon: Icon(
-            Icons.remove, // Icône de réduction
-            color: Colors.white, // Couleur de l'icône
-          ),
-        ),
-        Text(
-          "$buyFood", // Nombre d'aliments sélectionnés
-          style: TextStyle(color: Colors.white), // Couleur du texte
-        ),
-        IconButton(
-          onPressed: _incFood,
-          icon: Icon(
-            Icons.add, // Icône d'ajout
-            color: Colors.white, // Couleur de l'icône
-          ),
-        )
-      ],
     );
   }
 }

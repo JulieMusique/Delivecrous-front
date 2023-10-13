@@ -1,4 +1,3 @@
-
 class FoodCategory {
   String imagePath; // Chemin de l'image représentant la catégorie d'aliments
   String name; // Nom de la catégorie d'aliments

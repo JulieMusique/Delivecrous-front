@@ -5,6 +5,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter_ui_food_delivery_app/Favorite/Favoritebar.dart';
 import 'package:flutter_ui_food_delivery_app/cart/bloc/cartlistBloc.dart'; // Importation du BLoC pour la gestion du panier
 import 'package:flutter_ui_food_delivery_app/home/FoodDetail.dart'; // Importation de la page de détail des aliments
+import 'package:flutter_ui_food_delivery_app/http/HttpServiceCart.dart';
+import 'package:flutter_ui_food_delivery_app/model/Command.dart';
+import 'package:flutter_ui_food_delivery_app/model/Compose.dart';
 import 'package:flutter_ui_food_delivery_app/model/list_food.dart'; // Importation des données sur les aliments
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart'; // Importation des couleurs personnalisées
 import 'package:flutter_ui_food_delivery_app/utils/routes.dart'; // Importation des itinéraires de navigation
@@ -184,15 +187,17 @@ class _HomeScreenState extends State<HomeScreen>
                   },
                 );
               } else {
-                return Container(child: Center(
-        child: Text(
-          "No More Items Left In Favoris",
-          style: TextStyle(
-              fontWeight: FontWeight.w600,
-              color: Colors.grey[500],
-              fontSize: 20),
-        ),
-      ),);
+                return Container(
+                  child: Center(
+                    child: Text(
+                      "No More Items Left In Favoris",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: Colors.grey[500],
+                          fontSize: 20),
+                    ),
+                  ),
+                );
               }
             }
           },
@@ -219,8 +224,11 @@ class _HomeScreenState extends State<HomeScreen>
     return SingleChildScrollView(
         child: GestureDetector(
       onTap: () => {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => DetailFood(user: widget.user,food: food)))
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    DetailFood(user: widget.user, food: food)))
       },
       child: Container(
         margin: EdgeInsets.only(right: 15, left: 10, top: 25),
@@ -295,6 +303,16 @@ class _HomeScreenState extends State<HomeScreen>
                         onTap: () {
                           addToCart(
                               food); // Appel de la fonction pour ajouter l'aliment au panier
+                          /*final compose =
+                              Compose(dish: food, quantity: food.quantity);*/
+                          /*final command = Command(
+                              idUser: widget.user.id,
+                              deliveryAdress: widget.user.address,
+                              orderStatus: 'En cours',
+                              totalAmount: 0,
+                              compose: compose);
+                          createCommand(command);*/
+                          addDishToCommand(51152, food.id);
                           final snackBar = SnackBar(
                             content: Text('${food.title} added to Cart'),
                             // Message de la barre d'informations
@@ -313,7 +331,9 @@ class _HomeScreenState extends State<HomeScreen>
                     SizedBox(
                       child: Row(
                         children: [
-                          FavB(user: widget.user,food: food), // Widget pour gérer les favoris
+                          FavB(
+                              user: widget.user,
+                              food: food), // Widget pour gérer les favoris
                           SizedBox(width: 5), // Espace horizontal
                         ],
                       ),
