@@ -19,6 +19,7 @@ import '../model/User.dart';
 // ignore: must_be_immutable
 class HomeScreen extends StatefulWidget {
   User user;
+
   HomeScreen({Key? key, required this.user}) : super(key: key);
 
   @override
@@ -39,7 +40,6 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   void initState() {
-    super.initState();
     foodList = fetchDishes(urlLocal);
     fetchCurrentCommand(widget.user.id ?? 0).then((list) {
       setState(() {
@@ -183,10 +183,7 @@ class _HomeScreenState extends State<HomeScreen>
                   itemCount: dishes.length,
                   itemBuilder: (context, index) {
                     final dish = dishes[index];
-                    /* InkWell permet d'afficher une animation d'encre
-                              (effet d'onde) lorsque l'utilisateur appuie sur l'objet.
-                               Cela montre que l'objet est cliquable
-                              */
+
                     return InkWell(
                         child: FoodCard(dish.imagePath, dish.title,
                             dish.description, dish.price, dish));

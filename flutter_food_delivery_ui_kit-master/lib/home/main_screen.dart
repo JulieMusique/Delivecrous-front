@@ -19,6 +19,7 @@ import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
 class MainScreen extends StatefulWidget {
   final VoidCallback onTap;
   User user;
+
   MainScreen({required this.onTap, required this.user});
 
   @override

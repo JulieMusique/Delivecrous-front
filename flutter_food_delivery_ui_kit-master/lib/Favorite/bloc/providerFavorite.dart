@@ -28,10 +28,9 @@ class FavoriteProvider {
   }
 
   List<Food> removeFromList(Food foodItem) {
-      //remove it from the list
-      foodItems.remove(foodItem);
-    
+    //remove it from the list
+    foodItems.remove(foodItem);
+
     return foodItems;
   }
-
 }

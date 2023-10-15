@@ -2,9 +2,7 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ui_food_delivery_app/cart/buy_food.dart';
-import 'package:flutter_ui_food_delivery_app/cart/order_confirmed.dart';
-//import 'package:flutter_ui_food_delivery_app/cart/order_error.dart';
-import 'package:flutter_ui_food_delivery_app/home/FoodDetail.dart';
+import 'package:flutter_ui_food_delivery_app/cart/payment_screen.dart';
 import 'package:flutter_ui_food_delivery_app/http/HttpServiceCart.dart';
 import 'package:flutter_ui_food_delivery_app/model/Command.dart';
 import 'package:flutter_ui_food_delivery_app/model/Compose.dart';
@@ -70,7 +68,7 @@ class _CartScreenState extends State<CartScreen> {
             body: SafeArea(
               child: CartBody(dishes, command, widget.user),
             ),
-            bottomNavigationBar: BottomBar(dishes, command),
+            bottomNavigationBar: BottomBar(dishes, command, widget.user),
           );
         } else {
           return Container(
@@ -84,8 +82,6 @@ class _CartScreenState extends State<CartScreen> {
 
 Container totalAmount(Command command) {
   return Container(
-    margin: EdgeInsets.only(right: 10),
-    padding: EdgeInsets.all(25),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -105,8 +101,9 @@ Container totalAmount(Command command) {
 class BottomBar extends StatefulWidget {
   final List<Food> foodItems;
   final Command command;
+  final User user;
 
-  BottomBar(this.foodItems, this.command);
+  BottomBar(this.foodItems, this.command, this.user);
 
   @override
   _BottomBarState createState() => _BottomBarState();
@@ -117,8 +114,9 @@ class _BottomBarState extends State<BottomBar> {
 
   @override
   void initState() {
-    super.initState();
     updateTotalAmount();
+
+    super.initState();
   }
 
   // Met à jour le montant total en fonction des éléments dans le panier
@@ -133,6 +131,7 @@ class _BottomBarState extends State<BottomBar> {
     });
   }
 
+  bool isShowSignInDialog = false;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -158,22 +157,41 @@ class _BottomBarState extends State<BottomBar> {
             ),
           ),
           // Bouton "Continue" pour finaliser la commande
-          AppButton(
+          GestureDetector(
+              child: AppButton(
             bgColor: vermilion,
             borderRadius: 30,
             fontSize: 17,
             fontWeight: FontWeight.w600,
             onTap: () {
-              Navigator.pushReplacement(
+              /*Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => OrderConfirmed() /*OrderError(),*/
+                    builder: (context) => OrderConfirmed(user:widget.user) /*OrderError(),*/
                     ),
+              );*/
+              Future.delayed(
+                const Duration(milliseconds: 800),
+                () {
+                  setState(() {
+                    isShowSignInDialog = true;
+                  });
+                  showCustomDialog(
+                    context,
+                    onValue: (_) {
+                      setState(() {
+                        isShowSignInDialog = false;
+                      });
+                    },
+                    user: widget.user,
+                    command: widget.command,
+                  );
+                },
               );
             },
-            text: "Continue",
+            text: "Confirm order",
             textColor: Colors.white,
-          ),
+          )),
         ],
       ),
     );
@@ -185,6 +203,7 @@ class CartBody extends StatelessWidget {
   final List<Food> foodItems; // Liste des articles alimentaires dans le panier
   final Command command;
   final User user;
+
   CartBody(this.foodItems, this.command,
       this.user); // Constructeur prenant la liste des articles alimentaires comme paramètre
 
@@ -242,6 +261,7 @@ class CartListItem extends StatelessWidget {
   final Food foodItem; // L'article alimentaire associé à cet élément
   final Command command;
   final User user;
+
   CartListItem(
       {required this.foodItem,
       required this.command,
@@ -283,10 +303,12 @@ class DraggableChild extends StatelessWidget {
     required this.command,
     required this.user,
   }) : super(key: key);
+
   final User user;
   final Food
       foodItem; // L'article alimentaire affiché dans cet élément glissable
   final Command command;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -356,10 +378,12 @@ class ItemContent extends StatelessWidget {
     required this.command,
     required this.user,
   }) : super(key: key);
+
   final User user;
   final Food
       foodItem; // Représente l'article alimentaire affiché dans cet élément
   final Command command;
+
   @override
   Widget build(BuildContext context) {
     return Container(
