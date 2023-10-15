@@ -25,7 +25,6 @@ class DetailFood extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('hello');
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -118,8 +117,10 @@ class DetailFood extends StatelessWidget {
                               borderRadius: BorderRadius.circular(15),
                             ),
                             child: BuyFood(
-                                command: command,
-                                dish: food), // Widget pour acheter l'aliment
+                              command: command,
+                              dish: food,
+                              user: user,
+                            ), // Widget pour acheter l'aliment
                           ),
                         ],
                       ),

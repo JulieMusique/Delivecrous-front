@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ui_food_delivery_app/cart/cart_screen.dart';
 import 'package:flutter_ui_food_delivery_app/http/HttpServiceCart.dart';
 import 'package:flutter_ui_food_delivery_app/model/Command.dart';
+import 'package:flutter_ui_food_delivery_app/model/User.dart';
 import 'package:flutter_ui_food_delivery_app/model/list_food.dart';
 
 class BuyFood extends StatefulWidget {
-  const BuyFood({
-    Key? key,
-    this.command,
-    required this.dish,
-  }) : super(key: key);
+  const BuyFood(
+      {Key? key, this.command, required this.dish, required this.user})
+      : super(key: key);
   final Command? command;
   final Food dish;
-
+  final User user;
   @override
   State<BuyFood> createState() => _BuyFoodState();
 }
 
 class _BuyFoodState extends State<BuyFood> {
-  var buyFood = 1;
   void _incFood() {
     setState(() {
       if (widget.command == null) {
@@ -34,6 +33,12 @@ class _BuyFoodState extends State<BuyFood> {
       widget.dish
           .incrementQuantity(); // Incrémente la quantité d'aliments sélectionnés lors de l'appui sur le bouton d'ajout
     });
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CartScreen(user: widget.user),
+      ),
+    );
   }
 
   void _decFood() {
@@ -51,9 +56,15 @@ class _BuyFoodState extends State<BuyFood> {
       deleteDishFromCommand(widget.command!.idCommand, widget.dish.id);
       if (widget.dish.quantity > 1) {
         // Vérifie que la quantité d'aliments sélectionnés est supérieure à 1 avant de décrémenter
-        widget.dish
-            .decrementQuantity(); // Décrémente la quantité d'aliments sélectionnés lors de l'appui sur le bouton de réduction
+        widget.dish.decrementQuantity();
+        // Décrémente la quantité d'aliments sélectionnés lors de l'appui sur le bouton de réduction
       }
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CartScreen(user: widget.user),
+        ),
+      );
     });
   }
 
