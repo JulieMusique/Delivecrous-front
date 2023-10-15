@@ -1,6 +1,3 @@
-
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
 import 'package:flutter_ui_food_delivery_app/utils/routes.dart';
@@ -35,16 +32,14 @@ class OrderError extends StatelessWidget {
               height: 300,
               width: 300,
             ),
-            SizedBox(
-                height: 20), // Espacement entre l'animation et le message
+            SizedBox(height: 20), // Espacement entre l'animation et le message
 
             // Message
             Text(
-                "SOMETHING WENT WRONG",
+              "SOMETHING WENT WRONG",
               style: TextStyle(fontSize: 24),
             ),
-            SizedBox(
-                height: 20), // Espacement entre le message et le bouton
+            SizedBox(height: 20), // Espacement entre le message et le bouton
 
             AppButton(
                 bgColor: vermilion,
@@ -54,7 +49,7 @@ class OrderError extends StatelessWidget {
                 onTap: () {
                   Navigator.pushNamed(context, Routes.home);
                 },
-                text:"TRY AGAIN",
+                text: "TRY AGAIN",
                 textColor: Colors.white)
           ],
         ),

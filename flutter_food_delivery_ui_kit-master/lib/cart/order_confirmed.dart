@@ -1,11 +1,15 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter_ui_food_delivery_app/cart/TrackOrder/TrackScreen.dart';
+import 'package:flutter_ui_food_delivery_app/model/User.dart';
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
 import 'package:flutter_ui_food_delivery_app/utils/routes.dart';
 import 'package:flutter_ui_food_delivery_app/widgets/custom_button.dart';
 import 'package:lottie/lottie.dart';
 
 class OrderConfirmed extends StatelessWidget {
+  final User user;
+  OrderConfirmed({required this.user});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,16 +37,14 @@ class OrderConfirmed extends StatelessWidget {
               height: 300,
               width: 300,
             ),
-            SizedBox(
-                height: 20), // Espacement entre l'animation et le message
+            SizedBox(height: 20), // Espacement entre l'animation et le message
 
             // Message
             Text(
               "ORDER CONFIRMED",
               style: TextStyle(fontSize: 24),
             ),
-            SizedBox(
-                height: 20), // Espacement entre le message et le bouton
+            SizedBox(height: 20), // Espacement entre le message et le bouton
 
             AppButton(
                 bgColor: vermilion,
@@ -50,7 +52,13 @@ class OrderConfirmed extends StatelessWidget {
                 fontSize: 17,
                 fontWeight: FontWeight.w600,
                 onTap: () {
-                  Navigator.pushNamed(context, Routes.home);
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            TrackingScreen(user: user) /*OrderError(),*/
+                        ),
+                  );
                 },
                 text: "TRACK MY ORDER",
                 textColor: Colors.white)

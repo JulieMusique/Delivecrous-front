@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_ui_food_delivery_app/model/list_food.dart';
 import 'package:http/http.dart' as http;
+
 /*
 Future<List<Food>> fetchFavoriteDishes(int userId) async {
   final response = await http
@@ -18,7 +19,8 @@ Future<List<Food>> fetchFavoriteDishes(int userId) async {
 }
 */
 Future<List<Food>> fetchFavoriteDishes(int userId) async {
-  final response = await http.get(Uri.parse('http://localhost:8080/DelivCROUS/favoris/$userId'));
+  final response = await http
+      .get(Uri.parse('http://localhost:8080/DelivCROUS/favoris/$userId'));
 
   if (response.statusCode == 200) {
     List<Food> dishes = [];
@@ -33,35 +35,39 @@ Future<List<Food>> fetchFavoriteDishes(int userId) async {
         ingredientList.add(Ingredient.fromJson(ingredientJson));
       }
       dishes.add(Food(
-        id: obj[i]['idDish'],
-        title: obj[i]['title'],
-        description: obj[i]['description'],
-        categories: obj[i]['categories'],
-        price: obj[i]['price'],
-        imagePath: obj[i]['imagePath'],
-        ingredients: ingredientList,
-        allergens: obj[i]['allergenList']));
+          id: obj[i]['idDish'],
+          title: obj[i]['title'],
+          description: obj[i]['description'],
+          categories: obj[i]['categories'],
+          price: obj[i]['price'],
+          imagePath: obj[i]['imagePath'],
+          ingredients: ingredientList,
+          allergens: obj[i]['allergenList']));
     }
     // Affiche les données converties en objets Food
-    if (kDebugMode) {
-    }
+    if (kDebugMode) {}
     return dishes;
   } else {
     return throw Exception('Failed to load dishes');
   }
 }
 
-      /*
-    // Si la réponse est OK, parsez la réponse JSON pour obtenir la liste des plats favoris
-    final List<dynamic> jsonList = json.decode(response.body);
-    // Vous devez itérer sur la liste JSON et convertir chaque élément en un objet Food
-    final List<Food> favoriteDishes = jsonList.map((json) => Food.fromJson(json)).toList();
-    return favoriteDishes;
+Future<bool> fetchFavoriteExist(int userId, int dishId) async {
+  final response = await http.get(Uri.parse(
+      'http://localhost:8080/DelivCROUS/favoris/check/$userId/$dishId'));
+
+  if (response.statusCode == 200) {
+    final bool isFavorite = jsonDecode(response.body);
+
+    if (kDebugMode) {
+      // Affiche les données récupérées (utile pour le débogage)
+    }
+
+    return isFavorite;
   } else {
-    // Gérez les erreurs en fonction du code de statut de la réponse
-    throw Exception('Erreur lors de la récupération des plats favoris');
+    throw Exception('Failed to check if the dish is a favorite');
   }
-}*/
+}
 
 Future<void> addFavoriteDish(int userId, int dishId) async {
   final response = await http.post(

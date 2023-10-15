@@ -1,9 +1,9 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_ui_food_delivery_app/cart/order_confirmed.dart';
-//import 'package:flutter_ui_food_delivery_app/cart/order_error.dart';
+import 'package:flutter_ui_food_delivery_app/cart/payment_screen.dart';
 import 'package:flutter_ui_food_delivery_app/home/FoodDetail.dart';
+import 'package:flutter_ui_food_delivery_app/model/User.dart';
 import 'package:flutter_ui_food_delivery_app/model/list_food.dart';
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
 import 'package:flutter_ui_food_delivery_app/utils/style.dart';
@@ -12,6 +12,8 @@ import 'bloc/cartlistBloc.dart';
 import 'bloc/listTileColorBloc.dart';
 
 class CartScreen extends StatelessWidget {
+  final User user;
+  CartScreen({required this.user});
   @override
   Widget build(BuildContext context) {
     final CartListBloc bloc = BlocProvider.getBloc<CartListBloc>();
@@ -25,7 +27,7 @@ class CartScreen extends StatelessWidget {
             body: SafeArea(
               child: CartBody(foodItems),
             ),
-            bottomNavigationBar: BottomBar(foodItems),
+            bottomNavigationBar: BottomBar(foodItems, user),
           );
         } else {
           return Container(
@@ -39,18 +41,12 @@ class CartScreen extends StatelessWidget {
 
 Container totalAmount(List<Food> foodItems) {
   return Container(
-    margin: EdgeInsets.only(right: 10),
-    padding: EdgeInsets.all(25),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text(
-          "Total:",
-          style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),
-        ),
-        Text(
           "\$${returnTotalAmount(foodItems)}",
-          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 28),
+          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
         ),
       ],
     ),
@@ -68,8 +64,8 @@ String returnTotalAmount(List<Food> foodItems) {
 
 class BottomBar extends StatefulWidget {
   final List<Food> foodItems;
-
-  BottomBar(this.foodItems);
+  final User user;
+  BottomBar(this.foodItems, this.user);
 
   @override
   _BottomBarState createState() => _BottomBarState();
@@ -80,8 +76,9 @@ class _BottomBarState extends State<BottomBar> {
 
   @override
   void initState() {
-    super.initState();
     updateTotalAmount();
+
+    super.initState();
   }
 
   // Met à jour le montant total en fonction des éléments dans le panier
@@ -97,6 +94,7 @@ class _BottomBarState extends State<BottomBar> {
     });
   }
 
+  bool isShowSignInDialog = false;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -122,22 +120,41 @@ class _BottomBarState extends State<BottomBar> {
             ),
           ),
           // Bouton "Continue" pour finaliser la commande
-          AppButton(
+          GestureDetector(
+              child: AppButton(
             bgColor: vermilion,
             borderRadius: 30,
             fontSize: 17,
             fontWeight: FontWeight.w600,
             onTap: () {
-              Navigator.pushReplacement(
+              /*Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => OrderConfirmed() /*OrderError(),*/
+                    builder: (context) => OrderConfirmed(user:widget.user) /*OrderError(),*/
                     ),
+              );*/
+              Future.delayed(
+                const Duration(milliseconds: 800),
+                () {
+                  setState(() {
+                    isShowSignInDialog = true;
+                  });
+                  showCustomDialog(
+                    context,
+                    onValue: (_) {
+                      setState(() {
+                        isShowSignInDialog = false;
+                      });
+                    },
+                    user: widget.user,
+                    food: widget.foodItems,
+                  );
+                },
               );
             },
-            text: "Continue",
+            text: "Confirm order",
             textColor: Colors.white,
-          ),
+          )),
         ],
       ),
     );
@@ -148,12 +165,14 @@ class _BottomBarState extends State<BottomBar> {
 class CartBody extends StatelessWidget {
   final List<Food> foodItems; // Liste des articles alimentaires dans le panier
 
-  CartBody(this.foodItems); // Constructeur prenant la liste des articles alimentaires comme paramètre
+  CartBody(
+      this.foodItems); // Constructeur prenant la liste des articles alimentaires comme paramètre
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(20, 30, 15, 0), // Espacement intérieur du conteneur
+      padding: EdgeInsets.fromLTRB(
+          20, 30, 15, 0), // Espacement intérieur du conteneur
       child: Column(
         children: <Widget>[
           CustomAppBar(), // Affiche la barre d'applications personnalisée
@@ -198,23 +217,29 @@ class CartBody extends StatelessWidget {
 class CartListItem extends StatelessWidget {
   final Food foodItem; // L'article alimentaire associé à cet élément
 
-  CartListItem({required this.foodItem}); // Constructeur avec l'article alimentaire comme paramètre
+  CartListItem(
+      {required this.foodItem}); // Constructeur avec l'article alimentaire comme paramètre
 
   @override
   Widget build(BuildContext context) {
     return LongPressDraggable(
-      hapticFeedbackOnStart: false, // Désactive la rétroaction haptique au début du glissement
-      maxSimultaneousDrags: 1, // Permet un seul glissement simultané de cet élément
+      hapticFeedbackOnStart:
+          false, // Désactive la rétroaction haptique au début du glissement
+      maxSimultaneousDrags:
+          1, // Permet un seul glissement simultané de cet élément
       data: foodItem, // L'article alimentaire associé aux données de glissement
-      feedback: DraggableChildFeedback(foodItem: foodItem), // Rétroaction visuelle pendant le glissement
-      child: DraggableChild(foodItem: foodItem), // Contenu de l'élément glissable
+      feedback: DraggableChildFeedback(
+          foodItem: foodItem), // Rétroaction visuelle pendant le glissement
+      child:
+          DraggableChild(foodItem: foodItem), // Contenu de l'élément glissable
       childWhenDragging: foodItem.quantity > 1
-          ? DraggableChild(foodItem: foodItem) // Affiche l'élément glissable lors du glissement si la quantité est supérieure à 1
+          ? DraggableChild(
+              foodItem:
+                  foodItem) // Affiche l'élément glissable lors du glissement si la quantité est supérieure à 1
           : Container(), // Affiche un conteneur vide lors du glissement si la quantité est égale à 1
     );
   }
 }
-
 
 // Classe représentant un élément pouvant être glissé (draggable) pour un article du panier
 class DraggableChild extends StatelessWidget {
@@ -223,17 +248,20 @@ class DraggableChild extends StatelessWidget {
     required this.foodItem, // L'article alimentaire associé à cet élément glissable
   }) : super(key: key);
 
-  final Food foodItem; // L'article alimentaire affiché dans cet élément glissable
+  final Food
+      foodItem; // L'article alimentaire affiché dans cet élément glissable
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 25), // Marge inférieure pour espacement entre les éléments glissables
-      child: ItemContent(foodItem: foodItem), // Affiche le contenu de l'article alimentaire
+      margin: EdgeInsets.only(
+          bottom:
+              25), // Marge inférieure pour espacement entre les éléments glissables
+      child: ItemContent(
+          foodItem: foodItem), // Affiche le contenu de l'article alimentaire
     );
   }
 }
-
 
 // Classe représentant un élément de feedback lors du glissement (drag) d'un article du panier
 class DraggableChildFeedback extends StatelessWidget {
@@ -242,7 +270,8 @@ class DraggableChildFeedback extends StatelessWidget {
     required this.foodItem, // L'article alimentaire associé à cet élément de feedback
   }) : super(key: key);
 
-  final Food foodItem; // L'article alimentaire affiché dans cet élément de feedback
+  final Food
+      foodItem; // L'article alimentaire affiché dans cet élément de feedback
 
   @override
   Widget build(BuildContext context) {
@@ -252,14 +281,21 @@ class DraggableChildFeedback extends StatelessWidget {
       opacity: 0.7, // Opacité de l'élément de feedback (70% de transparence)
       child: Material(
         child: StreamBuilder(
-          stream: colorBloc.colorStream, // Flux de couleurs pour le changement de couleur
+          stream: colorBloc
+              .colorStream, // Flux de couleurs pour le changement de couleur
           builder: (context, snapshot) {
             return Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15), // Coins arrondis du conteneur
-                color: snapshot.data != null ? snapshot.data : Colors.white, // Couleur du conteneur basée sur le flux de couleurs
+                borderRadius:
+                    BorderRadius.circular(15), // Coins arrondis du conteneur
+                color: snapshot.data != null
+                    ? snapshot.data
+                    : Colors
+                        .white, // Couleur du conteneur basée sur le flux de couleurs
               ),
-              child: ItemContent(foodItem: foodItem), // Affiche l'élément de contenu de l'article alimentaire
+              child: ItemContent(
+                  foodItem:
+                      foodItem), // Affiche l'élément de contenu de l'article alimentaire
             );
           },
         ),
@@ -268,7 +304,6 @@ class DraggableChildFeedback extends StatelessWidget {
   }
 }
 
-
 // Classe représentant un élément de contenu d'un article dans le panier
 class ItemContent extends StatelessWidget {
   const ItemContent({
@@ -276,7 +311,8 @@ class ItemContent extends StatelessWidget {
     required this.foodItem,
   }) : super(key: key);
 
-  final Food foodItem; // Représente l'article alimentaire affiché dans cet élément
+  final Food
+      foodItem; // Représente l'article alimentaire affiché dans cet élément
 
   @override
   Widget build(BuildContext context) {
@@ -293,10 +329,12 @@ class ItemContent extends StatelessWidget {
           Row(
             children: [
               Hero(
-                tag: foodItem.imagePath, // Tag pour l'animation Hero (transition d'image)
+                tag: foodItem
+                    .imagePath, // Tag pour l'animation Hero (transition d'image)
                 child: Image.asset(
                   foodItem.imagePath, // Chemin de l'image de l'article
-                  width: MediaQuery.of(context).size.width / 6, // Largeur de l'image
+                  width: MediaQuery.of(context).size.width /
+                      6, // Largeur de l'image
                 ),
               ),
               SizedBox(width: 16), // Espace entre l'image et le nom/prix
@@ -321,16 +359,17 @@ class ItemContent extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               color: vermilion, // Couleur de fond du conteneur
-              borderRadius: BorderRadius.circular(15), // Coins arrondis du conteneur
+              borderRadius:
+                  BorderRadius.circular(15), // Coins arrondis du conteneur
             ),
-            child: BuyFood(), // Affiche un widget "BuyFood" (peut être un bouton d'achat)
+            child:
+                BuyFood(), // Affiche un widget "BuyFood" (peut être un bouton d'achat)
           ),
         ],
       ),
     );
   }
 }
-
 
 // Classe pour afficher une barre d'app bar personnalisée
 class CustomAppBar extends StatelessWidget {
@@ -345,7 +384,8 @@ class CustomAppBar extends StatelessWidget {
         ),
         onTap: () {
           // Lorsqu'on appuie sur l'icône de retour
-          Navigator.pop(context); // Navigue en arrière pour revenir à l'écran précédent
+          Navigator.pop(
+              context); // Navigue en arrière pour revenir à l'écran précédent
         },
       ),
       title: Text(
@@ -358,4 +398,3 @@ class CustomAppBar extends StatelessWidget {
     );
   }
 }
-

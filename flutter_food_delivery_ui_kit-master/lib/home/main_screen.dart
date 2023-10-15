@@ -16,7 +16,8 @@ import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
 // ignore: must_be_immutable
 class MainScreen extends StatefulWidget {
   final VoidCallback onTap;
-   User user;
+  User user;
+
   MainScreen({required this.onTap, required this.user});
 
   @override
@@ -40,7 +41,6 @@ class _MainScreenState extends State<MainScreen> {
       // Naviguez vers la première page (par exemple, HomePage)
       Navigator.pop(context);
     } else if (index == 1) {
-      
       // Naviguez vers la deuxième page (par exemple, FavoritesPage)
       // Ici, la navigation n'est pas implémentée
     } else if (index == 2) {
@@ -58,107 +58,115 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     // Initialisation de la liste de widgets avec des instances de HomeScreen
-    widgets.add(HomeScreen(user:widget.user));
-  
+    widgets.add(HomeScreen(user: widget.user));
+
     super.initState();
   }
 
-@override
-Widget build(BuildContext context) {
-  // Crée un Scaffold, qui fournit une structure de base pour la page
-  return Scaffold(
-    backgroundColor: concrete, // Définit la couleur de fond de la page
-    bottomNavigationBar: Theme(
-      data: Theme.of(context).copyWith(canvasColor: concrete),
-      child: BottomNavigationBar(
-        elevation: 0,
-        backgroundColor: concrete, // Définit la couleur de fond de la barre de navigation inférieure
-        items: <BottomNavigationBarItem>[
-          // Liste des éléments de la barre de navigation inférieure
-          BottomNavigationBarItem(
-            label: "Accueil", // Étiquette de l'élément
-            icon: Icon(Icons.home), // Icône de l'élément
-          ),
-          BottomNavigationBarItem(
-            label: "Favoris",
-            icon: IconButton(
-              onPressed: () {
-                // Navigue vers l'écran des Favoris lorsqu'on appuie sur l'icône
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => FavoriteScreen(user:widget.user)),
-                );
-              },
-              icon: Icon(Icons.favorite_border),
+  @override
+  Widget build(BuildContext context) {
+    // Crée un Scaffold, qui fournit une structure de base pour la page
+    return Scaffold(
+      backgroundColor: concrete, // Définit la couleur de fond de la page
+      bottomNavigationBar: Theme(
+        data: Theme.of(context).copyWith(canvasColor: concrete),
+        child: BottomNavigationBar(
+          elevation: 0,
+          backgroundColor:
+              concrete, // Définit la couleur de fond de la barre de navigation inférieure
+          items: <BottomNavigationBarItem>[
+            // Liste des éléments de la barre de navigation inférieure
+            BottomNavigationBarItem(
+              label: "Accueil", // Étiquette de l'élément
+              icon: Icon(Icons.home), // Icône de l'élément
             ),
-          ),
-          BottomNavigationBarItem(
-            label: "Historique",
-            icon: Icon(Icons.history),
-          ),
-          BottomNavigationBarItem(
-            label: "Profile",
-            icon: Icon(Icons.account_circle),
-          ),
-        ],
-        unselectedItemColor: manatee, // Couleur des éléments non sélectionnés
-        currentIndex: _selectedIndex, // Index de l'élément actuellement sélectionné
-        selectedItemColor: Color.fromARGB(255, 89, 154, 23), // Couleur de l'élément sélectionné
-        onTap: _onItemTapped, // Fonction appelée lorsqu'un élément est tapé
-      ),
-    ),
-    body: Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(0)),
-      child: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 24),
-          child: Column(
-            children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.05,
+            BottomNavigationBarItem(
+              label: "Favoris",
+              icon: IconButton(
+                onPressed: () {
+                  // Navigue vers l'écran des Favoris lorsqu'on appuie sur l'icône
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            FavoriteScreen(user: widget.user)),
+                  );
+                },
+                icon: Icon(Icons.favorite_border),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                    onTap: widget.onTap,
-                    child: CircleAvatar(
-                      radius: 25,
-                      backgroundImage: AssetImage('man.jpeg'), // Image du profil
-                    ),
-                  ),
-                  // Utilisation de BlocProvider pour gérer les BLoCs
-                  BlocProvider(
-                    blocs: [
-                      Bloc((i) => CartListBloc()), // Bloc pour le panier
-                      Bloc((i) => ColorBloc()),// Bloc pour la couleur
-                      Bloc((i) => FavoriteListBloc()), // Bloc pour la favoris
-                    ],
-                    dependencies: [],
-                    child: IconButton(
-                      onPressed: () {
-                        // Navigue vers l'écran du panier lorsque l'icône est tapée
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => CartScreen()),
-                        );
-                      },
-                      icon: SvgPicture.asset(
-                        "assets/icons/cart.svg", // Icône du panier
-                        width: 24,
-                        height: 24,
+            ),
+            BottomNavigationBarItem(
+              label: "Historique",
+              icon: Icon(Icons.history),
+            ),
+            BottomNavigationBarItem(
+              label: "Profile",
+              icon: Icon(Icons.account_circle),
+            ),
+          ],
+          unselectedItemColor: manatee, // Couleur des éléments non sélectionnés
+          currentIndex:
+              _selectedIndex, // Index de l'élément actuellement sélectionné
+          selectedItemColor: Color.fromARGB(
+              255, 89, 154, 23), // Couleur de l'élément sélectionné
+          onTap: _onItemTapped, // Fonction appelée lorsqu'un élément est tapé
+        ),
+      ),
+      body: Container(
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(0)),
+        child: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.05,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: widget.onTap,
+                      child: CircleAvatar(
+                        radius: 25,
+                        backgroundImage:
+                            AssetImage('man.jpeg'), // Image du profil
                       ),
                     ),
-                  ),
-                ],
-              ),
-              // Affiche la page sélectionnée à partir de la liste de widgets
-              widgets.elementAt(_selectedIndex),
-            ],
+                    // Utilisation de BlocProvider pour gérer les BLoCs
+                    BlocProvider(
+                      blocs: [
+                        Bloc((i) => CartListBloc()), // Bloc pour le panier
+                        Bloc((i) => ColorBloc()), // Bloc pour la couleur
+                        Bloc((i) => FavoriteListBloc()), // Bloc pour la favoris
+                      ],
+                      dependencies: [],
+                      child: IconButton(
+                        onPressed: () {
+                          // Navigue vers l'écran du panier lorsque l'icône est tapée
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    CartScreen(user: widget.user)),
+                          );
+                        },
+                        icon: SvgPicture.asset(
+                          "assets/icons/cart.svg", // Icône du panier
+                          width: 24,
+                          height: 24,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                // Affiche la page sélectionnée à partir de la liste de widgets
+                widgets.elementAt(_selectedIndex),
+              ],
+            ),
           ),
         ),
       ),
-    ),
-  );
-}}
+    );
+  }
+}
