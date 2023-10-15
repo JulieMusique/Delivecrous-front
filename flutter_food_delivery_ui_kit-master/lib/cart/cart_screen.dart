@@ -5,6 +5,10 @@ import 'package:flutter_ui_food_delivery_app/cart/buy_food.dart';
 import 'package:flutter_ui_food_delivery_app/cart/order_confirmed.dart';
 //import 'package:flutter_ui_food_delivery_app/cart/order_error.dart';
 import 'package:flutter_ui_food_delivery_app/home/FoodDetail.dart';
+import 'package:flutter_ui_food_delivery_app/http/HttpServiceCart.dart';
+import 'package:flutter_ui_food_delivery_app/model/Command.dart';
+import 'package:flutter_ui_food_delivery_app/model/Compose.dart';
+import 'package:flutter_ui_food_delivery_app/model/User.dart';
 import 'package:flutter_ui_food_delivery_app/model/list_food.dart';
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
 import 'package:flutter_ui_food_delivery_app/utils/style.dart';
@@ -12,21 +16,70 @@ import 'package:flutter_ui_food_delivery_app/widgets/custom_button.dart';
 import 'bloc/cartlistBloc.dart';
 import 'bloc/listTileColorBloc.dart';
 
-class CartScreen extends StatelessWidget {
+class CartScreen extends StatefulWidget {
+  final User user;
+  CartScreen({Key? key, required this.user}) : super(key: key);
+
+  @override
+  _CartScreenState createState() => _CartScreenState();
+}
+
+class _CartScreenState extends State<CartScreen> {
+  List<Food> dishes = [];
+  late Command command;
+  @override
+  void initState() {
+    super.initState();
+    command = Command(
+      idUser: widget.user.id, // Provide default values for Command.
+      deliveryAdress: "", // You may need to set these appropriately.
+      orderStatus: "",
+      totalAmount: 0,
+      compose: [],
+    );
+    fetchCurrentCommand(widget.user.id ?? 0).then((list) {
+      setState(() {
+        print('lsit $list');
+        if (list != null) {
+          command = list;
+          for (Compose compose in command.compose) {
+            dishes.add(compose.dish);
+          }
+        } else {
+          command = Command(
+            idUser: widget.user.id, // Provide default values for Command.
+            deliveryAdress: "", // You may need to set these appropriately.
+            orderStatus: "",
+            totalAmount: 0,
+            compose: [],
+          );
+        }
+      });
+    }).catchError((error) {
+      setState(() {
+        command = Command(
+          idUser: widget.user.id, // Provide default values for Command.
+          deliveryAdress: "", // You may need to set these appropriately.
+          orderStatus: "",
+          totalAmount: 0,
+          compose: [],
+        );
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final CartListBloc bloc = BlocProvider.getBloc<CartListBloc>();
-    List<Food> foodItems;
     return StreamBuilder(
       stream: bloc.listStream,
       builder: (context, snapshot) {
         if (snapshot.data != null) {
-          foodItems = snapshot.data!;
           return Scaffold(
             body: SafeArea(
-              child: CartBody(foodItems),
+              child: CartBody(dishes, command),
             ),
-            bottomNavigationBar: BottomBar(foodItems),
+            bottomNavigationBar: BottomBar(dishes),
           );
         } else {
           return Container(
@@ -38,7 +91,7 @@ class CartScreen extends StatelessWidget {
   }
 }
 
-Container totalAmount(List<Food> foodItems) {
+Container totalAmount(Command command) {
   return Container(
     margin: EdgeInsets.only(right: 10),
     padding: EdgeInsets.all(25),
@@ -50,7 +103,7 @@ Container totalAmount(List<Food> foodItems) {
           style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),
         ),
         Text(
-          "\$${returnTotalAmount(foodItems)}",
+          "\$${command.totalAmount}",
           style: TextStyle(fontWeight: FontWeight.w700, fontSize: 28),
         ),
       ],
@@ -58,14 +111,14 @@ Container totalAmount(List<Food> foodItems) {
   );
 }
 
-String returnTotalAmount(List<Food> foodItems) {
+/*String returnTotalAmount(List<Food> foodItems) {
   double totalAmount = 0.0;
 
   for (int i = 0; i < foodItems.length; i++) {
     totalAmount = totalAmount + foodItems[i].price * foodItems[i].quantity;
   }
   return totalAmount.toStringAsFixed(2);
-}
+}*/
 
 class BottomBar extends StatefulWidget {
   final List<Food> foodItems;
@@ -88,12 +141,13 @@ class _BottomBarState extends State<BottomBar> {
   // Met à jour le montant total en fonction des éléments dans le panier
   void updateTotalAmount() {
     double total = 0.0;
-
+    print(widget.foodItems);
     for (int i = 0; i < widget.foodItems.length; i++) {
       total = total + widget.foodItems[i].price * widget.foodItems[i].quantity;
     }
 
     setState(() {
+      print(total);
       totalAmount = total;
     });
   }
@@ -148,9 +202,9 @@ class _BottomBarState extends State<BottomBar> {
 // Classe représentant le corps de l'écran du panier
 class CartBody extends StatelessWidget {
   final List<Food> foodItems; // Liste des articles alimentaires dans le panier
-
-  CartBody(
-      this.foodItems); // Constructeur prenant la liste des articles alimentaires comme paramètre
+  final Command command;
+  CartBody(this.foodItems,
+      this.command); // Constructeur prenant la liste des articles alimentaires comme paramètre
 
   @override
   Widget build(BuildContext context) {
@@ -191,7 +245,10 @@ class CartBody extends StatelessWidget {
     return ListView.builder(
       itemCount: foodItems.length,
       itemBuilder: (context, index) {
-        return CartListItem(foodItem: foodItems[index]);
+        return CartListItem(
+          foodItem: foodItems[index],
+          command: command,
+        );
       },
     );
   }
@@ -200,9 +257,10 @@ class CartBody extends StatelessWidget {
 // Classe représentant un élément de la liste du panier
 class CartListItem extends StatelessWidget {
   final Food foodItem; // L'article alimentaire associé à cet élément
-
+  final Command command;
   CartListItem(
-      {required this.foodItem}); // Constructeur avec l'article alimentaire comme paramètre
+      {required this.foodItem,
+      required this.command}); // Constructeur avec l'article alimentaire comme paramètre
 
   @override
   Widget build(BuildContext context) {
@@ -213,13 +271,16 @@ class CartListItem extends StatelessWidget {
           1, // Permet un seul glissement simultané de cet élément
       data: foodItem, // L'article alimentaire associé aux données de glissement
       feedback: DraggableChildFeedback(
-          foodItem: foodItem), // Rétroaction visuelle pendant le glissement
-      child:
-          DraggableChild(foodItem: foodItem), // Contenu de l'élément glissable
+          foodItem: foodItem,
+          command: command), // Rétroaction visuelle pendant le glissement
+      child: DraggableChild(
+          foodItem: foodItem,
+          command: command), // Contenu de l'élément glissable
       childWhenDragging: foodItem.quantity > 1
           ? DraggableChild(
-              foodItem:
-                  foodItem) // Affiche l'élément glissable lors du glissement si la quantité est supérieure à 1
+              foodItem: foodItem,
+              command:
+                  command) // Affiche l'élément glissable lors du glissement si la quantité est supérieure à 1
           : Container(), // Affiche un conteneur vide lors du glissement si la quantité est égale à 1
     );
   }
@@ -230,11 +291,12 @@ class DraggableChild extends StatelessWidget {
   const DraggableChild({
     Key? key,
     required this.foodItem, // L'article alimentaire associé à cet élément glissable
+    required this.command,
   }) : super(key: key);
 
   final Food
       foodItem; // L'article alimentaire affiché dans cet élément glissable
-
+  final Command command;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -242,7 +304,8 @@ class DraggableChild extends StatelessWidget {
           bottom:
               25), // Marge inférieure pour espacement entre les éléments glissables
       child: ItemContent(
-          foodItem: foodItem), // Affiche le contenu de l'article alimentaire
+          foodItem: foodItem,
+          command: command), // Affiche le contenu de l'article alimentaire
     );
   }
 }
@@ -252,10 +315,12 @@ class DraggableChildFeedback extends StatelessWidget {
   const DraggableChildFeedback({
     Key? key,
     required this.foodItem, // L'article alimentaire associé à cet élément de feedback
+    required this.command,
   }) : super(key: key);
 
   final Food
       foodItem; // L'article alimentaire affiché dans cet élément de feedback
+  final Command command;
 
   @override
   Widget build(BuildContext context) {
@@ -278,8 +343,9 @@ class DraggableChildFeedback extends StatelessWidget {
                         .white, // Couleur du conteneur basée sur le flux de couleurs
               ),
               child: ItemContent(
-                  foodItem:
-                      foodItem), // Affiche l'élément de contenu de l'article alimentaire
+                  foodItem: foodItem,
+                  command:
+                      command), // Affiche l'élément de contenu de l'article alimentaire
             );
           },
         ),
@@ -293,11 +359,12 @@ class ItemContent extends StatelessWidget {
   const ItemContent({
     Key? key,
     required this.foodItem,
+    required this.command,
   }) : super(key: key);
 
   final Food
       foodItem; // Représente l'article alimentaire affiché dans cet élément
-
+  final Command command;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -346,8 +413,10 @@ class ItemContent extends StatelessWidget {
               borderRadius:
                   BorderRadius.circular(15), // Coins arrondis du conteneur
             ),
-            child:
-                BuyFood(), // Affiche un widget "BuyFood" (peut être un bouton d'achat)
+            child: BuyFood(
+              command: command,
+              dish: foodItem,
+            ), // Affiche un widget "BuyFood" (peut être un bouton d'achat)
           ),
         ],
       ),

@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ui_food_delivery_app/Favorite/Favoritebar.dart';
 import 'package:flutter_ui_food_delivery_app/cart/buy_food.dart';
+import 'package:flutter_ui_food_delivery_app/cart/cart_screen.dart';
+import 'package:flutter_ui_food_delivery_app/model/Command.dart';
 import 'package:flutter_ui_food_delivery_app/model/list_food.dart';
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
 
@@ -16,11 +18,14 @@ const TextStyle styleDetail = TextStyle(
 class DetailFood extends StatelessWidget {
   final Food food;
   final User user;
-  const DetailFood({Key? key, required this.food, required this.user})
+  final Command? command;
+  const DetailFood(
+      {Key? key, required this.food, required this.user, this.command})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    print('hello');
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -112,7 +117,9 @@ class DetailFood extends StatelessWidget {
                               // Couleur de l'arrière-plan du bouton
                               borderRadius: BorderRadius.circular(15),
                             ),
-                            child: BuyFood(), // Widget pour acheter l'aliment
+                            child: BuyFood(
+                                command: command,
+                                dish: food), // Widget pour acheter l'aliment
                           ),
                         ],
                       ),
@@ -127,7 +134,12 @@ class DetailFood extends StatelessWidget {
       bottomNavigationBar: Container(
         padding: EdgeInsets.all(20),
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CartScreen(user: user)),
+            );
+          },
           child: Text(
             "Buy Now",
             style: TextStyle(

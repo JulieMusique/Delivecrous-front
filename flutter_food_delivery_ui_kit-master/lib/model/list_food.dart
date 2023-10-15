@@ -45,6 +45,10 @@ class Food {
     return resultName;
   }
 
+  void setQuantity(int quantity) {
+    this.quantity = quantity;
+  }
+
   factory Food.fromJson(Map<String, dynamic> json) {
     return Food(
       id: json['idDish'],

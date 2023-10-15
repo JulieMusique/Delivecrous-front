@@ -1,8 +1,16 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ui_food_delivery_app/http/HttpServiceCart.dart';
+import 'package:flutter_ui_food_delivery_app/model/Command.dart';
+import 'package:flutter_ui_food_delivery_app/model/list_food.dart';
 
 class BuyFood extends StatefulWidget {
-  const BuyFood({Key? key}) : super(key: key);
+  const BuyFood({
+    Key? key,
+    this.command,
+    required this.dish,
+  }) : super(key: key);
+  final Command? command;
+  final Food dish;
 
   @override
   State<BuyFood> createState() => _BuyFoodState();
@@ -10,21 +18,41 @@ class BuyFood extends StatefulWidget {
 
 class _BuyFoodState extends State<BuyFood> {
   var buyFood = 1;
-
   void _incFood() {
     setState(() {
-      buyFood++; // Incrémente la quantité d'aliments sélectionnés lors de l'appui sur le bouton d'ajout
+      if (widget.command == null) {
+        final snackBar = SnackBar(
+          content: Text('Le plat n a pas pu etre ajoute à la commande'),
+          // Message de la barre d'informations
+          duration: Duration(
+              milliseconds:
+                  550), // Durée d'affichage de la barre d'informations
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+      addDishToCommand(widget.command!.idCommand, widget.dish.id);
+      widget.dish
+          .incrementQuantity(); // Incrémente la quantité d'aliments sélectionnés lors de l'appui sur le bouton d'ajout
     });
   }
 
   void _decFood() {
     setState(() {
-      if (buyFood > 1) {
+      if (widget.command == null) {
+        final snackBar = SnackBar(
+          content: Text('Le plat n a pas pu etre retire de la commande'),
+          // Message de la barre d'informations
+          duration: Duration(
+              milliseconds:
+                  550), // Durée d'affichage de la barre d'informations
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+      deleteDishFromCommand(widget.command!.idCommand, widget.dish.id);
+      if (widget.dish.quantity > 1) {
         // Vérifie que la quantité d'aliments sélectionnés est supérieure à 1 avant de décrémenter
-        buyFood--; // Décrémente la quantité d'aliments sélectionnés lors de l'appui sur le bouton de réduction
-      } else {
-        // Si la quantité est déjà à 1, reste à 1 pour éviter des valeurs négatives
-        buyFood = 1;
+        widget.dish
+            .decrementQuantity(); // Décrémente la quantité d'aliments sélectionnés lors de l'appui sur le bouton de réduction
       }
     });
   }
@@ -41,7 +69,7 @@ class _BuyFoodState extends State<BuyFood> {
           ),
         ),
         Text(
-          "$buyFood", // Nombre d'aliments sélectionnés
+          "${widget.dish.quantity}", // Nombre d'aliments sélectionnés
           style: TextStyle(color: Colors.white), // Couleur du texte
         ),
         IconButton(

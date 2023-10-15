@@ -6,21 +6,25 @@ import 'package:flutter_ui_food_delivery_app/model/list_food.dart';
 class Compose {
   final QuantityDishKey id;
   final Food dish;
-  final Command command;
-  final int quantity;
+  //final Command command;
+  int quantity;
 
   Compose({
     required this.id,
     required this.dish,
-    required this.command,
+    //required this.command,
     required this.quantity,
   });
+
+  get food {
+    return food;
+  }
 
   factory Compose.fromJson(Map<String, dynamic> json) {
     return Compose(
       id: QuantityDishKey.fromJson(json['id']),
       dish: Food.fromJson(json['dish']),
-      command: Command.fromJson(json['command']),
+      //command: Command.fromJson(json['command']),
       quantity: json['quantity'],
     );
   }
@@ -29,7 +33,7 @@ class Compose {
     return {
       'id': id.toJson(),
       //'dish': dish.toJson(),
-      'command': command.toJson(),
+      //'command': command.toJson(),
       'quantity': quantity,
     };
   }

@@ -1,5 +1,4 @@
 import 'package:bloc_pattern/bloc_pattern.dart'; // Importation de BLoC Pattern pour la gestion des BLoCs
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_ui_food_delivery_app/Favorite/Favoritebar.dart';
@@ -7,7 +6,6 @@ import 'package:flutter_ui_food_delivery_app/cart/bloc/cartlistBloc.dart'; // Im
 import 'package:flutter_ui_food_delivery_app/home/FoodDetail.dart'; // Importation de la page de détail des aliments
 import 'package:flutter_ui_food_delivery_app/http/HttpServiceCart.dart';
 import 'package:flutter_ui_food_delivery_app/model/Command.dart';
-import 'package:flutter_ui_food_delivery_app/model/Compose.dart';
 import 'package:flutter_ui_food_delivery_app/model/list_food.dart'; // Importation des données sur les aliments
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart'; // Importation des couleurs personnalisées
 import 'package:flutter_ui_food_delivery_app/utils/routes.dart'; // Importation des itinéraires de navigation
@@ -37,11 +35,19 @@ class _HomeScreenState extends State<HomeScreen>
       true; // Indicateur pour l'ordre croissant/décroissant de la liste d'aliments
 
   late Future<List<Food>> foodList;
+  Command? command;
 
   @override
   void initState() {
     super.initState();
     foodList = fetchDishes(urlLocal);
+    fetchCurrentCommand(widget.user.id ?? 0).then((list) {
+      setState(() {
+        command = list;
+      });
+    }).catchError((error) {
+      command = null;
+    });
   }
 
   @override
@@ -227,8 +233,8 @@ class _HomeScreenState extends State<HomeScreen>
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) =>
-                    DetailFood(user: widget.user, food: food)))
+                builder: (context) => DetailFood(
+                    user: widget.user, food: food, command: command)))
       },
       child: Container(
         margin: EdgeInsets.only(right: 15, left: 10, top: 25),
@@ -300,28 +306,34 @@ class _HomeScreenState extends State<HomeScreen>
                         ),
                       ),
                       child: GestureDetector(
-                        onTap: () {
-                          addToCart(
-                              food); // Appel de la fonction pour ajouter l'aliment au panier
-                          /*final compose =
-                              Compose(dish: food, quantity: food.quantity);*/
-                          /*final command = Command(
-                              idUser: widget.user.id,
-                              deliveryAdress: widget.user.address,
-                              orderStatus: 'En cours',
-                              totalAmount: 0,
-                              compose: compose);
-                          createCommand(command);*/
-                          addDishToCommand(51152, food.id);
-                          final snackBar = SnackBar(
-                            content: Text('${food.title} added to Cart'),
-                            // Message de la barre d'informations
-                            duration: Duration(
-                                milliseconds:
-                                    550), // Durée d'affichage de la barre d'informations
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              snackBar); // Affichage de la barre d'informations
+                        onTap: () async {
+                          if (command != null) {
+                            addToCart(
+                                food); // Appel de la fonction pour ajouter l'aliment au panier
+                            addDishToCommand(command!.idCommand, food.id);
+                            final snackBar = SnackBar(
+                              content: Text('${food.title} added to Cart'),
+                              // Message de la barre d'informations
+                              duration: Duration(
+                                  milliseconds:
+                                      550), // Durée d'affichage de la barre d'informations
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                snackBar); // Affichage de la barre d'informations
+                          } else {
+                            final snackBar = SnackBar(
+                                content: Text(
+                                  'Le plat n a pas pu etre ajoute à la commande',
+                                ),
+                                // Message de la barre d'informations
+                                duration: Duration(
+                                  seconds:
+                                      5, // Durée d'affichage de la barre d'informations
+                                ),
+                                backgroundColor: Colors.red);
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+                          }
                         },
                         child: Icon(Icons.add,
                             size: 20), // Icône "Ajouter" dans le conteneur
