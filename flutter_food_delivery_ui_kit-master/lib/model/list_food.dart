@@ -94,23 +94,23 @@ class Ingredient {
 List<FoodCategory> foodCategoryList = [
   // Liste des catégories d'aliments
   FoodCategory(
-    imagePath: 'assets/pizza.svg',
+    imagePath: 'vege.svg',
     name: 'Vegetarian',
   ),
   FoodCategory(
-    imagePath: 'assets/pizza.svg',
+    imagePath: 'meat.svg',
     name: 'Meat',
   ),
   FoodCategory(
-    imagePath: 'assets/pizza.svg',
+    imagePath: 'assets/sea-food.svg',
     name: 'Fish',
   ),
   FoodCategory(
-    imagePath: 'assets/pizza.svg',
+    imagePath: 'healthy.svg',
     name: 'Healthy',
   ),
   FoodCategory(
-    imagePath: 'assets/pizza.svg',
+    imagePath: 'fat.svg',
     name: 'Fat',
   ),
 ];

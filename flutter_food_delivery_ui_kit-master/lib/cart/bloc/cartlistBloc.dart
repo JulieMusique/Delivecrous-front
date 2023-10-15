@@ -24,7 +24,6 @@ class CartListBloc extends BlocBase {
 
   removeFromList(Food Food) {
     listSink.add(provider.removeFromList(Food));
-    
   }
 
 //dispose will be called automatically by closing its streams

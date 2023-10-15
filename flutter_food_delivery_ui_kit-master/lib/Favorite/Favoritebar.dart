@@ -1,4 +1,3 @@
-
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -24,13 +23,18 @@ class _FavBState extends State<FavB> {
 
   @override
   void initState() {
-    super.initState();
-
     if (widget.user.id != null) {
       userId = widget.user.id!;
     } else {
       userId = 0;
     }
+    fetchFavoriteExist(userId, widget.food.id).then((isFavorite) {
+      setState(() {
+        isFav = isFavorite;
+        print(isFav);
+      });
+    });
+    super.initState();
   }
 
   // Fonction pour ajouter un aliment au panier
@@ -45,31 +49,29 @@ class _FavBState extends State<FavB> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          isFav = !isFav; // Inversion de l'état des favoris
-        });
-
-        // Ajouter ou supprimer l'élément de la liste de favoris ici
+    return IconButton(
+      icon: Icon(
+        isFav ? Icons.favorite : Icons.favorite_border,
+        color: isFav ? Colors.red : Colors.black,
+      ),
+      iconSize: 24.0,
+      onPressed: () {
         if (isFav) {
-          addToCart(widget.food);
-          print(widget.food.id);
-          addFavoriteDish(userId, widget.food.id);
-          // Ajouter à la liste de favoris
-          showSnackBar('${widget.food.title} ajouté aux favoris');
-        } else {
-          removeFromList(widget.food);
           // Supprimer de la liste de favoris
+          removeFromList(widget.food);
           deleteFavoriteDish(userId, widget.food.id);
           showSnackBar('${widget.food.title} retiré des favoris');
+        } else {
+          //Ajouter à la liste de favoris (si c'est ce que vous voulez faire)
+          addToCart(widget.food);
+          addFavoriteDish(userId, widget.food.id);
+          showSnackBar('${widget.food.title} ajouté aux favoris');
         }
+        // Inverser l'état de isFav
+        setState(() {
+          isFav = !isFav;
+        });
       },
-      child: Icon(
-        isFav ? Icons.favorite : Icons.favorite_border,
-        color: Colors.red,
-        size: 24.0,
-      ),
     );
   }
 

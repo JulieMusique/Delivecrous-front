@@ -2,6 +2,8 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ui_food_delivery_app/Favorite/bloc/FavoriteslistBloc.dart';
+import 'package:flutter_ui_food_delivery_app/home/home_screen.dart';
+import 'package:flutter_ui_food_delivery_app/home/main_screen.dart';
 import 'package:flutter_ui_food_delivery_app/http/HttpServiceFav.dart';
 import 'package:flutter_ui_food_delivery_app/model/list_food.dart';
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
@@ -11,6 +13,7 @@ import 'bloc/listTileColorBloc.dart';
 
 class FavoriteScreen extends StatefulWidget {
   final User user;
+
   FavoriteScreen({required this.user});
 
   @override
@@ -19,8 +22,8 @@ class FavoriteScreen extends StatefulWidget {
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
   late FavoriteListBloc bloc;
-  late Future<List<Food>> foodItems;
-
+  late Future<List<Food>> foodItems =
+      Future.value(fetchFavoriteDishes(widget.user.id ?? 0));
   @override
   void initState() {
     super.initState();
@@ -28,7 +31,6 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
     fetchFavoriteDishes(widget.user.id ?? 0).then((list) {
       if (list.isNotEmpty) {
         setState(() {
-          print(list);
           foodItems = Future.value(list);
         });
       } else {
@@ -56,8 +58,33 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return Scaffold(
+            appBar: AppBar(
+              leading: GestureDetector(
+                child: Icon(
+                  CupertinoIcons.back,
+                  size: 20,
+                ),
+                onTap: () {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MainScreen(
+                                onTap: () {},
+                                user: widget.user,
+                              )));
+                },
+              ),
+              title: Text(
+                "My Favorite Dishes",
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 15,
+                ),
+              ),
+            ),
             body: SafeArea(
-              child: FavBody(foodItems), // Utilisez snapshot.data au lieu de foodItems
+              child: FavBody(foodItems,
+                  widget.user), // Utilisez snapshot.data au lieu de foodItems
             ),
           );
         } else if (snapshot.hasError) {
@@ -78,10 +105,11 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
     );
   }
 }
+
 class FavBody extends StatelessWidget {
   final Future<List<Food>> foodItems;
-
-  FavBody(this.foodItems);
+  final User user;
+  FavBody(this.foodItems, this.user);
 
   @override
   Widget build(BuildContext context) {
@@ -93,17 +121,18 @@ class FavBody extends StatelessWidget {
           return CircularProgressIndicator();
         } else if (snapshot.hasError) {
           // En cas d'erreur, affichez un message d'erreur.
-          return Text("An error occurred: ${snapshot.error}");
+          return noItemContainer();
+          // Text("An error occurred: ${snapshot.error}");
         } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
           // Si des données sont disponibles et non vides, affichez la liste d'articles.
           return Container(
             padding: EdgeInsets.fromLTRB(20, 30, 15, 0),
             child: Column(
               children: <Widget>[
-                CustomAppBar(),
                 Expanded(
                   flex: 1,
-                  child: foodItemList(snapshot.data!), // Utilisez snapshot.data au lieu de foodItems
+                  child: foodItemList(snapshot
+                      .data!), // Utilisez snapshot.data au lieu de foodItems
                 )
               ],
             ),
@@ -115,28 +144,7 @@ class FavBody extends StatelessWidget {
       },
     );
   }
-/*
-class FavBody extends StatelessWidget {
-  final Future<List<Food>> foodItems;
 
-  FavBody(this.foodItems);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.fromLTRB(20, 30, 15, 0),
-      child: Column(
-        children: <Widget>[
-          CustomAppBar(),
-          Expanded(
-            flex: 1,
-            child: foodItems.length > 0 ? foodItemList() : noItemContainer(),
-          )
-        ],
-      ),
-    );
-  }
-*/
   Container noItemContainer() {
     return Container(
       child: Center(
@@ -150,225 +158,164 @@ class FavBody extends StatelessWidget {
       ),
     );
   }
-ListView foodItemList(List<Food> foodItems) {
-  return ListView.builder(
-    itemCount: foodItems.length,
-    itemBuilder: (context, index) {
-      return FavoriteListItem(foodItem: foodItems[index]);
-    },
-  );
-}
- /* ListView foodItemList() {
+
+  ListView foodItemList(List<Food> foodItems) {
     return ListView.builder(
       itemCount: foodItems.length,
       itemBuilder: (context, index) {
-        return FavoriteListItem(foodItem: foodItems[index]);
+        return FavoriteListItem(user: user, foodItem: foodItems, index: index);
       },
     );
-  }*/
+  }
+}
+//foodItems[index]
+
+class FavoriteListItem extends StatefulWidget {
+  final List<Food> foodItem;
+  final User user;
+  final int index;
+  FavoriteListItem(
+      {required this.foodItem, required this.user, required this.index});
+
+  @override
+  _FavoriteListItemState createState() => _FavoriteListItemState();
 }
 
-class FavoriteListItem extends StatelessWidget {
-  final Food foodItem;
-
-  FavoriteListItem({required this.foodItem});
+class _FavoriteListItemState extends State<FavoriteListItem> {
+  final FavoriteListBloc bloc = BlocProvider.getBloc<FavoriteListBloc>();
 
   @override
   Widget build(BuildContext context) {
-    return Dismissible(
-        key: Key(foodItem.id.toString()),
+    return DraggableChild(
+        user: widget.user, foodItem: widget.foodItem, index: widget.index);
+  }
+}
+
+class DraggableChild extends StatelessWidget {
+  const DraggableChild(
+      {Key? key,
+      required this.foodItem,
+      required this.user,
+      required this.index})
+      : super(key: key);
+
+  final List<Food> foodItem;
+  final User user;
+  final int index;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 25),
+      child: ItemContent(user: user, foodItem: foodItem, index: index),
+    );
+  }
+}
+
+class ItemContent extends StatefulWidget {
+  const ItemContent({
+    Key? key,
+    required this.foodItem,
+    required this.user,
+    required this.index,
+  }) : super(key: key);
+
+  final List<Food> foodItem;
+  final User user;
+  final int index;
+  @override
+  ItemContentState createState() => ItemContentState();
+}
+
+class ItemContentState extends State<ItemContent> {
+  @override
+  Widget build(BuildContext context) {
+    final FavoriteListBloc bloc = BlocProvider.getBloc<FavoriteListBloc>();
+    print("Index: ${widget.index}, Length: ${widget.foodItem.length}");
+
+    if (widget.index >= 0 && widget.index < widget.foodItem.length) {
+      // Check if the index is within the bounds of the foodItem list.
+      return Dismissible(
+        key: UniqueKey(),
         direction: DismissDirection.endToStart,
+        onDismissed: (direction) {
+          // Code à exécuter lorsque l'élément est supprimé
+          deleteFavoriteDish(widget.user.id!, widget.foodItem[widget.index].id);
+          bloc.removeFromList(widget.foodItem[widget.index]);
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                  '${widget.foodItem[widget.index].title} removed from favorites'),
+              duration: Duration(seconds: 1),
+            ),
+          );
+          // Reconstruire la page FavoriteScreen après la suppression
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FavoriteScreen(user: widget.user),
+            ),
+          );
+        },
         background: Container(
-          alignment: Alignment.centerRight,
-          color:
-              vermilion, // Couleur d'arrière-plan lorsque vous faites glisser l'élément
+          color: Colors.red,
           child: Icon(
             Icons.delete,
             color: Colors.white,
             size: 30,
           ),
+          alignment: Alignment.centerRight,
+          padding: EdgeInsets.only(right: 20),
         ),
-        onDismissed: (direction) {
-          final FavoriteListBloc bloc =
-              BlocProvider.getBloc<FavoriteListBloc>();
-
-          // Supprimez l'élément de la liste des favoris en utilisant le bloc
-          // Fonction pour supprimer un aliment du panier
-          bloc.removeFromList(foodItem);
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('${foodItem.title} retiré des favoris'),
-              duration: Duration(seconds: 1),
-            ),
-          );
-          // Vous devrez également mettre à jour l'interface utilisateur ici
-
-          // Affiche un message en bas de l'écran
-          // pour refléter les changements dans la liste des favoris
-        },
-        child: LongPressDraggable(
-          hapticFeedbackOnStart: false,
-          maxSimultaneousDrags: 1,
-          data: foodItem,
-          feedback: DraggableChildFeedback(foodItem: foodItem),
-          child: DraggableChild(foodItem: foodItem),
-          childWhenDragging: foodItem.quantity > 1
-              ? DraggableChild(foodItem: foodItem)
-              : Container(),
-        ));
-  }
-}
-
-class DraggableChild extends StatelessWidget {
-  const DraggableChild({
-    Key? key,
-    required this.foodItem,
-  }) : super(key: key);
-
-  final Food foodItem;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 25),
-      child: ItemContent(
-        foodItem: foodItem,
-      ),
-    );
-  }
-}
-
-class DraggableChildFeedback extends StatelessWidget {
-  const DraggableChildFeedback({
-    Key? key,
-    required this.foodItem,
-  }) : super(key: key);
-
-  final Food foodItem;
-
-  @override
-  Widget build(BuildContext context) {
-    final ColorBloc colorBloc = BlocProvider.getBloc<ColorBloc>();
-
-    return Opacity(
-      opacity: 0.7,
-      child: Material(
-        child: StreamBuilder(
-          stream: colorBloc.colorStream,
-          builder: (context, snapshot) {
-            return Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                color: snapshot.data != null ? snapshot.data : Colors.white,
-              ),
-              child: ItemContent(foodItem: foodItem),
-            );
-          },
-        ),
-      ),
-    );
-  }
-}
-
-class ItemContent extends StatelessWidget {
-  const ItemContent({
-    Key? key,
-    required this.foodItem,
-  }) : super(key: key);
-
-  final Food foodItem;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      padding: EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [BoxShadow(blurRadius: 10, color: AppColor.lighterGray)],
-        color: AppColor.white,
-      ),
-      child: Row(
-        children: [
-          Row(
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          padding: EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [BoxShadow(blurRadius: 10, color: AppColor.lighterGray)],
+            color: AppColor.white,
+          ),
+          child: Row(
             children: [
-              Hero(
-                tag: foodItem.imagePath,
-                child: Image.asset(
-                  foodItem.imagePath,
-                  width: MediaQuery.of(context).size.width / 6,
-                ),
-              ),
-              SizedBox(width: 16), // Espace entre l'image et le nom/prix
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
                 children: [
-                  PrimaryText(
-                    text: foodItem.title,
-                    size: 18,
-                    fontWeight: FontWeight.w700,
-                  ),
-                  PrimaryText(
-                    text: '\$${foodItem.price}',
-                    size: 16,
-                    color: AppColor.lightGray,
+                  SizedBox(width: 16), // Espace entre l'image et le nom/prix
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      PrimaryText(
+                        text: widget.foodItem[widget.index].title,
+                        size: 18,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      PrimaryText(
+                        text: '\$${widget.foodItem[widget.index].price}',
+                        size: 16,
+                        color: AppColor.lightGray,
+                      ),
+                    ],
                   ),
                 ],
               ),
+              Spacer(),
             ],
           ),
-          Spacer(),
-        ],
-      ),
-    );
-  }
-}
+        ),
+      );
+    } else {
+      print("Index out of bounds: ${widget.index}");
 
-class CustomAppBar extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      leading: GestureDetector(
-        child: Icon(
-          CupertinoIcons.back,
-          size: 20,
+      return Container(
+        child: Center(
+          child: Text(
+            "Please refresh the page",
+            style: TextStyle(
+                fontWeight: FontWeight.w600,
+                color: Colors.grey[500],
+                fontSize: 20),
+          ),
         ),
-        onTap: () {
-          Navigator.pop(context);
-        },
-      ),
-      title: Text(
-        "My Favorite Dishes",
-        style: TextStyle(
-          fontWeight: FontWeight.w700,
-          fontSize: 15,
-        ),
-      ),
-    );
+      );
+    }
   }
 }
-/*
-class FavoriteScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final FavoriteListBloc bloc = BlocProvider.getBloc<FavoriteListBloc>();
-    List<Food> foodItems;
-    return StreamBuilder(
-      stream: bloc.listStream,
-      builder: (context, snapshot) {
-        if (snapshot.data != null) {
-          foodItems = snapshot.data!;
-          return Scaffold(
-            body: SafeArea(
-              child: FavBody(foodItems),
-            ),
-          );
-        } else {
-          return Container(
-            child: Text("Something returned null"),
-          );
-        }
-      },
-    );
-  }
-}*/
