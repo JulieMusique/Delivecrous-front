@@ -1,4 +1,3 @@
-
 class FoodCategory {
   String imagePath; // Chemin de l'image représentant la catégorie d'aliments
   String name; // Nom de la catégorie d'aliments
@@ -44,6 +43,10 @@ class Food {
     for (int i = 0; i < ingredients.length; i++)
       resultName.add(ingredients[i].name);
     return resultName;
+  }
+
+  void setQuantity(int quantity) {
+    this.quantity = quantity;
   }
 
   factory Food.fromJson(Map<String, dynamic> json) {

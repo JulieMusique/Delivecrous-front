@@ -5,6 +5,7 @@ import 'package:flutter_ui_food_delivery_app/cart/order_confirmed.dart';
 import 'package:flutter_ui_food_delivery_app/model/User.dart';
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
 
+import '../model/Command.dart';
 import '../model/list_food.dart';
 import '../utils/metrics.dart';
 import '../widgets/custom_button.dart';
@@ -14,13 +15,13 @@ bool isShowSignInDialog = false;
 class SignInModel extends StatelessWidget {
   final String screen;
   final User user;
-  final List<Food> food;
-  
+  final Command command;
+
   const SignInModel(
       {super.key,
       required this.screen,
       required this.user,
-      required this.food});
+      required this.command});
 
   @override
   Widget build(BuildContext context) {
@@ -167,8 +168,8 @@ class SignInModel extends StatelessWidget {
                         ),
                         Column(
                           children: <Widget>[
-                            totalAmount(food),
-                            totalAmount(food),
+                            totalAmount(command),
+                            totalAmount(command),
                           ],
                         ),
                       ],

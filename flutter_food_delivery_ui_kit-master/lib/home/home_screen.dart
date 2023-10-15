@@ -1,10 +1,11 @@
 import 'package:bloc_pattern/bloc_pattern.dart'; // Importation de BLoC Pattern pour la gestion des BLoCs
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_ui_food_delivery_app/Favorite/Favoritebar.dart';
 import 'package:flutter_ui_food_delivery_app/cart/bloc/cartlistBloc.dart'; // Importation du BLoC pour la gestion du panier
 import 'package:flutter_ui_food_delivery_app/home/FoodDetail.dart'; // Importation de la page de détail des aliments
+import 'package:flutter_ui_food_delivery_app/http/HttpServiceCart.dart';
+import 'package:flutter_ui_food_delivery_app/model/Command.dart';
 import 'package:flutter_ui_food_delivery_app/model/list_food.dart'; // Importation des données sur les aliments
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart'; // Importation des couleurs personnalisées
 import 'package:flutter_ui_food_delivery_app/utils/routes.dart'; // Importation des itinéraires de navigation
@@ -35,13 +36,18 @@ class _HomeScreenState extends State<HomeScreen>
       true; // Indicateur pour l'ordre croissant/décroissant de la liste d'aliments
 
   late Future<List<Food>> foodList;
+  Command? command;
 
   @override
   void initState() {
-  
     foodList = fetchDishes(urlLocal);
-        super.initState();
-
+    fetchCurrentCommand(widget.user.id ?? 0).then((list) {
+      setState(() {
+        command = list;
+      });
+    }).catchError((error) {
+      command = null;
+    });
   }
 
   @override
@@ -177,22 +183,24 @@ class _HomeScreenState extends State<HomeScreen>
                   itemCount: dishes.length,
                   itemBuilder: (context, index) {
                     final dish = dishes[index];
-                   
+
                     return InkWell(
                         child: FoodCard(dish.imagePath, dish.title,
                             dish.description, dish.price, dish));
                   },
                 );
               } else {
-                return Container(child: Center(
-        child: Text(
-          "No More Items Left In Favoris",
-          style: TextStyle(
-              fontWeight: FontWeight.w600,
-              color: Colors.grey[500],
-              fontSize: 20),
-        ),
-      ),);
+                return Container(
+                  child: Center(
+                    child: Text(
+                      "No More Items Left In Favoris",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: Colors.grey[500],
+                          fontSize: 20),
+                    ),
+                  ),
+                );
               }
             }
           },
@@ -219,8 +227,11 @@ class _HomeScreenState extends State<HomeScreen>
     return SingleChildScrollView(
         child: GestureDetector(
       onTap: () => {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => DetailFood(user: widget.user,food: food)))
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => DetailFood(
+                    user: widget.user, food: food, command: command)))
       },
       child: Container(
         margin: EdgeInsets.only(right: 15, left: 10, top: 25),
@@ -292,18 +303,34 @@ class _HomeScreenState extends State<HomeScreen>
                         ),
                       ),
                       child: GestureDetector(
-                        onTap: () {
-                          addToCart(
-                              food); // Appel de la fonction pour ajouter l'aliment au panier
-                          final snackBar = SnackBar(
-                            content: Text('${food.title} added to Cart'),
-                            // Message de la barre d'informations
-                            duration: Duration(
-                                milliseconds:
-                                    550), // Durée d'affichage de la barre d'informations
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              snackBar); // Affichage de la barre d'informations
+                        onTap: () async {
+                          if (command != null) {
+                            addToCart(
+                                food); // Appel de la fonction pour ajouter l'aliment au panier
+                            addDishToCommand(command!.idCommand, food.id);
+                            final snackBar = SnackBar(
+                              content: Text('${food.title} added to Cart'),
+                              // Message de la barre d'informations
+                              duration: Duration(
+                                  milliseconds:
+                                      550), // Durée d'affichage de la barre d'informations
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                snackBar); // Affichage de la barre d'informations
+                          } else {
+                            final snackBar = SnackBar(
+                                content: Text(
+                                  'Le plat n a pas pu etre ajoute à la commande',
+                                ),
+                                // Message de la barre d'informations
+                                duration: Duration(
+                                  seconds:
+                                      5, // Durée d'affichage de la barre d'informations
+                                ),
+                                backgroundColor: Colors.red);
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+                          }
                         },
                         child: Icon(Icons.add,
                             size: 20), // Icône "Ajouter" dans le conteneur
@@ -313,7 +340,9 @@ class _HomeScreenState extends State<HomeScreen>
                     SizedBox(
                       child: Row(
                         children: [
-                          FavB(user: widget.user,food: food), // Widget pour gérer les favoris
+                          FavB(
+                              user: widget.user,
+                              food: food), // Widget pour gérer les favoris
                           SizedBox(width: 5), // Espace horizontal
                         ],
                       ),

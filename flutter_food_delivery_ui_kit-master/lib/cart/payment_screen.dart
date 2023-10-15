@@ -7,8 +7,8 @@ import 'package:flutter_ui_food_delivery_app/widgets/custom_button.dart';
 import '../model/list_food.dart';
 import 'sign_in_form.dart';
 
-void showCustomDialog(BuildContext context, {required ValueChanged onValue, required User user, required List<Food>  food}) 
- {
+void showCustomDialog(BuildContext context,
+    {required ValueChanged onValue, required User user, required command}) {
   showGeneralDialog(
     context: context,
     barrierLabel: "Barrier",
@@ -55,31 +55,28 @@ void showCustomDialog(BuildContext context, {required ValueChanged onValue, requ
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 14),
                     ),
-                    SignInModel(screen:"Bill",user:user,food:food),
-                                       SignInModel(
-                      screen: "Address", user: user,food:food
+                    SignInModel(screen: "Bill", user: user, command: command),
+                    SignInModel(
+                        screen: "Address", user: user, command: command),
+                    AppButton(
+                      bgColor: vermilion,
+                      borderRadius: 30,
+                      fontSize: 17,
+                      fontWeight: FontWeight.w600,
+                      onTap: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  OrderConfirmed(user: user) /*OrderError(),*/
+                              ),
+                        );
+                      },
+                      text: "Confirm order",
+                      textColor: Colors.white,
                     ),
-                     AppButton(
-              bgColor: vermilion,
-              borderRadius: 30,
-              fontSize: 17,
-              fontWeight: FontWeight.w600,
-              onTap: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          OrderConfirmed(user: user) /*OrderError(),*/
-                      ),
-                );
-              },
-              text: "Confirm order",
-              textColor: Colors.white,
-            ),
                   ],
                 ),
-    
-
                 const Positioned(
                   left: 0,
                   right: 0,

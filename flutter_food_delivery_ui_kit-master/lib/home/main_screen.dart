@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_ui_food_delivery_app/Favorite/FavoriteOrder.dart';
 import 'package:flutter_ui_food_delivery_app/Favorite/bloc/FavoriteslistBloc.dart';
+import 'package:flutter_ui_food_delivery_app/History/HistoryOrder.dart';
+import 'package:flutter_ui_food_delivery_app/History/bloc/HistorylistBloc.dart';
 import 'package:flutter_ui_food_delivery_app/cart/bloc/cartlistBloc.dart';
 import 'package:flutter_ui_food_delivery_app/cart/bloc/listTileColorBloc.dart';
 import 'package:flutter_ui_food_delivery_app/cart/cart_screen.dart';
@@ -97,7 +99,17 @@ class _MainScreenState extends State<MainScreen> {
             ),
             BottomNavigationBarItem(
               label: "Historique",
-              icon: Icon(Icons.history),
+              icon: IconButton(
+                onPressed: () {
+                  // Navigue vers l'écran des Favoris lorsqu'on appuie sur l'icône
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => HistoryScreen(user: widget.user)),
+                  );
+                },
+                icon: Icon(Icons.history),
+              ),
             ),
             BottomNavigationBarItem(
               label: "Profile",
@@ -139,6 +151,8 @@ class _MainScreenState extends State<MainScreen> {
                         Bloc((i) => CartListBloc()), // Bloc pour le panier
                         Bloc((i) => ColorBloc()), // Bloc pour la couleur
                         Bloc((i) => FavoriteListBloc()), // Bloc pour la favoris
+                        Bloc(
+                            (i) => HistoryListBloc()), // Bloc pour l'historique
                       ],
                       dependencies: [],
                       child: IconButton(
