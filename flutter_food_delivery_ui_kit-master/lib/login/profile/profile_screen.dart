@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ui_food_delivery_app/home/home_screen.dart';
+import 'package:flutter_ui_food_delivery_app/home/main_screen.dart';
 import 'package:flutter_ui_food_delivery_app/model/User.dart';
 import 'package:flutter_ui_food_delivery_app/widgets/custom_button.dart';
 import 'package:flutter_ui_food_delivery_app/widgets/custom_input.dart';
@@ -97,11 +98,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
           color: Colors.green, // Icône de retour
           onPressed: () {
             Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => HomeScreen(user: widget.user,),
-              ),
-            );
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MainScreen(
+                                onTap: () {},
+                                user: widget.user,
+                              )));
           }, // Retour à la page précédente
         ),
       ),
