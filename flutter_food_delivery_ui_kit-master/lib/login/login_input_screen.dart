@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_ui_food_delivery_app/home/landing_screen.dart';
+import 'package:flutter_ui_food_delivery_app/login/forgot_password_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
 import 'package:flutter_ui_food_delivery_app/widgets/custom_input.dart';
@@ -99,15 +100,24 @@ class _LoginInputScreenState extends State<LoginInputScreen> {
             Align(
               alignment: Alignment.centerLeft,
               child: Padding(
-                padding: EdgeInsets.only(bottom: 42),
-                child: AppText(
-                  color: vermilion,
-                  size: 17,
-                  weight: FontWeight.w600,
-                  text: "Forgot password?",
-                  textAlign: TextAlign.start,
-                ),
-              ),
+                  padding: EdgeInsets.only(bottom: 42),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ForgotPasswordScreen(),
+                        ),
+                      );
+                    },
+                    child: AppText(
+                      color: vermilion,
+                      size: 17,
+                      weight: FontWeight.w600,
+                      text: "Forgot password?",
+                      textAlign: TextAlign.start,
+                    ),
+                  )),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
