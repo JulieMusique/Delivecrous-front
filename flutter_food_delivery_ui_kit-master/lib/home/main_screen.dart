@@ -50,10 +50,6 @@ class _MainScreenState extends State<MainScreen> {
       // Ici, la navigation n'est pas implémentée
     } else if (index == 3) {
       // Naviguez vers la quatrième page (par exemple, ProfilePage)
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => ProfileScreen(user:widget.user)),
-      );
     }
   }
 
@@ -112,9 +108,19 @@ class _MainScreenState extends State<MainScreen> {
               ),
             ),
             BottomNavigationBarItem(
-              label: "Profile",
-              icon: Icon(Icons.account_circle),
-            ),
+                label: "Profile",
+                icon: IconButton(
+                  onPressed: () {
+                    // Navigue vers l'écran des Favoris lorsqu'on appuie sur l'icône
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              ProfileScreen(user: widget.user)),
+                    );
+                  },
+                  icon: Icon(Icons.account_circle),
+                )),
           ],
           unselectedItemColor: manatee, // Couleur des éléments non sélectionnés
           currentIndex:

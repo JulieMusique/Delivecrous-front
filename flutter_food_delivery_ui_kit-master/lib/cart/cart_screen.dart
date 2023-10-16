@@ -80,7 +80,7 @@ class _CartScreenState extends State<CartScreen> {
   }
 }
 
-Container totalAmount(Command command) {
+Container totalAmount(Command command, int i) {
   return Container(
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -90,7 +90,7 @@ Container totalAmount(Command command) {
           style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),
         ),
         Text(
-          "\$${command.totalAmount}",
+          "\$${command.totalAmount + i}",
           style: TextStyle(fontWeight: FontWeight.w700, fontSize: 28),
         ),
       ],
@@ -404,7 +404,7 @@ class ItemContent extends StatelessWidget {
                 child: Image.asset(
                   foodItem.imagePath, // Chemin de l'image de l'article
                   width: MediaQuery.of(context).size.width /
-                      6, // Largeur de l'image
+                      4, // Largeur de l'image
                 ),
               ),
               SizedBox(width: 16), // Espace entre l'image et le nom/prix

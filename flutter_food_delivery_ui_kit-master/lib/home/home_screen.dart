@@ -369,10 +369,10 @@ class _HomeScreenState extends State<HomeScreen>
               ),
 
               child: Ink.image(
-                image: NetworkImage(imagePath),
+                image: NetworkImage('/assets/$imagePath'),
                 fit: BoxFit.cover,
                 child: Image.network(
-                  imagePath,
+                  '/assets/$imagePath',
                   width: MediaQuery.of(context).size.width / 5,
                 ),
               ),
