@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_ui_food_delivery_app/login/login_screen.dart';
@@ -140,7 +141,8 @@ class _SignUpInputScreenState extends State<SignUpInputScreen> {
                   if (!isPasswordValid(password)) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('Le mot de passe n\'est pas valide.'),
+                        content: Text(
+                            'Le mot de passe n\'est pas valide. Le nombre de caractères doit être compris entre 8 et 12 avec une lettre maj minimum.'),
                         backgroundColor: Colors.red,
                       ),
                     );
@@ -166,8 +168,7 @@ class _SignUpInputScreenState extends State<SignUpInputScreen> {
                       phone: phoneController.text,
                       login: loginController.text,
                       password: passwordController.text,
-                      //photoUrl: "", // À compléter avec l'URL de la photo
-                      soldeCarteCrous: 0);
+                      soldeCarteCrous: Random().nextDouble() * 150 + 20);
                   final response = await http.post(
                     Uri.parse('http://localhost:8080/DelivCROUS/users'),
                     headers: <String, String>{

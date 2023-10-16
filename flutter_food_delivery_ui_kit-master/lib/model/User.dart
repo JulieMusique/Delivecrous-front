@@ -18,7 +18,7 @@ class User {
     this.address,
     this.login,
     required this.password,
-    required this.soldeCarteCrous,
+    required this.soldeCarteCrous
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -31,7 +31,7 @@ class User {
       address: json['adresse'],
       login: json['login'],
       password: json['password'],
-      soldeCarteCrous: json['solde_carte_crous'] ?? 0,
+      soldeCarteCrous: json['soldeCarteCrous'] ?? 0,
     );
   }
 
@@ -44,7 +44,7 @@ class User {
       'adresse': address,
       'login': login,
       'password': password,
-      'solde_carte_crous': soldeCarteCrous,
+      'soldeCarteCrous': soldeCarteCrous,
     };
   }
 }

@@ -52,7 +52,7 @@ class _MainScreenState extends State<MainScreen> {
       // Naviguez vers la quatrième page (par exemple, ProfilePage)
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => ProfileScreen()),
+        MaterialPageRoute(builder: (context) => ProfileScreen(user:widget.user)),
       );
     }
   }
