@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter_ui_food_delivery_app/Favorite/Favoritebar.dart';
 import 'package:flutter_ui_food_delivery_app/cart/bloc/cartlistBloc.dart'; // Importation du BLoC pour la gestion du panier
 import 'package:flutter_ui_food_delivery_app/home/FoodDetail.dart'; // Importation de la page de détail des aliments
+import 'package:flutter_ui_food_delivery_app/home/search_screen.dart';
 import 'package:flutter_ui_food_delivery_app/http/HttpServiceCart.dart';
 import 'package:flutter_ui_food_delivery_app/model/Command.dart';
 import 'package:flutter_ui_food_delivery_app/model/list_food.dart'; // Importation des données sur les aliments
@@ -106,8 +107,8 @@ class _HomeScreenState extends State<HomeScreen>
             controller: _controller,
             // Contrôleur de texte pour la boîte de recherche
             onTap: () {
-              Navigator.of(context).pushNamed(
-                  Routes.search); // Navigation vers la page de recherche
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SearchScreen(user: widget.user)));
             },
           ),
         ),
