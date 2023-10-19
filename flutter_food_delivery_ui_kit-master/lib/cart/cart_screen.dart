@@ -78,7 +78,7 @@ class _CartScreenState extends State<CartScreen> {
   }
 }
 
-Container totalAmount(Command command, int i) {
+Container totalAmount(Command command) {
   return Container(
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -88,7 +88,7 @@ Container totalAmount(Command command, int i) {
           style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),
         ),
         Text(
-          "\$${command.totalAmount ?? 0 + i}",
+          "\$${command.totalAmount}",
           style: TextStyle(fontWeight: FontWeight.w700, fontSize: 28),
         ),
       ],
