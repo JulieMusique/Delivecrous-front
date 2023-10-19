@@ -2,6 +2,7 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ui_food_delivery_app/History/bloc/HistorylistBloc.dart';
+import 'package:flutter_ui_food_delivery_app/home/main_screen.dart';
 import 'package:flutter_ui_food_delivery_app/http/HttpServiceCart.dart';
 import 'package:flutter_ui_food_delivery_app/model/Command.dart';
 import 'package:flutter_ui_food_delivery_app/model/list_food.dart';
@@ -27,8 +28,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
     super.initState();
     bloc = BlocProvider.getBloc<HistoryListBloc>();
     fetchHistoryCommands(widget.user.id ?? 0).then((list) {
-      print('list ${list}');
-      print('commandItems ${commandItems}');
       if (list.isNotEmpty) {
         setState(() {
           print(list);
@@ -59,10 +58,31 @@ class _HistoryScreenState extends State<HistoryScreen> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return Scaffold(
-            body: SafeArea(
-              child: HistoryBody(
-                  commandItems), // Utilisez snapshot.data au lieu de commandItems
+            appBar: AppBar(
+              leading: GestureDetector(
+                child: Icon(
+                  CupertinoIcons.back,
+                  size: 20,
+                ),
+                onTap: () {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MainScreen(
+                                onTap: () {},
+                                user: widget.user,
+                              )));
+                },
+              ),
+              title: Text(
+                "History",
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 15,
+                ),
+              ),
             ),
+            body: SafeArea(child: SafeArea(child: HistoryBody(commandItems))),
           );
         } else if (snapshot.hasError) {
           return Container(
@@ -98,7 +118,7 @@ class HistoryBody extends StatelessWidget {
           return CircularProgressIndicator();
         } else if (snapshot.hasError) {
           // En cas d'erreur, affichez un message d'erreur.
-          return Text("An error occurred: ${snapshot.error}");
+          return noItemContainer();
         } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
           // Si des données sont disponibles et non vides, affichez la liste d'articles.
           return Container(
@@ -126,7 +146,7 @@ class HistoryBody extends StatelessWidget {
     return Container(
       child: Center(
         child: Text(
-          "No More Items Left In Favoris",
+          "No More Items Left In History",
           style: TextStyle(
               fontWeight: FontWeight.w600,
               color: Colors.grey[500],

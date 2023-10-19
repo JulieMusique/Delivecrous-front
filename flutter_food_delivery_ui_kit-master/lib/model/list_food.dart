@@ -62,6 +62,20 @@ class Food {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    List<Map<String, dynamic>> jsonIngredient =
+        ingredients.map((item) => item.toJson()).toList();
+    return {
+      'title': title,
+      'description': description,
+      'price': price,
+      'imagePath': imagePath,
+      'categories': categories,
+      'allergenList': allergens,
+      'ingredientList': jsonIngredient,
+    };
+  }
+
   @override
   String toString() {
     return "Plat : $id\n$title\n$description\n$price\n$price\n$imagePath\n$categories\n$allergens\n$ingredients\n";
@@ -86,6 +100,10 @@ class Ingredient {
         name: json['name'],
         calorie: json['calorie'],
         allergenList: json['allergenList']);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'name': name, 'calorie': calorie, 'allergenList': allergenList};
   }
 
   @override

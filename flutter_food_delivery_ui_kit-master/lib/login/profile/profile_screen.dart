@@ -7,7 +7,6 @@ import 'package:flutter_ui_food_delivery_app/widgets/custom_input.dart';
 import 'package:http/http.dart' as http;
 import '../../utils/colors.dart';
 import '../../utils/helper.dart';
-import '../../utils/routes.dart';
 
 class ProfileScreen extends StatefulWidget {
   User user;
@@ -98,12 +97,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
           color: Colors.green, // Icône de retour
           onPressed: () {
             Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => MainScreen(
-                                onTap: () {},
-                                user: widget.user,
-                              )));
+                context,
+                MaterialPageRoute(
+                    builder: (context) => MainScreen(
+                          onTap: () {},
+                          user: widget.user,
+                        )));
           }, // Retour à la page précédente
         ),
       ),

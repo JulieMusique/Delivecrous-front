@@ -14,6 +14,8 @@ import 'package:flutter_ui_food_delivery_app/login/profile/profile_screen.dart';
 import 'package:flutter_ui_food_delivery_app/model/User.dart';
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
 
+import '../utils/routes.dart';
+
 // Définition du widget MainScreen
 // ignore: must_be_immutable
 class MainScreen extends StatefulWidget {
@@ -31,27 +33,6 @@ class _MainScreenState extends State<MainScreen> {
   List<Widget> widgets = [];
 
   int _selectedIndex = 0;
-
-  // Fonction de gestion du changement d'onglet dans la barre de navigation
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-
-    // Ajoutez ici la logique de navigation
-    if (index == 0) {
-      // Naviguez vers la première page (par exemple, HomePage)
-      Navigator.pop(context);
-    } else if (index == 1) {
-      // Naviguez vers la deuxième page (par exemple, FavoritesPage)
-      // Ici, la navigation n'est pas implémentée
-    } else if (index == 2) {
-      // Naviguez vers la troisième page (par exemple, HistoryPage)
-      // Ici, la navigation n'est pas implémentée
-    } else if (index == 3) {
-      // Naviguez vers la quatrième page (par exemple, ProfilePage)
-    }
-  }
 
   @override
   void initState() {
@@ -127,7 +108,6 @@ class _MainScreenState extends State<MainScreen> {
               _selectedIndex, // Index de l'élément actuellement sélectionné
           selectedItemColor: Color.fromARGB(
               255, 89, 154, 23), // Couleur de l'élément sélectionné
-          onTap: _onItemTapped, // Fonction appelée lorsqu'un élément est tapé
         ),
       ),
       body: Container(
@@ -144,12 +124,14 @@ class _MainScreenState extends State<MainScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
-                      onTap: widget.onTap,
                       child: CircleAvatar(
                         radius: 25,
                         backgroundImage:
                             AssetImage('man.jpeg'), // Image du profil
                       ),
+                      onTap: () {
+                        Navigator.of(context).pushNamed(Routes.profile);
+                      },
                     ),
                     // Utilisation de BlocProvider pour gérer les BLoCs
                     BlocProvider(

@@ -1,4 +1,5 @@
 import 'package:flutter_ui_food_delivery_app/model/Compose.dart';
+import 'package:flutter_ui_food_delivery_app/model/User.dart';
 import 'package:flutter_ui_food_delivery_app/model/list_food.dart';
 
 class Command {
@@ -6,8 +7,7 @@ class Command {
   int? idUser;
   String? orderDate;
   String? deliveryAdress; // Adresse de livraison
-  String orderStatus; // Statut de la commande)
-  int totalAmount;
+  double totalAmount;
   List<Compose> compose;
 
   Command({
@@ -15,7 +15,6 @@ class Command {
     required this.idUser,
     this.orderDate,
     required this.deliveryAdress,
-    required this.orderStatus,
     required this.totalAmount,
     required this.compose,
   });
@@ -29,14 +28,12 @@ class Command {
   }
 
   Map<String, dynamic> toJson() {
+    List<Map<String, dynamic>> jsonCompose =
+        compose.map((item) => item.toJson()).toList();
     return {
-      'idCommand': idCommand,
       'idUser': idUser,
-      'orderDate': orderDate,
       'deliveryAdress': deliveryAdress,
-      'orderStatus': orderStatus,
-      'totalAmount': totalAmount,
-      'composeItems': compose
+      'composeItems': jsonCompose
     };
   }
 
@@ -46,7 +43,6 @@ class Command {
         idUser: chaineJson['idUser'],
         orderDate: chaineJson['orderDate'],
         deliveryAdress: chaineJson['deliveryAdress'],
-        orderStatus: chaineJson['orderStatus'],
         totalAmount: chaineJson['totalAmount'],
         compose: chaineJson['composeItems']);
   }

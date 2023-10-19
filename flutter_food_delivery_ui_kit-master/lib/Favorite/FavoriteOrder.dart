@@ -75,7 +75,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                 },
               ),
               title: Text(
-                "My Favorite Dishes",
+                "My Favorite Dishes ",
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: 15,
@@ -237,6 +237,41 @@ class ItemContentState extends State<ItemContent> {
       return Dismissible(
         key: UniqueKey(),
         direction: DismissDirection.endToStart,
+        confirmDismiss: (direction) async {
+          // Affichage un dialogue de confirmation
+          return await showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("Confirmation"),
+                content: Text("Faites glisser vers le haut pour supprimer."),
+                actions: <Widget>[
+                  TextButton(
+                    child: Text("Annuler"),
+                    onPressed: () {
+                      Navigator.of(context).pop(false);
+                    },
+                  ),
+                  TextButton(
+                    child: Text("Supprimer"),
+                    onPressed: () {
+                      deleteFavoriteDish(
+                          widget.user.id!, widget.foodItem[widget.index].id);
+                      bloc.removeFromList(widget.foodItem[widget.index]);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              FavoriteScreen(user: widget.user),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        },
         onDismissed: (direction) {
           // Code à exécuter lorsque l'élément est supprimé
           deleteFavoriteDish(widget.user.id!, widget.foodItem[widget.index].id);
@@ -250,12 +285,14 @@ class ItemContentState extends State<ItemContent> {
             ),
           );
           // Reconstruire la page FavoriteScreen après la suppression
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => FavoriteScreen(user: widget.user),
-            ),
-          );
+          setState(() {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => FavoriteScreen(user: widget.user),
+              ),
+            );
+          });
         },
         background: Container(
           color: Colors.red,

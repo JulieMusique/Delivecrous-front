@@ -7,6 +7,7 @@ import 'package:flutter_ui_food_delivery_app/home/FoodDetail.dart'; // Importati
 import 'package:flutter_ui_food_delivery_app/home/search_screen.dart';
 import 'package:flutter_ui_food_delivery_app/http/HttpServiceCart.dart';
 import 'package:flutter_ui_food_delivery_app/model/Command.dart';
+import 'package:flutter_ui_food_delivery_app/model/Compose.dart';
 import 'package:flutter_ui_food_delivery_app/model/list_food.dart'; // Importation des données sur les aliments
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart'; // Importation des couleurs personnalisées
 import 'package:flutter_ui_food_delivery_app/utils/routes.dart'; // Importation des itinéraires de navigation
@@ -107,8 +108,10 @@ class _HomeScreenState extends State<HomeScreen>
             controller: _controller,
             // Contrôleur de texte pour la boîte de recherche
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => SearchScreen(user: widget.user)));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => SearchScreen(user: widget.user)));
             },
           ),
         ),
@@ -214,6 +217,7 @@ class _HomeScreenState extends State<HomeScreen>
   Widget FoodCard(
       String imagePath, String name, String weight, double price, Food food) {
     final CartListBloc bloc = BlocProvider.getBloc<CartListBloc>();
+    final imageUrl = _fetchImageUrl(imagePath);
 
     // Fonction pour ajouter un aliment au panier
     addToCart(Food foodItem) {
@@ -319,18 +323,45 @@ class _HomeScreenState extends State<HomeScreen>
                             ScaffoldMessenger.of(context).showSnackBar(
                                 snackBar); // Affichage de la barre d'informations
                           } else {
-                            final snackBar = SnackBar(
-                                content: Text(
-                                  'Le plat n a pas pu etre ajoute à la commande',
-                                ),
-                                // Message de la barre d'informations
-                                duration: Duration(
-                                  seconds:
-                                      5, // Durée d'affichage de la barre d'informations
-                                ),
-                                backgroundColor: Colors.red);
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
+                            Compose compose = new Compose(
+                                dish: food, quantity: food.quantity);
+                            List<Compose> composes = [];
+                            composes.add(compose);
+                            Command command = new Command(
+                                idUser: widget.user.id,
+                                deliveryAdress: widget.user.address,
+                                totalAmount: 0.0,
+                                compose: composes);
+                            bool isCommandCreated =
+                                await createCommand(command);
+
+                            if (isCommandCreated) {
+                              final snackBar = SnackBar(
+                                  content: Text(
+                                    'La commande a été créée avec succès.',
+                                  ),
+                                  // Message de la barre d'informations
+                                  duration: Duration(
+                                    seconds:
+                                        5, // Durée d'affichage de la barre d'informations
+                                  ),
+                                  backgroundColor: Colors.green);
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                            } else {
+                              final snackBar = SnackBar(
+                                  content: Text(
+                                    'La création de la commande a échoué.',
+                                  ),
+                                  // Message de la barre d'informations
+                                  duration: Duration(
+                                    seconds:
+                                        5, // Durée d'affichage de la barre d'informations
+                                  ),
+                                  backgroundColor: Colors.red);
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                            }
                           }
                         },
                         child: Icon(Icons.add,
@@ -370,10 +401,10 @@ class _HomeScreenState extends State<HomeScreen>
               ),
 
               child: Ink.image(
-                image: NetworkImage('/assets/$imagePath'),
+                image: NetworkImage(imageUrl),
                 fit: BoxFit.cover,
                 child: Image.network(
-                  '/assets/$imagePath',
+                  imageUrl,
                   width: MediaQuery.of(context).size.width / 5,
                 ),
               ),
@@ -438,5 +469,13 @@ class _HomeScreenState extends State<HomeScreen>
         ),
       ),
     );
+  }
+
+  String _fetchImageUrl(String imagePath) {
+    if (imagePath.contains("http") || imagePath.contains("https")) {
+      return imagePath;
+    } else {
+      return "/assets/$imagePath";
+    }
   }
 }
