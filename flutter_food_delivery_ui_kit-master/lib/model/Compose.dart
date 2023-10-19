@@ -4,13 +4,13 @@ import 'package:flutter_ui_food_delivery_app/model/Command.dart';
 import 'package:flutter_ui_food_delivery_app/model/list_food.dart';
 
 class Compose {
-  final QuantityDishKey id;
+  QuantityDishKey? id;
   final Food dish;
   //final Command command;
   int quantity;
 
   Compose({
-    required this.id,
+    this.id,
     required this.dish,
     //required this.command,
     required this.quantity,
@@ -31,8 +31,8 @@ class Compose {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id.toJson(),
-      //'dish': dish.toJson(),
+      //'id': id.toJson(),
+      'dish': dish.toJson(),
       //'command': command.toJson(),
       'quantity': quantity,
     };

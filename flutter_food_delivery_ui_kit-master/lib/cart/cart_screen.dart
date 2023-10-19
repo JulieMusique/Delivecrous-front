@@ -31,8 +31,7 @@ class _CartScreenState extends State<CartScreen> {
     command = Command(
       idUser: widget.user.id, // Provide default values for Command.
       deliveryAdress: "", // You may need to set these appropriately.
-      orderStatus: "",
-      totalAmount: 0,
+      totalAmount: 0.0,
       compose: [],
     );
     fetchCurrentCommand(widget.user.id ?? 0).then((list) {
@@ -49,8 +48,7 @@ class _CartScreenState extends State<CartScreen> {
         command = Command(
           idUser: widget.user.id, // Provide default values for Command.
           deliveryAdress: "", // You may need to set these appropriately.
-          orderStatus: "",
-          totalAmount: 0,
+          totalAmount: 0.0,
           compose: [],
         );
       });
@@ -80,7 +78,7 @@ class _CartScreenState extends State<CartScreen> {
   }
 }
 
-Container totalAmount(Command command) {
+Container totalAmount(Command command, int i) {
   return Container(
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -90,7 +88,7 @@ Container totalAmount(Command command) {
           style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),
         ),
         Text(
-          "\$${command.totalAmount}",
+          "\$${command.totalAmount ?? 0 + i}",
           style: TextStyle(fontWeight: FontWeight.w700, fontSize: 28),
         ),
       ],
@@ -227,8 +225,10 @@ class CartBody extends StatelessWidget {
   }
 
   // Widget pour afficher un message lorsque le panier est vide
-  Container noItemContainer() {
-    return Container(
+  Scaffold noItemContainer() {
+    return Scaffold(
+        body: SafeArea(
+            child: Container(
       child: Center(
         child: Text(
           "No More Items Left In The Cart",
@@ -238,7 +238,7 @@ class CartBody extends StatelessWidget {
               fontSize: 20),
         ),
       ),
-    );
+    )));
   }
 
   // Widget pour afficher la liste des articles alimentaires dans le panier
@@ -399,10 +399,10 @@ class ItemContent extends StatelessWidget {
           Row(
             children: [
               Hero(
-                tag: foodItem
-                    .imagePath, // Tag pour l'animation Hero (transition d'image)
-                child: Image.asset(
-                  foodItem.imagePath, // Chemin de l'image de l'article
+                tag: NetworkImage(_fetchImageUrl(foodItem
+                    .imagePath)), // Tag pour l'animation Hero (transition d'image)
+                child: Image.network(
+                  _fetchImageUrl(foodItem.imagePath),
                   width: MediaQuery.of(context).size.width /
                       6, // Largeur de l'image
                 ),
@@ -441,6 +441,14 @@ class ItemContent extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _fetchImageUrl(String imagePath) {
+    if (imagePath.contains("http") || imagePath.contains("https")) {
+      return imagePath;
+    } else {
+      return "/assets/$imagePath";
+    }
   }
 }
 

@@ -50,39 +50,9 @@ class SignInModel extends StatelessWidget {
                     Text(
                       "Recevoir la facture par mail ?",
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
-                    ),
-                    Row(
-                      children: [
-                        Radio<bool>(
-                          value:
-                              receiveByMail, // Définissez la valeur du RadioButton en conséquence
-                          groupValue:
-                              receiveByMail, // La valeur sélectionnée, assurez-vous de la gérer correctement
-                          onChanged: (bool? value) {
-                            // Mettez à jour la variable lorsque l'utilisateur change la sélection
-                            if (value != null) {
-                              receiveByMail = false;
-                            }
-                          },
-                        ),
-                        Text("Oui"),
-                        Radio<bool>(
-                          value:
-                              receiveByMail, // Définissez la valeur du RadioButton en conséquence
-                          groupValue:
-                              receiveByMail, // Utilisez la variable pour suivre la sélection
-                          onChanged: (bool? value) {
-                            // Mettez à jour la variable lorsque l'utilisateur change la sélection
-                            if (value != null) {
-                              receiveByMail = false;
-                            }
-                          },
-                        ),
-                        Text("Non"),
-                      ],
                     ),
                   ],
                 )
@@ -168,8 +138,8 @@ class SignInModel extends StatelessWidget {
                         ),
                         Column(
                           children: <Widget>[
-                            totalAmount(command),
-                            totalAmount(command),
+                            totalAmount(command, 0),
+                            totalAmount(command, 10),
                           ],
                         ),
                       ],

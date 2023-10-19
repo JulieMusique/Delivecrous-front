@@ -7,14 +7,34 @@ import 'package:http/http.dart' as http;
 
 String baseURL = "http://localhost:8080/DelivCROUS/commands/";
 
-Future<Command> createCommand(Command command) async {
+Future<bool> createCommand(Command command) async {
   var body = jsonEncode(command.toJson());
   var url = Uri.parse(baseURL);
-  http.Response response = await http.post(url, body: body);
-  print(response.body);
-  Map<String, dynamic> responseMap = jsonDecode(response.body);
-  Command newCommand = Command.fromJson(responseMap); // Renommez la variable
-  return newCommand;
+  http.Response response =
+      await http.post(url, body: body, headers: <String, String>{
+    'Content-Type': 'application/json; charset=UTF-8',
+  });
+  if (response.statusCode != 200) {
+    // Gérez les erreurs en fonction du code de statut de la réponse
+    print("Réponse du serveur : ${response.body}");
+    //throw Exception('Erreur lors de l\'ajout du plat dans la commande');
+    return false;
+  }
+  return true;
+}
+
+Future<bool> confirmCommand(Command command) async {
+  var url = Uri.parse(baseURL + "${command.idCommand}/validate");
+  http.Response response = await http.get(url, headers: <String, String>{
+    'Content-Type': 'application/json; charset=UTF-8',
+  });
+  if (response.statusCode != 200) {
+    // Gérez les erreurs en fonction du code de statut de la réponse
+    print("Réponse du serveur : ${response.body}");
+    //throw Exception('Erreur lors de l\'ajout du plat dans la commande');
+    return false;
+  }
+  return true;
 }
 
 Future<Result<List<Command>, Exception>> getCommands() async {
@@ -103,7 +123,6 @@ Future<List<Command>> fetchHistoryCommands(int idUser) async {
           idCommand: objHistory[i]['idCommand'],
           idUser: objHistory[i]['idUser']['id'],
           orderDate: objHistory[i]['orderDate'],
-          orderStatus: objHistory[i]['orderStatus'],
           deliveryAdress: objHistory[i]['deliveryAdress'],
           totalAmount: objHistory[i]['totalAmount'],
           compose: composeItems));
@@ -161,7 +180,6 @@ Future<Command> fetchCurrentCommand(int idUser) async {
           idCommand: objHistory[i]['idCommand'],
           idUser: objHistory[i]['idUser']['id'],
           orderDate: objHistory[i]['orderDate'],
-          orderStatus: objHistory[i]['orderStatus'],
           deliveryAdress: objHistory[i]['deliveryAdress'],
           totalAmount: objHistory[i]['totalAmount'],
           compose: composeItems));
