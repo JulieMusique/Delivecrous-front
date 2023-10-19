@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_ui_food_delivery_app/cart/cart_screen.dart';
-import 'package:flutter_ui_food_delivery_app/cart/order_confirmed.dart';
 import 'package:flutter_ui_food_delivery_app/model/User.dart';
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
 
 import '../model/Command.dart';
-import '../model/list_food.dart';
 import '../utils/metrics.dart';
-import '../widgets/custom_button.dart';
-
 bool isShowSignInDialog = false;
 
 class SignInModel extends StatelessWidget {
@@ -138,8 +134,22 @@ class SignInModel extends StatelessWidget {
                         ),
                         Column(
                           children: <Widget>[
-                            totalAmount(command, 0),
-                            totalAmount(command, 10),
+                            totalAmount(command),
+                            Container(
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Text(
+          "Total:",
+          style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),
+        ),
+        Text(
+          "\$${user.soldeCarteCrous}",
+          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 28),
+        ),
+      ],
+    ),
+  )
                           ],
                         ),
                       ],

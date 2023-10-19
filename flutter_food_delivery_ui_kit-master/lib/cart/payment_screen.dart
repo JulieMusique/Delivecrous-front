@@ -4,7 +4,6 @@ import 'package:flutter_ui_food_delivery_app/model/User.dart';
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
 import 'package:flutter_ui_food_delivery_app/widgets/custom_button.dart';
 
-import '../model/list_food.dart';
 import 'sign_in_form.dart';
 
 void showCustomDialog(BuildContext context,
