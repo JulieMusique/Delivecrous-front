@@ -126,20 +126,27 @@ class SignInModel extends StatelessWidget {
                       children: <Widget>[
                         Column(
                           children: <Widget>[
-                            Text(
-                              "Total:",
-                              style: TextStyle(fontSize: 25),
-                            ),
-                            Text(
-                              "Solde:",
-                              style: TextStyle(fontSize: 25),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          children: <Widget>[
-                            totalAmount(command, 0),
-                            totalAmount(command, 10),
+                            totalAmount(command),
+                            Container(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    "Solde:",
+                                    style: TextStyle(
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.w300),
+                                  ),
+                                  Text(
+                                    "\$${user.soldeCarteCrous}",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 28),
+                                  ),
+                                ],
+                              ),
+                            )
                           ],
                         ),
                       ],
