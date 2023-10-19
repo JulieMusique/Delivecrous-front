@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ui_food_delivery_app/home/main_screen.dart';
+import 'package:flutter_ui_food_delivery_app/model/User.dart';
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
 import 'package:flutter_ui_food_delivery_app/utils/routes.dart';
 import 'package:flutter_ui_food_delivery_app/widgets/custom_button.dart';
 import 'package:lottie/lottie.dart';
 
 class OrderError extends StatelessWidget {
+    final User user;
+      OrderError({required this.user});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +52,11 @@ class OrderError extends StatelessWidget {
                 fontSize: 17,
                 fontWeight: FontWeight.w600,
                 onTap: () {
-                  Navigator.pushNamed(context, Routes.home);
+                    Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MainScreen(onTap: (){},user : user)),
+                            );
                 },
                 text: "TRY AGAIN",
                 textColor: Colors.white)

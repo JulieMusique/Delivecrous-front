@@ -58,27 +58,28 @@ class _HomeScreenState extends State<HomeScreen>
 
     super.dispose();
   }
-void _sortFoodList() {
-  setState(() {
-    if (isAscendingOrder) {
-      // Triez en ordre croissant
-      foodList.then((list) {
-        list.sort((a, b) => a.price.compareTo(b.price));
-        setState(() {
-          isAscendingOrder = false;
+
+  void _sortFoodList() {
+    setState(() {
+      if (isAscendingOrder) {
+        // Triez en ordre croissant
+        foodList.then((list) {
+          list.sort((a, b) => a.price.compareTo(b.price));
+          setState(() {
+            isAscendingOrder = false;
+          });
         });
-      });
-    } else {
-      // Triez en ordre décroissant
-      foodList.then((list) {
-        list.sort((a, b) => b.price.compareTo(a.price));
-        setState(() {
-          isAscendingOrder = true;
+      } else {
+        // Triez en ordre décroissant
+        foodList.then((list) {
+          list.sort((a, b) => b.price.compareTo(a.price));
+          setState(() {
+            isAscendingOrder = true;
+          });
         });
-      });
-    }
-  });
-}
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -170,10 +171,9 @@ void _sortFoodList() {
                   Icons.filter_list, // Icône de filtre
                   color: Colors.black, // Couleur de l'icône
                 ),
-                 onPressed: () {
-    _sortFoodList(); // Appel de la fonction de tri
-  },
-
+                onPressed: () {
+                  _sortFoodList(); // Appel de la fonction de tri
+                },
               ),
             ],
           ),
@@ -223,19 +223,20 @@ void _sortFoodList() {
       ],
     );
   }
-String truncateString(String text, int maxLength) {
-  if (text.length <= maxLength) {
-    return text;
+
+  String truncateString(String text, int maxLength) {
+    if (text.length <= maxLength) {
+      return text;
+    }
+    return text.substring(0, maxLength) + '...';
   }
-  return text.substring(0, maxLength) + '...';
-}
 
   // Widget pour afficher une carte d'aliment
-  Widget FoodCard(
-      String imagePath, String name, String description, double price, Food food) {
+  Widget FoodCard(String imagePath, String name, String description,
+      double price, Food food) {
     final CartListBloc bloc = BlocProvider.getBloc<CartListBloc>();
     final imageUrl = _fetchImageUrl(imagePath);
-String truncateddescription = truncateString(description,25 );
+    String truncateddescription = truncateString(description, 25);
     // Fonction pour ajouter un aliment au panier
     addToCart(Food foodItem) {
       bloc.addToList(food);
@@ -291,7 +292,7 @@ String truncateddescription = truncateString(description,25 );
                       SizedBox(
                         width: MediaQuery.of(context).size.width / 2.2,
                         // Largeur du conteneur de texte en fonction de la largeur de l'écran
-                        
+
                         child: PrimaryText(
                             text: name, // Nom de l'aliment
                             size: 22, // Taille du texte
@@ -328,8 +329,7 @@ String truncateddescription = truncateString(description,25 );
                       child: GestureDetector(
                         onTap: () async {
                           if (command != null) {
-                            addToCart(
-                                food); // Appel de la fonction pour ajouter l'aliment au panier
+                            // Appel de la fonction pour ajouter l'aliment au panier
                             addDishToCommand(command!.idCommand, food.id);
                             final snackBar = SnackBar(
                               content: Text('${food.title} added to Cart'),
@@ -473,9 +473,7 @@ String truncateddescription = truncateString(description,25 );
             SvgPicture.asset(imagePath, width: 40),
             PrimaryText(text: name, fontWeight: FontWeight.w800, size: 16),
             RawMaterialButton(
-                onPressed: () {
-                  
-                },
+                onPressed: () {},
                 fillColor: selectedFoodCard == index
                     ? AppColor.white
                     : Color.fromARGB(255, 88, 162, 14),

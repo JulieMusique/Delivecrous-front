@@ -6,6 +6,7 @@ import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
 
 import '../model/Command.dart';
 import '../utils/metrics.dart';
+
 bool isShowSignInDialog = false;
 
 class SignInModel extends StatelessWidget {
@@ -34,128 +35,97 @@ class SignInModel extends StatelessWidget {
             boxShadow: [BoxShadow(blurRadius: 10, color: AppColor.lighterGray)],
             color: AppColor.white,
           ),
-          child: screen == "Bill"
-              ? Row(
-                  children: [
-                    SvgPicture.asset(
-                      'images/bill.svg', // Remplacez par le chemin vers votre image SVG pour la partie "bill"
-                      width: 30, // Ajustez la largeur selon vos besoins
-                      height: 30, // Ajustez la hauteur selon vos besoins
-                    ),
-                    SizedBox(width: 8), // Espacement entre l'image et le texte
-                    Text(
-                      "Recevoir la facture par mail ?",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
+          child: Column(
+            children: [
+              SvgPicture.asset(
+                'images/address.svg', // Remplacez par le chemin vers votre image SVG pour l'adresse
+                width: 30, // Ajustez la largeur selon vos besoins
+                height: 30, // Ajustez la hauteur selon vos besoins
+              ),
+              SizedBox(width: 8),
+              Text(
+                "Adresse",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+
+              Autocomplete<String>(
+                optionsBuilder: (TextEditingValue textEditingValue) {
+                  if (textEditingValue.text == '') {
+                    return const Iterable<String>.empty();
+                  }
+                  return listItems.where((String item) {
+                    return item
+                        .toLowerCase()
+                        .contains(textEditingValue.text.toLowerCase());
+                  });
+                },
+                onSelected: (String item) {
+                  print('The $item was selected');
+                },
+                fieldViewBuilder: (BuildContext context,
+                    TextEditingController textEditingController,
+                    FocusNode focusNode,
+                    VoidCallback onFieldSubmitted) {
+                  return TextField(
+                    controller: textEditingController,
+                    focusNode: focusNode,
+                    onSubmitted: (_) => onFieldSubmitted(),
+                    decoration: InputDecoration(
+                      hintText: 'Num de Voie, Rue/Bd/av, nom, CP Ville, Pays ',
+                      suffixIcon: IconButton(
+                        icon: Icon(Icons
+                            .save), // Utilisez l'icône d'enregistrement ou un autre de votre choix
+                        onPressed: () {
+                          if (!listItems.contains(currentAddress)) {
+                            listItems.add(
+                                currentAddress); // Ajoutez l'adresse si elle n'est pas dans la liste
+                          }
+                          // Réinitialisez l'adresse actuelle après l'avoir ajoutée
+                          currentAddress = '';
+                        },
                       ),
                     ),
-                  ],
-                )
-              : Column(
-                  children: [
-                    SvgPicture.asset(
-                      'images/address.svg', // Remplacez par le chemin vers votre image SVG pour l'adresse
-                      width: 30, // Ajustez la largeur selon vos besoins
-                      height: 30, // Ajustez la hauteur selon vos besoins
-                    ),
-                    SizedBox(width: 8),
-                    Text(
-                      "Adresse",
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    onChanged: (value) {
+                      currentAddress = value; // Mettre à jour l'adresse saisie
+                    },
+                  );
+                },
+              ),
 
-                    Autocomplete<String>(
-                      optionsBuilder: (TextEditingValue textEditingValue) {
-                        if (textEditingValue.text == '') {
-                          return const Iterable<String>.empty();
-                        }
-                        return listItems.where((String item) {
-                          return item
-                              .toLowerCase()
-                              .contains(textEditingValue.text.toLowerCase());
-                        });
-                      },
-                      onSelected: (String item) {
-                        print('The $item was selected');
-                      },
-                      fieldViewBuilder: (BuildContext context,
-                          TextEditingController textEditingController,
-                          FocusNode focusNode,
-                          VoidCallback onFieldSubmitted) {
-                        return TextField(
-                          controller: textEditingController,
-                          focusNode: focusNode,
-                          onSubmitted: (_) => onFieldSubmitted(),
-                          decoration: InputDecoration(
-                            hintText:
-                                'Num de Voie, Rue/Bd/av, nom, CP Ville, Pays ',
-                            suffixIcon: IconButton(
-                              icon: Icon(Icons
-                                  .save), // Utilisez l'icône d'enregistrement ou un autre de votre choix
-                              onPressed: () {
-                                if (!listItems.contains(currentAddress)) {
-                                  listItems.add(
-                                      currentAddress); // Ajoutez l'adresse si elle n'est pas dans la liste
-                                }
-                                // Réinitialisez l'adresse actuelle après l'avoir ajoutée
-                                currentAddress = '';
-                              },
-                            ),
-                          ),
-                          onChanged: (value) {
-                            currentAddress =
-                                value; // Mettre à jour l'adresse saisie
-                          },
-                        );
-                      },
-                    ),
-
-                    SizedBox(
-                        width: 20), // Espacement entre l'image et le TextField
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Column(
+              SizedBox(width: 20), // Espacement entre l'image et le TextField
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Column(
+                    children: <Widget>[
+                      totalAmount(command),
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Text(
-                              "Total:",
-                              style: TextStyle(fontSize: 25),
-                            ),
                             Text(
                               "Solde:",
-                              style: TextStyle(fontSize: 25),
+                              style: TextStyle(
+                                  fontSize: 25, fontWeight: FontWeight.w300),
+                            ),
+                            Text(
+                              "\$${user.soldeCarteCrous}",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700, fontSize: 28),
                             ),
                           ],
                         ),
-                        Column(
-                          children: <Widget>[
-                            totalAmount(command),
-                            Container(
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Text(
-          "Total:",
-          style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),
-        ),
-        Text(
-          "\$${user.soldeCarteCrous}",
-          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 28),
-        ),
-      ],
-    ),
-  )
-                          ],
-                        ),
-                      ],
-                    )
-                  ],
-                ),
+                      )
+                    ],
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     ]);

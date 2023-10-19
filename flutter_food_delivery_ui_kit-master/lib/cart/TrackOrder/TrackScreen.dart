@@ -170,15 +170,6 @@ class _TrackingScreenState extends State<TrackingScreen>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(top: 50),
-                      //Order id
-                      child: Text(
-                        'Order#568',
-                        style: TextStyle(
-                            color: Color.fromRGBO(0, 0, 0, 0.2), fontSize: 12),
-                      ),
-                    ),
                     Timer(),
                     Center(
                       child: AnimatedBuilder(
@@ -364,7 +355,7 @@ class _TrackingScreenState extends State<TrackingScreen>
                       ),
                     ),
                     SizedBox(height: 50),
-                    AvatarAndText(),
+                    AvatarAndText(user : widget.user),
                     SizedBox(height: 50),
                   ]),
             )));

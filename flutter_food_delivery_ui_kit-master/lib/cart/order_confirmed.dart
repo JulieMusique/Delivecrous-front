@@ -51,6 +51,7 @@ class OrderConfirmed extends StatelessWidget {
                 fontSize: 17,
                 fontWeight: FontWeight.w600,
                 onTap: () {
+                  print(user.soldeCarteCrous);
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
