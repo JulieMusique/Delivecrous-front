@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ui_food_delivery_app/cart/TrackOrder/TrackScreen.dart';
 import 'package:flutter_ui_food_delivery_app/model/User.dart';
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
-import 'package:flutter_ui_food_delivery_app/utils/routes.dart';
 import 'package:flutter_ui_food_delivery_app/widgets/custom_button.dart';
 import 'package:lottie/lottie.dart';
 

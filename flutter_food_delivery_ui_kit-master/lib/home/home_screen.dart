@@ -59,6 +59,28 @@ class _HomeScreenState extends State<HomeScreen>
     super.dispose();
   }
 
+  void _sortFoodList() {
+    setState(() {
+      if (isAscendingOrder) {
+        // Triez en ordre croissant
+        foodList.then((list) {
+          list.sort((a, b) => a.price.compareTo(b.price));
+          setState(() {
+            isAscendingOrder = false;
+          });
+        });
+      } else {
+        // Triez en ordre décroissant
+        foodList.then((list) {
+          list.sort((a, b) => b.price.compareTo(a.price));
+          setState(() {
+            isAscendingOrder = true;
+          });
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -150,18 +172,7 @@ class _HomeScreenState extends State<HomeScreen>
                   color: Colors.black, // Couleur de l'icône
                 ),
                 onPressed: () {
-                  setState(() async {
-                    List<Food> foods =
-                        await Future.wait(foodList as Iterable<Future<Food>>);
-                    isAscendingOrder = !isAscendingOrder;
-                    if (isAscendingOrder) {
-                      foods.sort((a, b) =>
-                          a.price.compareTo(b.price)); // Tri en ordre croissant
-                    } else {
-                      foods.sort((a, b) => b.price
-                          .compareTo(a.price)); // Tri en ordre décroissant
-                    }
-                  });
+                  _sortFoodList(); // Appel de la fonction de tri
                 },
               ),
             ],
@@ -213,12 +224,19 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
+  String truncateString(String text, int maxLength) {
+    if (text.length <= maxLength) {
+      return text;
+    }
+    return text.substring(0, maxLength) + '...';
+  }
+
   // Widget pour afficher une carte d'aliment
-  Widget FoodCard(
-      String imagePath, String name, String weight, double price, Food food) {
+  Widget FoodCard(String imagePath, String name, String description,
+      double price, Food food) {
     final CartListBloc bloc = BlocProvider.getBloc<CartListBloc>();
     final imageUrl = _fetchImageUrl(imagePath);
-
+    String truncateddescription = truncateString(description, 25);
     // Fonction pour ajouter un aliment au panier
     addToCart(Food foodItem) {
       bloc.addToList(food);
@@ -274,6 +292,7 @@ class _HomeScreenState extends State<HomeScreen>
                       SizedBox(
                         width: MediaQuery.of(context).size.width / 2.2,
                         // Largeur du conteneur de texte en fonction de la largeur de l'écran
+
                         child: PrimaryText(
                             text: name, // Nom de l'aliment
                             size: 22, // Taille du texte
@@ -281,8 +300,8 @@ class _HomeScreenState extends State<HomeScreen>
                                 FontWeight.w700), // Poids de la police en gras
                       ),
                       PrimaryText(
-                          text: weight, // Poids de l'aliment
-                          size: 18, // Taille du texte
+                          text: truncateddescription, // Poids de l'aliment
+                          size: 15, // Taille du texte
                           color: AppColor.lightGray),
                       // Couleur du texte en gris clair
                     ],
@@ -310,8 +329,7 @@ class _HomeScreenState extends State<HomeScreen>
                       child: GestureDetector(
                         onTap: () async {
                           if (command != null) {
-                            addToCart(
-                                food); // Appel de la fonction pour ajouter l'aliment au panier
+                            // Appel de la fonction pour ajouter l'aliment au panier
                             addDishToCommand(command!.idCommand, food.id);
                             final snackBar = SnackBar(
                               content: Text('${food.title} added to Cart'),

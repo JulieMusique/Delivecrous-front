@@ -2,13 +2,13 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_ui_food_delivery_app/cart/order_confirmed.dart';
+import 'package:flutter_ui_food_delivery_app/cart/order_error.dart';
 import 'package:flutter_ui_food_delivery_app/http/HttpServiceCart.dart';
 import 'package:flutter_ui_food_delivery_app/model/User.dart';
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
 import 'package:flutter_ui_food_delivery_app/widgets/custom_button.dart';
 import 'package:http/http.dart' as http;
 
-import '../model/list_food.dart';
 import 'sign_in_form.dart';
 
 bool isSufficientBalance(User user, double totalAmount) {
@@ -63,7 +63,6 @@ void showCustomDialog(BuildContext context,
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 14),
                     ),
-                    SignInModel(screen: "Bill", user: user, command: command),
                     SignInModel(
                         screen: "Address", user: user, command: command),
                     AppButton(
@@ -79,22 +78,22 @@ void showCustomDialog(BuildContext context,
                           if (response.statusCode == 204) {
                             final reponse = await http.get(Uri.parse(
                                 "http://localhost:8080/DelivCROUS/users?identifiant=${user.id}"));
-                            List<dynamic> userDataList  =
+                            List<dynamic> userDataList =
                                 json.decode(reponse.body);
-                                Map<String, dynamic> userData = userDataList[0];
-        User updatedUser = User.fromJson(userData);
-                                print(updatedUser.soldeCarteCrous);
+                            Map<String, dynamic> userData = userDataList[0];
+                            User updatedUser = User.fromJson(userData);
+                            print(updatedUser.soldeCarteCrous);
                             confirmCommand(command);
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => OrderConfirmed(
-                                      user: reponse.statusCode == 200 ? updatedUser : user) /*OrderError(),*/
-                                  ),
+                                      user: reponse.statusCode == 200
+                                          ? updatedUser
+                                          : user)),
                             );
-                          }
-                          //updateUser(widget.user);
-                          else {
+                          } 
+                        }else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
@@ -102,8 +101,12 @@ void showCustomDialog(BuildContext context,
                                 backgroundColor: Colors.red,
                               ),
                             );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => OrderError(user:user)),
+                            );
                           }
-                        }
                       },
                       text: "Confirm order",
                       textColor: Colors.white,
