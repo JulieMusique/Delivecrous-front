@@ -463,7 +463,6 @@ class CustomAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppBar(
       leading: GestureDetector(
-        // Ajoute un détecteur de geste pour détecter les pressions sur l'icône de retour
         child: Icon(
           CupertinoIcons.back, // Icône de flèche de retour style iOS
           size: 20, // Taille de l'icône

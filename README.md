@@ -3,29 +3,35 @@
 
 Ce dépôt contient le code source de la partie frontend de l'application de commande de repas cross-plateforme "Deliverucrous", similaire à "UberEats".
 
-![Capture d'écran](ExplicationdesDifferentsScreen.PNG)
+![Capture d'écran](architectureApp.PNG)
+
+![Capture d'écran](autrespages.PNG)
+
 ## Technologies Utilisées
-- Framework : 
-- Langages : 
-- Gestionnaire de Packages : 
+- Framework : Flutter
+- Langages : dart
 
 ## Architecture du Projet
- Organisation du code source et les principaux répertoires/fichiers importants.
+![Capture d'écran](architectureApp.PNG)
+![Capture d'écran](autresPages.PNG)
 
 ## Fonctionnalités Implémentées
-- Écran de listing des plats avec filtres et recherche
-- Écran de détail d'un plat avec allergènes
+- Écran de listing des plats avec filtres par category et recherche et trie par prix
+- Écran de détail d'un plat avec allergènes et ingredients
 - Système de panier avec récapitulatif et gestion des quantités
-- Écran de validation de commande
+- Écran de validation de commande ( si le solde lui permet --> Orderconfirmed sinon --> orderError)
 - Gestion d'informations utilisateur pour le solde de la carte CROUS
-
+- Ecran de liste de favoris
+- Ecran des commandes passés 
+- Ecran d'accueil
+- Ecran d'inscription, connexion et changement de mot de passe dans le cas l'utilisateur a oublié son mot  de passe 
 ## Fonctionnalités Bonus
 - Authentification utilisateur au démarrage
 - Affichage d'informations utilisateur et historique des commandes
 - Suivi de commande en temps réel
 
 ## Instructions pour Exécuter le Projet
-1. Clonez ce dépôt : `git clone [lien du dépôt]`
-2. Installez les dépendances : `[commande d'installation des dépendances]`
-3. Lancez l'application : `[commande pour lancer l'application]`
-4. Ouvrez votre navigateur à l'adresse : `http://localhost:[port]`
+1. Clonez ce dépôt : `git clone [https://github.com/JulieMusique/Delivecrous-front.git]`
+2. Installez les dépendances : `[flutter pub get]`
+3. Lancez l'application : `[flutter run]`
+4. Relancement de l'application : `[r ou R]`
