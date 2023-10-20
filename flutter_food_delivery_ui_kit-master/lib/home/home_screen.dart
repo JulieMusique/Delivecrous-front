@@ -329,6 +329,7 @@ class _HomeScreenState extends State<HomeScreen>
                       child: GestureDetector(
                         onTap: () async {
                           if (command != null) {
+                           addToCart(food);
                             // Appel de la fonction pour ajouter l'aliment au panier
                             addDishToCommand(command!.idCommand, food.id);
                             final snackBar = SnackBar(

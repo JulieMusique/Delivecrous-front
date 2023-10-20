@@ -9,6 +9,7 @@ import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
 import 'package:flutter_ui_food_delivery_app/utils/style.dart';
 import '../model/User.dart';
 
+// La liste des plats en favoris
 class FavoriteScreen extends StatefulWidget {
   final User user;
 
@@ -26,6 +27,8 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   void initState() {
     super.initState();
     bloc = BlocProvider.getBloc<FavoriteListBloc>();
+    // Récupération de la liste des aliments favoris et gestion des cas d'erreur
+
     fetchFavoriteDishes(widget.user.id ?? 0).then((list) {
       if (list.isNotEmpty) {
         setState(() {
@@ -226,7 +229,6 @@ class ItemContentState extends State<ItemContent> {
   @override
   Widget build(BuildContext context) {
     final FavoriteListBloc bloc = BlocProvider.getBloc<FavoriteListBloc>();
-    print("Index: ${widget.index}, Length: ${widget.foodItem.length}");
     String _fetchImageUrl(String imagePath) {
       if (imagePath.contains("http") || imagePath.contains("https")) {
         return imagePath;
@@ -236,7 +238,6 @@ class ItemContentState extends State<ItemContent> {
     }
 
     if (widget.index >= 0 && widget.index < widget.foodItem.length) {
-      // Check if the index is within the bounds of the foodItem list.
       return Dismissible(
         key: UniqueKey(),
         direction: DismissDirection.endToStart,

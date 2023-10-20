@@ -6,7 +6,7 @@ import 'package:flutter_ui_food_delivery_app/http/HttpServiceFav.dart';
 import 'package:flutter_ui_food_delivery_app/model/User.dart';
 import 'package:flutter_ui_food_delivery_app/model/list_food.dart';
 
-// Widget pour gérer les favoris
+// Widget pour gérer les favoris en format coeur
 class FavB extends StatefulWidget {
   final Food food;
   final User user;
@@ -28,10 +28,12 @@ class _FavBState extends State<FavB> {
     } else {
       userId = 0;
     }
+    // Vérification si l'aliment est déjà dans la liste de favoris
+
     fetchFavoriteExist(userId, widget.food.id).then((isFavorite) {
       setState(() {
         isFav = isFavorite;
-        print(isFav);
+        print("${widget.food.title} favoris :  ${isFav}");
       });
     });
     super.initState();
