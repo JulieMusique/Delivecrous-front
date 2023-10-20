@@ -1,5 +1,4 @@
 import 'package:flutter_ui_food_delivery_app/model/Compose.dart';
-import 'package:flutter_ui_food_delivery_app/model/User.dart';
 import 'package:flutter_ui_food_delivery_app/model/list_food.dart';
 
 class Command {

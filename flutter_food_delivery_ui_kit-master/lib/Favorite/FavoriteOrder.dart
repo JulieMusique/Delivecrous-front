@@ -2,14 +2,12 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ui_food_delivery_app/Favorite/bloc/FavoriteslistBloc.dart';
-import 'package:flutter_ui_food_delivery_app/home/home_screen.dart';
 import 'package:flutter_ui_food_delivery_app/home/main_screen.dart';
 import 'package:flutter_ui_food_delivery_app/http/HttpServiceFav.dart';
 import 'package:flutter_ui_food_delivery_app/model/list_food.dart';
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
 import 'package:flutter_ui_food_delivery_app/utils/style.dart';
 import '../model/User.dart';
-import 'bloc/listTileColorBloc.dart';
 
 class FavoriteScreen extends StatefulWidget {
   final User user;
@@ -35,8 +33,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
         });
       } else {
         setState(() {
-          foodItems = Future.error(
-              "No data found"); // Mettez un message d'erreur approprié
+          foodItems = Future.error("No data found");
         });
       }
     }).catchError((error) {
@@ -83,8 +80,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
               ),
             ),
             body: SafeArea(
-              child: FavBody(foodItems,
-                  widget.user), // Utilisez snapshot.data au lieu de foodItems
+              child: FavBody(foodItems, widget.user),
             ),
           );
         } else if (snapshot.hasError) {
@@ -96,7 +92,6 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
             child: CircularProgressIndicator(),
           );
         } else {
-          // Si aucune des conditions ci-dessus n'est remplie, vous pouvez renvoyer un widget par défaut.
           return Container(
             child: Text("Waiting for data..."),
           );
@@ -117,28 +112,23 @@ class FavBody extends StatelessWidget {
       future: foodItems,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          // Si le Future est en cours d'exécution, affichez un indicateur de chargement.
+          // Chargement de la page
           return CircularProgressIndicator();
         } else if (snapshot.hasError) {
-          // En cas d'erreur, affichez un message d'erreur.
           return noItemContainer();
-          // Text("An error occurred: ${snapshot.error}");
         } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-          // Si des données sont disponibles et non vides, affichez la liste d'articles.
           return Container(
             padding: EdgeInsets.fromLTRB(20, 30, 15, 0),
             child: Column(
               children: <Widget>[
                 Expanded(
                   flex: 1,
-                  child: foodItemList(snapshot
-                      .data!), // Utilisez snapshot.data au lieu de foodItems
+                  child: foodItemList(snapshot.data!),
                 )
               ],
             ),
           );
         } else {
-          // Si aucune des conditions ci-dessus n'est remplie, affichez un message approprié.
           return noItemContainer();
         }
       },
@@ -168,7 +158,6 @@ class FavBody extends StatelessWidget {
     );
   }
 }
-//foodItems[index]
 
 class FavoriteListItem extends StatefulWidget {
   final List<Food> foodItem;
@@ -233,7 +222,7 @@ class ItemContentState extends State<ItemContent> {
     print("Index: ${widget.index}, Length: ${widget.foodItem.length}");
 
     if (widget.index >= 0 && widget.index < widget.foodItem.length) {
-      // Check if the index is within the bounds of the foodItem list.
+      // Verifie si l'indice est bien entre 0 et la longueur du tableau de foodItem
       return Dismissible(
         key: UniqueKey(),
         direction: DismissDirection.endToStart,
@@ -316,7 +305,7 @@ class ItemContentState extends State<ItemContent> {
             children: [
               Row(
                 children: [
-                  SizedBox(width: 16), // Espace entre l'image et le nom/prix
+                  SizedBox(width: 16),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

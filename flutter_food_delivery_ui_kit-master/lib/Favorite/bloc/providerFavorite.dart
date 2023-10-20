@@ -1,7 +1,6 @@
 import 'package:flutter_ui_food_delivery_app/model/list_food.dart';
 
 class FavoriteProvider {
-  //couterProvider only consists of a counter and a method which is responsible for increasing the value of count
   List<Food> foodItems = [];
 
   List<Food> addToList(Food foodItem) {

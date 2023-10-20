@@ -25,7 +25,6 @@ class _TrackingScreenState extends State<TrackingScreen>
   final dotSize = 20.0;
   final timerDuration = Duration(milliseconds: 2500);
 
-  // Define text styles and animations here
   late Animation<TextStyle> textOneStyle;
   late Animation<double> progressBarOne;
   late Animation<TextStyle> textTwoStyle;
@@ -71,7 +70,6 @@ class _TrackingScreenState extends State<TrackingScreen>
         ),
       ),
     );
-    // Initialize animations
     textOneStyle = TextStyleTween(
       begin: TextStyle(
         fontWeight: FontWeight.w400,
@@ -355,7 +353,7 @@ class _TrackingScreenState extends State<TrackingScreen>
                       ),
                     ),
                     SizedBox(height: 50),
-                    AvatarAndText(user : widget.user),
+                    AvatarAndText(user: widget.user),
                     SizedBox(height: 50),
                   ]),
             )));

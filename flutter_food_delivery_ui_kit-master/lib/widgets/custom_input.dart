@@ -4,11 +4,15 @@ import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
 class AppInputText extends StatefulWidget {
   final TextEditingController controller;
   final String hint;
-final TextInputType? keyboardType; // Ajoutez le paramètre keyboardType
-  final String? labelText; // Ajoutez le paramètre labelText
-final bool obscureText;
-  const AppInputText({required this.controller, required this.hint, this.keyboardType, // Mettez à jour le constructeur
-    this.labelText,this.obscureText = false});
+  final TextInputType? keyboardType;
+  final String? labelText;
+  final bool obscureText;
+  const AppInputText(
+      {required this.controller,
+      required this.hint,
+      this.keyboardType,
+      this.labelText,
+      this.obscureText = false});
 
   @override
   _AppInputTextState createState() => _AppInputTextState();
@@ -33,17 +37,15 @@ class _AppInputTextState extends State<AppInputText> {
             decoration: InputDecoration(
               border: InputBorder.none,
               hintText: widget.hint,
-                  labelText: widget.labelText, // Utilisez labelText
-
+              labelText: widget.labelText,
               hintStyle: TextStyle(
                 color: AppColor.placeholder,
               ),
               contentPadding: padding,
             ),
-             keyboardType: widget.keyboardType, // Utilisez keyboardType
-  obscureText: widget.obscureText ?? false,
+            keyboardType: widget.keyboardType,
+            obscureText: widget.obscureText ?? false,
           ),
-          
         ],
       ),
     );

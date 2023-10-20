@@ -18,27 +18,27 @@ class _AvatarAndTextState extends State<AvatarAndText>
   final textOne = "Your order is being prepared";
 
   final imageOne = Lottie.asset(
-    '/anim/onTheWay.json', // Assurez-vous que le chemin est correct
+    '/anim/onTheWay.json',
     fit: BoxFit.contain,
     height: 350,
     width: 400,
   );
   final textTwo = "Your order is on the Way";
   final imageTwo = Lottie.asset(
-    '/anim/Preparing.json', // Assurez-vous que le chemin est correct
+    '/anim/Preparing.json',
     fit: BoxFit.contain,
     height: 300,
     width: 300,
   );
   final imageThree = Lottie.asset(
-    '/anim/TimeToPickUporder.json', // Assurez-vous que le chemin est correct
+    '/anim/TimeToPickUporder.json',
     fit: BoxFit.contain,
     height: 300,
     width: 300,
   );
   final textThree = "Your order is ready to pick up";
   LottieBuilder actualImage = Lottie.asset(
-    '/anim/Preparing.json', // Assurez-vous que le chemin est correct
+    '/anim/Preparing.json',
     fit: BoxFit.contain,
     height: 350,
     width: 350,
@@ -71,9 +71,7 @@ class _AvatarAndTextState extends State<AvatarAndText>
           actualImage = imageThree;
           actualText = textThree;
         });
-      } else {
-        // do nothing
-      }
+      } else {}
     });
   }
 
@@ -86,17 +84,21 @@ class _AvatarAndTextState extends State<AvatarAndText>
   @override
   Widget build(BuildContext context) {
     return AvatarAnimation(
-        controller: animationController, image: actualImage, text: actualText, user: widget.user,);
+      controller: animationController,
+      image: actualImage,
+      text: actualText,
+      user: widget.user,
+    );
   }
 }
 
 class AvatarAnimation extends StatelessWidget {
-
   AvatarAnimation(
       {Key? key,
       required this.controller,
       required this.image,
-      required this.text, required this.user})
+      required this.text,
+      required this.user})
       : super(key: key);
 
   final AnimationController controller;
@@ -117,18 +119,17 @@ class AvatarAnimation extends StatelessWidget {
         ),
         AppButton(
             bgColor: vermilion,
-            text : 'home',
+            text: 'home',
             textColor: Colors.white,
             borderRadius: 30,
             fontSize: 17,
             fontWeight: FontWeight.w600,
             onTap: () {
               Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => MainScreen(onTap: (){},user: user)
-                                  ),
-                            );
+                context,
+                MaterialPageRoute(
+                    builder: (context) => MainScreen(onTap: () {}, user: user)),
+              );
             }),
       ],
     );

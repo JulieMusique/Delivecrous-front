@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_ui_food_delivery_app/cart/cart_screen.dart';
-import 'package:flutter_ui_food_delivery_app/cart/order_confirmed.dart';
 import 'package:flutter_ui_food_delivery_app/model/User.dart';
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
 
 import '../model/Command.dart';
-import '../model/list_food.dart';
 import '../utils/metrics.dart';
-import '../widgets/custom_button.dart';
 
 bool isShowSignInDialog = false;
 
@@ -25,7 +22,6 @@ class SignInModel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool receiveByMail = false;
     String currentAddress = '';
     return Stack(children: [
       Padding(

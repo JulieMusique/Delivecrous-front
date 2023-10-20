@@ -14,14 +14,13 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
           animationController.duration! * animationController.value;
       return '${(duration.inHours % 60).toString().padLeft(2, '0')} : ${(duration.inMinutes % 60).toString().padLeft(2, '0')} : ${(duration.inSeconds % 60).toString().padLeft(2, '0')}';
     }
-    return ''; // Gestion d'une valeur nulle (peut être modifiée en fonction de vos besoins)
+    return '';
   }
 
   @override
   void initState() {
     super.initState();
     animationController = AnimationController(
-      //duration
       duration: Duration(milliseconds: 10800),
       vsync: this,
     );

@@ -5,7 +5,6 @@ import 'package:flutter_ui_food_delivery_app/History/bloc/HistorylistBloc.dart';
 import 'package:flutter_ui_food_delivery_app/home/main_screen.dart';
 import 'package:flutter_ui_food_delivery_app/http/HttpServiceCart.dart';
 import 'package:flutter_ui_food_delivery_app/model/Command.dart';
-import 'package:flutter_ui_food_delivery_app/model/list_food.dart';
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
 import 'package:flutter_ui_food_delivery_app/utils/style.dart';
 import '../model/User.dart';
@@ -35,8 +34,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
         });
       } else {
         setState(() {
-          commandItems = Future.error(
-              "No data found"); // Mettez un message d'erreur approprié
+          commandItems = Future.error("No data found");
         });
       }
     }).catchError((error) {
@@ -93,7 +91,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
             child: CircularProgressIndicator(),
           );
         } else {
-          // Si aucune des conditions ci-dessus n'est remplie, vous pouvez renvoyer un widget par défaut.
           return Container(
             child: Text("Waiting for data..."),
           );
@@ -114,13 +111,12 @@ class HistoryBody extends StatelessWidget {
       future: commandItems,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          // Si le Future est en cours d'exécution, affichez un indicateur de chargement.
+          // Chargement de la page
           return CircularProgressIndicator();
         } else if (snapshot.hasError) {
-          // En cas d'erreur, affichez un message d'erreur.
           return noItemContainer();
         } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-          // Si des données sont disponibles et non vides, affichez la liste d'articles.
+          // Affichage de la liste quand toutes les données sont récupérées
           return Container(
             padding: EdgeInsets.fromLTRB(20, 30, 15, 0),
             child: Column(
@@ -128,14 +124,12 @@ class HistoryBody extends StatelessWidget {
                 CustomAppBar(),
                 Expanded(
                   flex: 1,
-                  child: commandItemList(snapshot
-                      .data!), // Utilisez snapshot.data au lieu de commandItems
+                  child: commandItemList(snapshot.data!),
                 )
               ],
             ),
           );
         } else {
-          // Si aucune des conditions ci-dessus n'est remplie, affichez un message approprié.
           return noItemContainer();
         }
       },
@@ -178,8 +172,7 @@ class HistoryListItem extends StatelessWidget {
         direction: DismissDirection.endToStart,
         background: Container(
           alignment: Alignment.centerRight,
-          color:
-              vermilion, // Couleur d'arrière-plan lorsque vous faites glisser l'élément
+          color: vermilion,
           child: Icon(
             Icons.delete,
             color: Colors.white,
@@ -188,10 +181,6 @@ class HistoryListItem extends StatelessWidget {
         ),
         onDismissed: (direction) {
           final HistoryListBloc bloc = BlocProvider.getBloc<HistoryListBloc>();
-
-          // Supprimez l'élément de la liste des favoris en utilisant le bloc
-          // Fonction pour supprimer un aliment du panier
-          //bloc.removeFromList(commandItem);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
@@ -199,10 +188,6 @@ class HistoryListItem extends StatelessWidget {
               duration: Duration(seconds: 1),
             ),
           );
-          // Vous devrez également mettre à jour l'interface utilisateur ici
-
-          // Affiche un message en bas de l'écran
-          // pour refléter les changements dans la liste des favoris
         },
         child: LongPressDraggable(
           hapticFeedbackOnStart: false,
