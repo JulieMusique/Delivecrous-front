@@ -9,7 +9,6 @@ Ce dépôt contient le code source de la partie frontend de l'application de com
 
 ## Architecture du Projet
 ![Capture d'écran](architectureApp.PNG)
-![Capture d'écran](autrespages.PNG)
 
 ## Fonctionnalités Implémentées
 - Écran de listing des plats avec filtres par category et recherche et trie par prix
