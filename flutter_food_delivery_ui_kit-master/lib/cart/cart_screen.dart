@@ -14,6 +14,7 @@ import 'package:flutter_ui_food_delivery_app/widgets/custom_button.dart';
 import 'bloc/cartlistBloc.dart';
 import 'bloc/listTileColorBloc.dart';
 
+//Cette classe est le panier de l'application
 class CartScreen extends StatefulWidget {
   final User user;
   CartScreen({Key? key, required this.user}) : super(key: key);
@@ -29,11 +30,12 @@ class _CartScreenState extends State<CartScreen> {
   void initState() {
     super.initState();
     command = Command(
-      idUser: widget.user.id, // Provide default values for Command.
-      deliveryAdress: "", // You may need to set these appropriately.
+      idUser: widget.user.id,
+      deliveryAdress: "",
       totalAmount: 0.0,
       compose: [],
     );
+    //Recupération de la commande en cours
     fetchCurrentCommand(widget.user.id ?? 0).then((list) {
       setState(() {
         if (list != null) {
@@ -46,8 +48,8 @@ class _CartScreenState extends State<CartScreen> {
     }).catchError((error) {
       setState(() {
         command = Command(
-          idUser: widget.user.id, // Provide default values for Command.
-          deliveryAdress: "", // You may need to set these appropriately.
+          idUser: widget.user.id,
+          deliveryAdress: "",
           totalAmount: 0.0,
           compose: [],
         );

@@ -9,13 +9,13 @@ class CartListBloc extends BlocBase {
 
   var _listController = BehaviorSubject<List<Food>>.seeded([]);
 
-//provider class
+  //provider class
   CartProvider provider = CartProvider();
 
-//output
+  //output
   Stream<List<Food>> get listStream => _listController.stream;
 
-//input
+  //input
   Sink<List<Food>> get listSink => _listController.sink;
 
   addToList(Food Food) {
@@ -26,7 +26,7 @@ class CartListBloc extends BlocBase {
     listSink.add(provider.removeFromList(Food));
   }
 
-//dispose will be called automatically by closing its streams
+  //Dispose will be called automatically by closing its streams
   @override
   void dispose() {
     _listController.close();

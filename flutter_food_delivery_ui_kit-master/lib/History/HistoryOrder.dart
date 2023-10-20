@@ -5,7 +5,6 @@ import 'package:flutter_ui_food_delivery_app/History/bloc/HistorylistBloc.dart';
 import 'package:flutter_ui_food_delivery_app/home/main_screen.dart';
 import 'package:flutter_ui_food_delivery_app/http/HttpServiceCart.dart';
 import 'package:flutter_ui_food_delivery_app/model/Command.dart';
-import 'package:flutter_ui_food_delivery_app/model/list_food.dart';
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
 import 'package:flutter_ui_food_delivery_app/utils/style.dart';
 import '../model/User.dart';
@@ -35,8 +34,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
         });
       } else {
         setState(() {
-          commandItems = Future.error(
-              "No data found"); // Mettez un message d'erreur approprié
+          commandItems = Future.error("No data found");
         });
       }
     }).catchError((error) {
@@ -93,7 +91,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
             child: CircularProgressIndicator(),
           );
         } else {
-          // Si aucune des conditions ci-dessus n'est remplie, vous pouvez renvoyer un widget par défaut.
           return Container(
             child: Text("Waiting for data..."),
           );
@@ -114,27 +111,24 @@ class HistoryBody extends StatelessWidget {
       future: commandItems,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          // Si le Future est en cours d'exécution, affichez un indicateur de chargement.
+          // Chargement de la page
           return CircularProgressIndicator();
         } else if (snapshot.hasError) {
-          // En cas d'erreur, affichez un message d'erreur.
           return noItemContainer();
         } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-          // Si des données sont disponibles et non vides, affichez la liste d'articles.
+          // Affichage de la liste quand toutes les données sont récupérées
           return Container(
             padding: EdgeInsets.fromLTRB(20, 30, 15, 0),
             child: Column(
               children: <Widget>[
                 Expanded(
                   flex: 1,
-                  child: commandItemList(snapshot
-                      .data!), // Utilisez snapshot.data au lieu de commandItems
+                  child: commandItemList(snapshot.data!),
                 )
               ],
             ),
           );
         } else {
-          // Si aucune des conditions ci-dessus n'est remplie, affichez un message approprié.
           return noItemContainer();
         }
       },
@@ -172,14 +166,14 @@ class HistoryListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  LongPressDraggable(
-          hapticFeedbackOnStart: false,
-          maxSimultaneousDrags: 1,
-          data: commandItem,
-          feedback: DraggableChildFeedback(commandItem: commandItem),
-          child: DraggableChild(commandItem: commandItem),
-          childWhenDragging: DraggableChild(commandItem: commandItem),
-        );
+    return LongPressDraggable(
+      hapticFeedbackOnStart: false,
+      maxSimultaneousDrags: 1,
+      data: commandItem,
+      feedback: DraggableChildFeedback(commandItem: commandItem),
+      child: DraggableChild(commandItem: commandItem),
+      childWhenDragging: DraggableChild(commandItem: commandItem),
+    );
   }
 }
 

@@ -8,10 +8,10 @@ import 'package:flutter_ui_food_delivery_app/model/User.dart';
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
 import 'package:flutter_ui_food_delivery_app/widgets/custom_button.dart';
 import 'package:http/http.dart' as http;
-
 import 'sign_in_form.dart';
 
 bool isSufficientBalance(User user, double totalAmount) {
+  //Verifie si le solde est superieur au prix de la commande
   return user.soldeCarteCrous >= totalAmount;
 }
 
@@ -92,21 +92,21 @@ void showCustomDialog(BuildContext context,
                                           ? updatedUser
                                           : user)),
                             );
-                          } 
-                        }else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                    'Solde insuffisant pour passer la commande.'),
-                                backgroundColor: Colors.red,
-                              ),
-                            );
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => OrderError(user:user)),
-                            );
                           }
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                  'Solde insuffisant pour passer la commande.'),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => OrderError(user: user)),
+                          );
+                        }
                       },
                       text: "Confirm order",
                       textColor: Colors.white,

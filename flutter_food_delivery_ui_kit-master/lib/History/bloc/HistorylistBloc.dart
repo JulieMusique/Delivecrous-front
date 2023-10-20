@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter_ui_food_delivery_app/History/bloc/providerHistory.dart';
 import 'package:flutter_ui_food_delivery_app/model/Command.dart';
-import 'package:flutter_ui_food_delivery_app/model/list_food.dart';
 import 'package:rxdart/rxdart.dart';
 
 class HistoryListBloc extends BlocBase {
@@ -10,13 +9,13 @@ class HistoryListBloc extends BlocBase {
 
   var _listController = BehaviorSubject<List<Command>>.seeded([]);
 
-//provider class
+  //provider class
   HistoryProvider provider = HistoryProvider();
 
-//output
+  //output
   Stream<List<Command>> get listStream => _listController.stream;
 
-//input
+  //input
   Sink<List<Command>> get listSink => _listController.sink;
 
   addToList(Command command) {
@@ -27,7 +26,7 @@ class HistoryListBloc extends BlocBase {
     listSink.add(provider.removeFromList(command));
   }
 
-//dispose will be called automatically by closing its streams
+  //Dispose will be called automatically by closing its streams
   @override
   void dispose() {
     _listController.close();

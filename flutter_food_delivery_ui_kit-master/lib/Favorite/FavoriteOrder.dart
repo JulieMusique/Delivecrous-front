@@ -36,8 +36,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
         });
       } else {
         setState(() {
-          foodItems = Future.error(
-              "No data found"); // Mettez un message d'erreur approprié
+          foodItems = Future.error("No data found");
         });
       }
     }).catchError((error) {
@@ -84,8 +83,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
               ),
             ),
             body: SafeArea(
-              child: FavBody(foodItems,
-                  widget.user), // Utilisez snapshot.data au lieu de foodItems
+              child: FavBody(foodItems, widget.user),
             ),
           );
         } else if (snapshot.hasError) {
@@ -97,7 +95,6 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
             child: CircularProgressIndicator(),
           );
         } else {
-          // Si aucune des conditions ci-dessus n'est remplie, vous pouvez renvoyer un widget par défaut.
           return Container(
             child: Text("Waiting for data..."),
           );
@@ -118,12 +115,14 @@ class FavBody extends StatelessWidget {
       future: foodItems,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
+          // Chargement de la page
+          return CircularProgressIndicator();
+        } else if (snapshot.hasError) {
           // Si le Future est en cours d'exécution,  un indicateur de chargement sera affiché
           return CircularProgressIndicator();
         } else if (snapshot.hasError) {
           // En cas d'erreur,  un message d'erreur sera affiché
           return noItemContainer();
-          // Text("An error occurred: ${snapshot.error}");
         } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
           // Si des données sont disponibles et non vides,  la liste d'articles sera affiché
           return Container(
@@ -238,6 +237,7 @@ class ItemContentState extends State<ItemContent> {
     }
 
     if (widget.index >= 0 && widget.index < widget.foodItem.length) {
+      // Verifie si l'indice est bien entre 0 et la longueur du tableau de foodItem
       return Dismissible(
         key: UniqueKey(),
         direction: DismissDirection.endToStart,

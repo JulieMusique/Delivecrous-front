@@ -22,7 +22,6 @@ class SignInModel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool receiveByMail = false;
     String currentAddress = '';
     return Stack(children: [
       Padding(

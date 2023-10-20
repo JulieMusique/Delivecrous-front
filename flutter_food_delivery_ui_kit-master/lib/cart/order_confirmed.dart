@@ -5,6 +5,7 @@ import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
 import 'package:flutter_ui_food_delivery_app/widgets/custom_button.dart';
 import 'package:lottie/lottie.dart';
 
+//Cette classe indique la commande a ete confirme
 class OrderConfirmed extends StatelessWidget {
   final User user;
   OrderConfirmed({required this.user});
@@ -18,10 +19,10 @@ class OrderConfirmed extends StatelessWidget {
           "Food Express",
           style: TextStyle(
             color: Colors.black,
-            fontFamily: 'Comic Sans MS, Arial', // Couleur du texte de l'app bar
+            fontFamily: 'Comic Sans MS, Arial',
           ),
         ),
-        backgroundColor: Color(0xFFD2F5AF), // Couleur de l'app bar
+        backgroundColor: Color(0xFFD2F5AF),
       ),
       backgroundColor: Colors.white,
       body: Center(
@@ -29,22 +30,18 @@ class OrderConfirmed extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Lottie Animation
             Lottie.asset(
-              '/anim/confirmed_order.json', // Assurez-vous que le chemin est correct
+              '/anim/confirmed_order.json',
               fit: BoxFit.contain,
               height: 300,
               width: 300,
             ),
-            SizedBox(height: 20), // Espacement entre l'animation et le message
-
-            // Message
+            SizedBox(height: 20),
             Text(
               "ORDER CONFIRMED",
               style: TextStyle(fontSize: 24),
             ),
-            SizedBox(height: 20), // Espacement entre le message et le bouton
-
+            SizedBox(height: 20),
             AppButton(
                 bgColor: vermilion,
                 borderRadius: 30,
