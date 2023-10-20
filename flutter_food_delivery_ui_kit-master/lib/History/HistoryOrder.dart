@@ -121,7 +121,6 @@ class HistoryBody extends StatelessWidget {
             padding: EdgeInsets.fromLTRB(20, 30, 15, 0),
             child: Column(
               children: <Widget>[
-                CustomAppBar(),
                 Expanded(
                   flex: 1,
                   child: commandItemList(snapshot.data!),
@@ -167,36 +166,14 @@ class HistoryListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Dismissible(
-        key: Key(commandItem.idCommand.toString()),
-        direction: DismissDirection.endToStart,
-        background: Container(
-          alignment: Alignment.centerRight,
-          color: vermilion,
-          child: Icon(
-            Icons.delete,
-            color: Colors.white,
-            size: 30,
-          ),
-        ),
-        onDismissed: (direction) {
-          final HistoryListBloc bloc = BlocProvider.getBloc<HistoryListBloc>();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                  'La commande ${commandItem.idCommand} retiré des favoris'),
-              duration: Duration(seconds: 1),
-            ),
-          );
-        },
-        child: LongPressDraggable(
-          hapticFeedbackOnStart: false,
-          maxSimultaneousDrags: 1,
-          data: commandItem,
-          feedback: DraggableChildFeedback(commandItem: commandItem),
-          child: DraggableChild(commandItem: commandItem),
-          childWhenDragging: DraggableChild(commandItem: commandItem),
-        ));
+    return LongPressDraggable(
+      hapticFeedbackOnStart: false,
+      maxSimultaneousDrags: 1,
+      data: commandItem,
+      feedback: DraggableChildFeedback(commandItem: commandItem),
+      child: DraggableChild(commandItem: commandItem),
+      childWhenDragging: DraggableChild(commandItem: commandItem),
+    );
   }
 }
 
@@ -292,30 +269,6 @@ class ItemContent extends StatelessWidget {
           ),
           Spacer(),
         ],
-      ),
-    );
-  }
-}
-
-class CustomAppBar extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      leading: GestureDetector(
-        child: Icon(
-          CupertinoIcons.back,
-          size: 20,
-        ),
-        onTap: () {
-          Navigator.pop(context);
-        },
-      ),
-      title: Text(
-        "My History Dishes",
-        style: TextStyle(
-          fontWeight: FontWeight.w700,
-          fontSize: 15,
-        ),
       ),
     );
   }

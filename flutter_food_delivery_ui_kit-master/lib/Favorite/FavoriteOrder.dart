@@ -9,6 +9,7 @@ import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
 import 'package:flutter_ui_food_delivery_app/utils/style.dart';
 import '../model/User.dart';
 
+// La liste des plats en favoris
 class FavoriteScreen extends StatefulWidget {
   final User user;
 
@@ -26,6 +27,8 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   void initState() {
     super.initState();
     bloc = BlocProvider.getBloc<FavoriteListBloc>();
+    // Récupération de la liste des aliments favoris et gestion des cas d'erreur
+
     fetchFavoriteDishes(widget.user.id ?? 0).then((list) {
       if (list.isNotEmpty) {
         setState(() {
@@ -115,8 +118,13 @@ class FavBody extends StatelessWidget {
           // Chargement de la page
           return CircularProgressIndicator();
         } else if (snapshot.hasError) {
+          // Si le Future est en cours d'exécution,  un indicateur de chargement sera affiché
+          return CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          // En cas d'erreur,  un message d'erreur sera affiché
           return noItemContainer();
         } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+          // Si des données sont disponibles et non vides,  la liste d'articles sera affiché
           return Container(
             padding: EdgeInsets.fromLTRB(20, 30, 15, 0),
             child: Column(
@@ -129,6 +137,7 @@ class FavBody extends StatelessWidget {
             ),
           );
         } else {
+          // Si aucune des conditions ci-dessus n'est remplie, un message approprié sera affiché.
           return noItemContainer();
         }
       },
@@ -219,7 +228,13 @@ class ItemContentState extends State<ItemContent> {
   @override
   Widget build(BuildContext context) {
     final FavoriteListBloc bloc = BlocProvider.getBloc<FavoriteListBloc>();
-    print("Index: ${widget.index}, Length: ${widget.foodItem.length}");
+    String _fetchImageUrl(String imagePath) {
+      if (imagePath.contains("http") || imagePath.contains("https")) {
+        return imagePath;
+      } else {
+        return "/assets/$imagePath";
+      }
+    }
 
     if (widget.index >= 0 && widget.index < widget.foodItem.length) {
       // Verifie si l'indice est bien entre 0 et la longueur du tableau de foodItem
@@ -233,7 +248,8 @@ class ItemContentState extends State<ItemContent> {
             builder: (BuildContext context) {
               return AlertDialog(
                 title: Text("Confirmation"),
-                content: Text("Faites glisser vers le haut pour supprimer."),
+                content: Text(
+                    "Confirmez-vous la suppression de ce repas des favoris"),
                 actions: <Widget>[
                   TextButton(
                     child: Text("Annuler"),
@@ -305,7 +321,17 @@ class ItemContentState extends State<ItemContent> {
             children: [
               Row(
                 children: [
-                  SizedBox(width: 16),
+                  Hero(
+                    tag: NetworkImage(_fetchImageUrl(widget
+                        .foodItem[widget.index]
+                        .imagePath)), // Tag pour l'animation Hero (transition d'image)
+                    child: Image.network(
+                      _fetchImageUrl(widget.foodItem[widget.index].imagePath),
+                      width: MediaQuery.of(context).size.width /
+                          6, // Largeur de l'image
+                    ),
+                  ),
+                  SizedBox(width: 16), // Espace entre l'image et le nom/prix
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -329,8 +355,6 @@ class ItemContentState extends State<ItemContent> {
         ),
       );
     } else {
-      print("Index out of bounds: ${widget.index}");
-
       return Container(
         child: Center(
           child: Text(

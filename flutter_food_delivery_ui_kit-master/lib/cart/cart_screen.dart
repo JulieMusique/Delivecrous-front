@@ -164,30 +164,35 @@ class _BottomBarState extends State<BottomBar> {
             fontSize: 17,
             fontWeight: FontWeight.w600,
             onTap: () {
-              /*Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => OrderConfirmed(user:widget.user) /*OrderError(),*/
-                    ),
-              );*/
-              Future.delayed(
-                const Duration(milliseconds: 800),
-                () {
-                  setState(() {
-                    isShowSignInDialog = true;
-                  });
-                  showCustomDialog(
-                    context,
-                    onValue: (_) {
-                      setState(() {
-                        isShowSignInDialog = false;
-                      });
-                    },
-                    user: widget.user,
-                    command: widget.command,
-                  );
-                },
-              );
+              if (widget.command.totalAmount == 0) {
+                final snackBar = SnackBar(
+                  content: Text('Vous devez ajouter au moins un articlee'),
+                  // Message de la barre d'informations
+                  duration: Duration(
+                      milliseconds:
+                          550), // Durée d'affichage de la barre d'informations
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              } else {
+                Future.delayed(
+                  const Duration(milliseconds: 800),
+                  () {
+                    setState(() {
+                      isShowSignInDialog = true;
+                    });
+                    showCustomDialog(
+                      context,
+                      onValue: (_) {
+                        setState(() {
+                          isShowSignInDialog = false;
+                        });
+                      },
+                      user: widget.user,
+                      command: widget.command,
+                    );
+                  },
+                );
+              }
             },
             text: "Confirm order",
             textColor: Colors.white,
@@ -460,7 +465,6 @@ class CustomAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppBar(
       leading: GestureDetector(
-        // Ajoute un détecteur de geste pour détecter les pressions sur l'icône de retour
         child: Icon(
           CupertinoIcons.back, // Icône de flèche de retour style iOS
           size: 20, // Taille de l'icône

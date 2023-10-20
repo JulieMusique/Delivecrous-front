@@ -1,12 +1,10 @@
 // Import des packages Flutter nécessaires
 import 'package:flutter/material.dart'; // Import du package Material Design
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart'; // Import des couleurs personnalisées
-import 'package:flutter_ui_food_delivery_app/widgets/custom_text.dart';
 import 'package:flutter_ui_food_delivery_app/home/FoodDetail.dart'; // Importation de la page de détail des aliments
 import '../http/HttpServiceDish.dart';
 import '../model/list_food.dart'; // Import du widget de texte personnalisé
 import '../model/User.dart';
-import 'home_screen.dart';
 
 // Définition d'une classe SearchScreen qui étend StatefulWidget
 class SearchScreen extends StatefulWidget {
@@ -76,10 +74,11 @@ class _SearchScreenState extends State<SearchScreen> {
                               TextStyle(color: Colors.black), // Style du texte
                           onChanged: (text) {
                             setState(() {
-                              if (text != "") {
+                              if (text.isNotEmpty) {
                                 var url = urlLocal + "?searchedTitle=" + text;
                                 foodList = fetchDishes(url);
-                              }
+                              } else
+                                foodList = Future.value([]);
                             });
                           }),
                     ),

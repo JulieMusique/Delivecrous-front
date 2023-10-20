@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_ui_food_delivery_app/cart/order_confirmed.dart';
+import 'package:flutter_ui_food_delivery_app/cart/order_error.dart';
 import 'package:flutter_ui_food_delivery_app/http/HttpServiceCart.dart';
 import 'package:flutter_ui_food_delivery_app/model/User.dart';
 import 'package:flutter_ui_food_delivery_app/utils/colors.dart';
@@ -62,7 +63,6 @@ void showCustomDialog(BuildContext context,
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 14),
                     ),
-                    SignInModel(screen: "Bill", user: user, command: command),
                     SignInModel(
                         screen: "Address", user: user, command: command),
                     AppButton(
@@ -90,11 +90,9 @@ void showCustomDialog(BuildContext context,
                                   builder: (context) => OrderConfirmed(
                                       user: reponse.statusCode == 200
                                           ? updatedUser
-                                          : user) /*OrderError(),*/
-                                  ),
+                                          : user)),
                             );
                           }
-                          //updateUser(widget.user);
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
@@ -102,6 +100,11 @@ void showCustomDialog(BuildContext context,
                                   'Solde insuffisant pour passer la commande.'),
                               backgroundColor: Colors.red,
                             ),
+                          );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => OrderError(user: user)),
                           );
                         }
                       },

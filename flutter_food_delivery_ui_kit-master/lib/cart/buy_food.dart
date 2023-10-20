@@ -1,4 +1,6 @@
+import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ui_food_delivery_app/cart/bloc/cartlistBloc.dart';
 import 'package:flutter_ui_food_delivery_app/cart/cart_screen.dart';
 import 'package:flutter_ui_food_delivery_app/http/HttpServiceCart.dart';
 import 'package:flutter_ui_food_delivery_app/model/Command.dart';
@@ -19,6 +21,16 @@ class BuyFood extends StatefulWidget {
 }
 
 class _BuyFoodState extends State<BuyFood> {
+  final CartListBloc bloc = BlocProvider.getBloc<CartListBloc>();
+
+  addToCart(Food foodItem) {
+    bloc.addToList(widget.dish);
+  }
+
+  removeFromList(Food food) {
+    bloc.removeFromList(food);
+  }
+
   void _incFood() {
     setState(() async {
       if (widget.command != null) {
@@ -69,6 +81,9 @@ class _BuyFoodState extends State<BuyFood> {
         }
       }
       //addDishToCommand(widget.command!.idCommand, widget.dish.id);
+      addToCart(widget.dish);
+
+      addDishToCommand(widget.command!.idCommand, widget.dish.id);
       widget.dish
           .incrementQuantity(); // Incrémente la quantité d'aliments sélectionnés lors de l'appui sur le bouton d'ajout
     });
@@ -92,6 +107,7 @@ class _BuyFoodState extends State<BuyFood> {
         );
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
+      removeFromList(widget.dish);
       deleteDishFromCommand(widget.command!.idCommand, widget.dish.id);
       if (widget.dish.quantity > 1) {
         // Vérifie que la quantité d'aliments sélectionnés est supérieure à 1 avant de décrémenter
