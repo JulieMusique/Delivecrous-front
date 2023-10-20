@@ -75,10 +75,11 @@ class _SearchScreenState extends State<SearchScreen> {
                         style: TextStyle(color: Colors.black), // Style du texte
                         onChanged: (text) {
                           setState(() {
-                            if(text != ""){
+                            if(text.isNotEmpty){
                               var url = urlLocal + "?searchedTitle=" + text;
                               foodList = fetchDishes(url);
-                            }
+                            } else
+                              foodList = Future.value([]);
                           });
                         }
                       ),
