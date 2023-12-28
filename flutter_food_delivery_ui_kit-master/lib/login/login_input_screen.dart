@@ -121,7 +121,7 @@ class _LoginInputScreenState extends State<LoginInputScreen> {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: vermilion,
+                backgroundColor: vermilion,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),
