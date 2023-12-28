@@ -149,7 +149,7 @@ class DetailFood extends StatelessWidget {
             ),
           ),
           style: ElevatedButton.styleFrom(
-            primary: vermilion,
+            backgroundColor: vermilion,
             // Couleur de fond du bouton
             padding: EdgeInsets.all(25),
             // Remplissage du bouton
