@@ -48,7 +48,7 @@ class OnboardScreen extends StatelessWidget {
 
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: const Color(0xFFD2F5AF), // Couleur du bouton
+                  backgroundColor: const Color(0xFFD2F5AF), // Couleur du bouton
                   shape: RoundedRectangleBorder(
                     borderRadius:
                         BorderRadius.circular(30.0), // Arrondi des coins
